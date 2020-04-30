@@ -7,7 +7,7 @@ export default class Multipicklist extends LightningElement {
     @api options = [{ value: 'a', label: 'a', isSelected: false, isVisible: true }, { value: 'b', label: 'b', isSelected: false, isVisible: true }];
     @api selection = '';
     @api placeholderInput = 'No options selected';
-    @api noResultMsg = 'Nessun risultato trovato';
+    @api noResultMsg = 'No results';
     @api selectedValues = '';
 
     /* EVENT HANDLERS - START */
