@@ -1,0 +1,45 @@
+<template>
+    <lightning-layout>
+        <lightning-layout-item size="12">
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="combobox-id-3">{fieldLabel}</label>
+                <div class="slds-form-element__control">
+                    <div class="slds-combobox_container">
+                        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                            <input type="text" class="slds-input slds-combobox__input" id="combobox-id-3" aria-controls="listbox-id-4" autocomplete="off" role="textbox" value={selection} placeholder={placeholderInput} onclick={clickInputHandler} onblur={focusOutHandler} onchange={filterOptions} onkeyup={filterOptions} readonly={_readOnly} />
+                            <span class="cstm-btn slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right" onclick={dropdownHandler}>
+                                <lightning-icon icon-name="utility:chevronup" size="xx-small"></lightning-icon>
+                            </span>
+                        </div>
+                        <div id="listbox-id-4" class="cstm-hide hide slds-dropdown slds-dropdown_length-2 slds-dropdown_fluid" role="listbox">
+                            <template if:true={hasResult}>
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <template for:each={options} for:item="opt">
+                                        <template if:true={opt.isVisible}>
+                                            <li key={opt.value} role="presentation" class="slds-listbox__item" data-v={opt.value} onmousedown={handleClickSelection}>
+                                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                    <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                    <span class="slds-media__body">
+                                                        <template if:true={opt.isSelected}>
+                                                            <lightning-icon class="slds-p-right_small" icon-name="utility:check" size="xx-small"></lightning-icon>
+                                                        </template>
+                                                        <span class="slds-truncate" title={opt.label}> {opt.label}</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </template>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template if:false={hasResult}>
+                                <span>{noResultMsg}</span>
+                            </template>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>
