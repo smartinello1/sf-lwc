@@ -1,0 +1,36 @@
+<template>
+    <template if:false={isRendered}>
+        <div style="min-height:100px;">
+            <lightning-spinner alternative-text="CARICAMENTO..."></lightning-spinner>
+        </div>
+    </template>
+    <template if:true={isRendered}>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12">
+                <p>{currentPageNumber}</p>
+                <lightning-combobox 
+                    name="recordPerPage"
+                    label="Number of records"
+                    value={recordsPerPage}
+                    placeholder="Select a number of records"
+                    options={optionsRecordsPerPage}
+                    onchange={handleChangeRecordsPerPage} ></lightning-combobox>
+                <lightning-button icon-name="utility:chevrondown" onclick={nextPage} disabled={disableNextPage}></lightning-button>
+                <lightning-button icon-name="utility:chevronup" onclick={prevPage} disabled={disablePrevPage}></lightning-button>
+                <lightning-input label="Filtro" type="text" value={filter} onchange={changeFilter}></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <lightning-datatable
+                    key-field="id"
+                    hide-checkbox-column=true
+                    data={selectedRecords}
+                    columns={columns}
+                    default-sort-direction={defaultSortDirection}
+                    sorted-direction={sortDirection}
+                    sorted-by={sortedBy}
+                    onsort={onHandleSort}
+                ></lightning-datatable>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+</template>
