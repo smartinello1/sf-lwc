@@ -1,0 +1,55 @@
+.THIS .container-card {
+  min-height: 345px;
+}
+
+.THIS .title {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+}
+
+.THIS .open-component {
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+  vertical-align: super;
+}
+
+.THIS .row {
+  padding: 10px;
+}
+
+.THIS .slds-card__body {
+  margin: 0 10px 10px 10px;
+}
+
+.THIS .containerCol {
+  border: 1px solid #dad7d8;
+  border-radius: 5px;
+}
+
+.THIS
+  .slds-p-around_small.slds-size_12-of-12.slds-small-size_6-of-12.slds-medium-size_4-of-12.slds-large-size_1-of-12 {
+  position: relative;
+}
+
+/* usata per allineare il valore di ogni colonna del componente */
+.THIS .column-height {
+  height: 50px;
+}
+
+.THIS hr {
+  margin-top: 1px;
+  margin-bottom: 4px;
+  color: #002a70;
+  border: 0px solid #002a70;
+  background-color: #002a70;
+}
+
+.THIS .blk {
+  color: #002a70;
+}
+
+.THIS .text-small {
+  font-size: x-small;
+}

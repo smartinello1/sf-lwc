@@ -1,0 +1,54 @@
+.cstm-tile-container {
+  position: relative;
+  height: 400px;
+  width: 250px;
+  background-color: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.cstm-upper-tile {
+  height: 150px;
+  background: #7f0007;
+}
+
+.cstm-image-container {
+  background: #fff;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  padding: 5px;
+  transform: translate(90%, 100px);
+  transition: 1s;
+}
+
+.cstm-image-container svg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  transition: 1s;
+}
+
+.cstm-image-container:hover svg {
+  width: 85px;
+  height: 85px;
+}
+
+.cstm-image-container:hover {
+  width: 95px;
+  height: 95px;
+  transform: translate(85%, 100px);
+}
+
+.cstm-bottom-tile {
+  height: 250px;
+  background: #fff;
+}
+
+button {
+  border-radius: 25px !important;
+  background: rgb(0, 0, 192) !important;
+  color: #fff !important;
+  border: 0px;
+  padding: 5px;
+}

@@ -1,0 +1,18 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute name="testo" type="String" default="" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <lightning:card title="Simple Parent Component" iconName="standard:contact">
+    <div class="slds-p-around_small">
+      <lightning:input
+        type="text"
+        label="Messaggio"
+        value="{!v.testo}"
+        placeholder="inserisci un messaggio"
+      />
+    </div>
+    <c:SimpleChildComponent parentAttribute="{!v.testo}" />
+  </lightning:card>
+</aura:component>

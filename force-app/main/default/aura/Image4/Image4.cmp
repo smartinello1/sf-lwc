@@ -1,0 +1,10 @@
+<aura:component
+  implements="flexipage:availableForAllPageTypes,force:HasRecordId,force:appHostable"
+  access="global"
+>
+  <div class="slds-grid slds-gutters slds-wrap">
+    <div class="slds-col slds-size_12-of-12">
+      <img src="{!$Resource.Grafico2}" />
+    </div>
+  </div>
+</aura:component>

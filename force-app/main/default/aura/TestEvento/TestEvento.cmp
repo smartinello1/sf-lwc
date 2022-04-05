@@ -1,0 +1,21 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute name="valore1" type="String" />
+
+  <aura:handler name="change" value="{!v.valore1}" action="{!c.handleProva}" />
+
+  <!-- body -->
+  <lightning:input
+    type="text"
+    value="{!v.valore1}"
+    placeholder="Inserisci un testo..."
+  />
+
+  <h1>Visualizza il testo che hai scritto</h1>
+
+  <span>{!v.valore1}</span>
+
+  <lightning:button label="Cambia view" onclick="{!c.cambia}" />
+</aura:component>

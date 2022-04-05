@@ -1,0 +1,164 @@
+<aura:component
+  implements="flexipage:availableForAllPageTypes,force:HasRecordId,force:appHostable"
+  access="global"
+>
+  <aura:attribute name="data" Type="List" />
+  <aura:attribute name="columns" Type="List" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <div class="slds-grid slds-gutters slds-wrap slds-align_absolute-center">
+    <div class="slds-col slds-size_6-of-12">
+      <div class="slds-grid slds-gutters slds-wrap slds-align_absolute-center">
+        <div class="slds-col slds-size_12-of-12">
+          <canvas
+            aura:id="canvas"
+            id="canvas"
+            height="20"
+            style="width: 100%"
+          ></canvas>
+        </div>
+      </div>
+      <div class="slds-grid slds-gutters slds-wrap slds-align_absolute-center">
+        <div class="slds-col slds-size_3-of-12 slds-align_absolute-center">
+          <div
+            class="slds-grid slds-grid_vertical slds-gutters slds-wrap slds-align_absolute-center"
+          >
+            <div
+              class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              style="margin-left: 0px; font-weight: bold"
+            >
+              24
+            </div>
+            <div
+              class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              style="margin-left: 0px"
+            >
+              Aziende da contattare
+            </div>
+          </div>
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-align_absolute-center">
+          <div
+            class="slds-grid slds-grid_vertical slds-gutters slds-wrap slds-align_absolute-center"
+          >
+            <div
+              class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              style="font-weight: bold"
+            >
+              24
+            </div>
+            <div class="slds-col slds-size_6-of-12 slds-align_absolute-center">
+              Aziende da contattare
+            </div>
+          </div>
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-align_absolute-center">
+          <div
+            class="slds-grid slds-grid_vertical slds-gutters slds-wrap slds-align_absolute-center"
+          >
+            <div
+              class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              style="font-weight: bold"
+            >
+              24
+            </div>
+            <div class="slds-col slds-size_6-of-12 slds-align_absolute-center">
+              Aziende da contattare
+            </div>
+          </div>
+        </div>
+        <div class="slds-col slds-size_3-of-12 slds-align_absolute-center">
+          <div
+            class="slds-grid slds-grid_vertical slds-gutters slds-wrap slds-align_absolute-center"
+          >
+            <div
+              class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              style="font-weight: bold; margin-right: 0px"
+            >
+              24
+            </div>
+            <div
+              class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              style="margin-right: 0px"
+            >
+              Aziende da contattare
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slds-col slds-size_6-of-12">
+      <div class="slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_2-of-3">
+          <div class="slds-grid slds-grid_vertical slds-gutters slds-wrap">
+            <div class="slds-col slds-size_4-of-12" style="color: grey">
+              Clienti Attivati
+            </div>
+            <div class="slds-col slds-size_4-of-12" style="color: grey">
+              Clienti Persi
+            </div>
+            <div class="slds-col slds-size_4-of-12" style="color: grey">
+              Clienti Dormienti
+            </div>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3">
+          <div class="slds-grid slds-grid_vertical slds-gutters slds-wrap">
+            <div class="slds-col slds-size_4-of-12" style="font-weight: bold">
+              <img src="{!$Resource.FrecciaVerde}" />+22
+            </div>
+            <div class="slds-col slds-size_4-of-12" style="font-weight: bold">
+              <img src="{!$Resource.FrecciaRossa}" />-10
+            </div>
+            <div class="slds-col slds-size_4-of-12" style="font-weight: bold">
+              <img src="{!$Resource.FrecciaGrigia}" /> 10
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slds-col slds-size_6-of-12">
+      <c:DataTable />
+    </div>
+    <div class="slds-col slds-size_6-of-12">
+      <div class="slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_2-of-12 slds-align_absolute-center">
+          <div
+            class="slds-align_absolute-center"
+            style="
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              background-color: blue;
+              color: white;
+            "
+          >
+            <div class="slds-grid slds-grid_vertical slds-gutters slds-wrap">
+              <div
+                class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              >
+                <h3 class="slds-text-heading_small">2</h3>
+              </div>
+              <div
+                class="slds-col slds-size_6-of-12 slds-align_absolute-center"
+              >
+                <p>Maggio</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slds-col slds-size_10-of-12">
+          <div class="slds-grid slds-grid_vertical slds-gutters slds-wrap">
+            <div class="slds-col slds-size_6-of-12">
+              <h3 class="slds-text-heading_small" style="font-weight: bold">
+                Results 1Q18, Approvazione dei risultati del primo trimestre
+              </h3>
+            </div>
+            <div class="slds-col slds-size_6-of-12" style="color: grey">
+              Sed ut perspiciatis unde omni natused iatis undes...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</aura:component>

@@ -1,0 +1,52 @@
+<template>
+  <div class="cstm-spinner">
+    <!-- <lightning-spinner alternative-text="Loading..."></lightning-spinner> -->
+    <c-custom-spinner></c-custom-spinner>
+  </div>
+  <div class="cstm-gs-filter-container">
+    <div class="slds-grid slds-wrap">
+      <div class="slds-col slds-size_1-of-4">
+        <lightning-combobox
+          name="object"
+          label="Select an object"
+          value={value}
+          placeholder="Select an object..."
+          options={options}
+          onchange={handleChange}
+        >
+        </lightning-combobox>
+      </div>
+      <div class="slds-col slds-size_3-of-4">
+        <div class="slds-grid slds-wrap">
+          <template if:false={isAllSearch}>
+            soql
+            <template for:each={fields} for:item="field">
+              <div key={field.name} class="slds-col slds-p-around_small">
+                <p data-fieldname={field.name} onclick={selectField}>
+                  {field.name}
+                </p>
+              </div>
+            </template>
+          </template>
+          <template if:true={isAllSearch}>
+            sosl
+            <div class="slds-col">
+              <lightning-input
+                label="Type fields to search separeted by comma"
+                name="soslField"
+              ></lightning-input>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div class="slds-col slds-size-1-of-1">
+        <lightning-input
+          type="textarea"
+          label="SOQL Query"
+          value={soqlTextUI}
+          onchange={changeSoqlText}
+        ></lightning-input>
+      </div>
+    </div>
+  </div>
+</template>

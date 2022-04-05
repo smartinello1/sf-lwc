@@ -1,0 +1,28 @@
+<!--c:ceHandler-->
+<aura:component implements="flexipage:availableForAllPageTypes">
+  <aura:attribute name="messageFromEvent" type="String" />
+  <aura:attribute name="numEvents" type="Integer" default="0" />
+
+  <!-- Note that name="cmpEvent" in aura:registerEvent
+     in ceNotifier.cmp -->
+  <aura:handler
+    name="CmpEvent"
+    event="c:CmpEvent"
+    action="{!c.handleComponentEvent}"
+  />
+
+  <!-- handler contains the notifier component -->
+  <lightning:card title="Event Handler" iconName="">
+    <div class="slds-p-around_small">
+      <div class="slds-p-around_small">
+        <c:HelloWorldEvent />
+      </div>
+      <div class="slds-p-around_xx-small">
+        <p>{!v.messageFromEvent}</p>
+      </div>
+      <div class="slds-p-around_xx-small">
+        <p>Number of events: {!v.numEvents}</p>
+      </div>
+    </div>
+  </lightning:card>
+</aura:component>

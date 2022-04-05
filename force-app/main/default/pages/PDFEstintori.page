@@ -1,0 +1,31 @@
+<apex:page renderAs="pdf" applyBodyTag="false">
+  <head>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+
+      .container {
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <apex:panelGrid columns="3" id="theGrid">
+        <apex:image url="{!$Resource.LogoAPT}"></apex:image>
+        <apex:panelGroup >
+          <h1 style="font-weight: bold">APT Services</h1>
+          <h3 style="color: lightgrey">Prova prova</h3>
+        </apex:panelGroup>
+        <apex:panelGroup >
+          <apex:outputText value="Second" id="theSecond" />
+        </apex:panelGroup>
+      </apex:panelGrid>
+    </div>
+  </body>
+</apex:page>

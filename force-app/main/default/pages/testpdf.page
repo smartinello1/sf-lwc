@@ -1,0 +1,12 @@
+<apex:page name="CustomDashBoard"
+  renderAs="PDF"
+  showHeader="true"
+  sidebar="false"
+  title="Custom DashBoard"
+>
+  <wave:dashboard dashboardId="0FK0Y000000cweVWAQ"
+    width="1000px"
+    height="1000px"
+    rendered="true"
+  ></wave:dashboard>
+</apex:page>

@@ -1,0 +1,15 @@
+<aura:component
+  implements="flexipage:AvailableForRecordHome,force:HasRecordId"
+  access="global"
+  controller="DataTableController"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="getRelatedContacts" type="String" />
+  <aura:attribute name="RelatedContacts" type="Contact[]" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <lightning:card iconName="standard:contact" title="Related Contacts">
+    <aura:iteration items="{!v.RelatedContacts}" var="contact" indexVar="i">
+      <c:DataTableItemComponent contact="{!contact}" recordId="{!v.recordId}" />
+    </aura:iteration>
+  </lightning:card>
+</aura:component>

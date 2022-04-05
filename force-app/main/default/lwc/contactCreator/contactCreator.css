@@ -1,0 +1,6 @@
+.cstm-div {
+	background-color: var(--lwc-colorBackgroundAltInverse);
+}
+
+@media var(--lwc-mqMediumLandscape) {
+}

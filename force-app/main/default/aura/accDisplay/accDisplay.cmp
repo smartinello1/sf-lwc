@@ -1,0 +1,41 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId">
+  <aura:attribute name="newAccount" type="Object" />
+  <aura:attribute name="accountRecord" type="Object" />
+  <aura:attribute name="newAccountError" type="String" />
+  <aura:attribute name="recordId" type="String" />
+  <aura:handler name="init" value="{!this}" action="{!c.myAction}" />
+  <force:recordData
+    aura:id="accountRecord"
+    recordId="{!v.recordId}"
+    layoutType="FULL"
+    targetRecord="{!v.newAccount}"
+    targetFields="{!v.accountRecord}"
+    targetError="{!v.newAccountError}"
+    mode="VIEW"
+  />
+  <aura:text value="Account Name" />
+  <br />
+  <lightning:card title="{!v.accountRecord.Name}">
+    <aura:text value="Industry: " />
+    <lightning:formattedText
+      title="Industry"
+      value="{!v.accountRecord.Industry}"
+    />
+    <br />
+    <aura:text value="Description: " />
+    <lightning:formattedText
+      title="Description"
+      value="{!v.accountRecord.Description}"
+    />
+    <br />
+    <aura:text value="Phone: " />
+    <lightning:formattedPhone title="Phone" value="{!v.accountRecord.Phone}" />
+  </lightning:card>
+  <aura:if isTrue="{!not(empty(v.newAccountError))}">
+    <div class="recordError">
+      <ui:message title="Error" closable="true" severity="ERROR">
+        {!v.newAccountError}
+      </ui:message>
+    </div>
+  </aura:if>
+</aura:component>

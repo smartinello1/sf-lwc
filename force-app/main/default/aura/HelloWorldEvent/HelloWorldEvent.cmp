@@ -1,0 +1,13 @@
+<!--c:ceNotifier-->
+<aura:component implements="flexipage:availableForAllPageTypes">
+  <aura:attribute name="testAtt" type="String" />
+  <aura:registerEvent name="CmpEvent" type="c:CmpEvent" />
+
+  <h1>Simple Component Event Sample</h1>
+  <p>
+    <lightning:button
+      label="Click here to fire a component event"
+      onclick="{!c.fireComponentEvent}"
+    />
+  </p>
+</aura:component>

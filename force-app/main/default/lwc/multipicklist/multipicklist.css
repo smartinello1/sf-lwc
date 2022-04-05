@@ -1,16 +1,16 @@
-.hide{
-    display: none !important;
+.hide {
+  display: none !important;
 }
 
-.isOpen{
-    transform: rotate(180deg);
+.isOpen {
+  transform: rotate(180deg);
 }
 
-.cstm-btn{
-    pointer-events: all !important;
-    transition: transform 1s;
+.cstm-btn {
+  pointer-events: all !important;
+  transition: transform 1s;
 }
 
-.cstm-hide{
-    transition: 2s;
+.cstm-hide {
+  transition: 2s;
 }

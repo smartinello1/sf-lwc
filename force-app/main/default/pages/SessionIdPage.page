@@ -1,0 +1,7 @@
+<apex:page contentType="application/json"
+  showHeader="false"
+  applyHtmlTag="false"
+  standardStylesheets="false"
+>
+  "{!$Api.Session_ID}"
+</apex:page>

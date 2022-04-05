@@ -1,0 +1,61 @@
+<aura:component
+  implements="flexipage:availableForAllPageTypes"
+  controller="FilterController"
+>
+  <!-- attributes -->
+  <aura:attribute
+    name="filterOptions"
+    type="List"
+    default="[{ 'value' : '1' , 'label' : 'prova 1'},{ 'value' : '2' , 'label' : 'prova 2'}]"
+  />
+  <aura:attribute
+    name="selectedFilter"
+    type="Map"
+    default="{ 'value' : '' , 'label' : '' , 'isTeam' : false }"
+  />
+  <aura:attribute name="isLoaded" type="Boolean" default="false" />
+  <!-- libraries -->
+  <lightning:empApi aura:id="empApi" />
+  <!-- events -->
+  <aura:registerEvent name="FilterEvent" type="c:FilterEvent" />
+  <!-- handlers -->
+  <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+
+  <!-- body -->
+  <div class="container">
+    <aura:if isTrue="{! v.isLoaded }">
+      <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="12" padding="around-small">
+          <h1 class="slds-title slds-text-align_center">Filtri</h1>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12" padding="around-small">
+          <lightning:select onchange="{! c.changeFilter }">
+            <option value="">-- Seleziona --</option>
+            <aura:iteration var="item" items="{! v.filterOptions }">
+              <option value="{! item }">{! item.label }</option>
+            </aura:iteration>
+          </lightning:select>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12">
+          <h2 class="slds-title slds-text-align_center">
+            Filtro selezionato: {! v.selectedFilter }
+          </h2>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12" class="slds-text-align_center">
+          <lightning:button
+            onclick="{! c.applyFilter }"
+            label="Applica filtri"
+          />
+          <lightning:button
+            onclick="{! c.clearFilter }"
+            label="Annulla filtri"
+          />
+        </lightning:layoutItem>
+      </lightning:layout>
+
+      <aura:set attribute="else">
+        <lightning:spinner alternativeText="CARICAMENTO" />
+      </aura:set>
+    </aura:if>
+  </div>
+</aura:component>

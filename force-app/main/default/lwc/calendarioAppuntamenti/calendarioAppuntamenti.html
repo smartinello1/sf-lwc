@@ -1,0 +1,113 @@
+<template>
+  <lightning-card title="Calendario appuntamenti" icon-name="standard:account">
+    <div class="slds-grid slds-grid_align-center">
+      <div class="slds-col">
+        <lightning-button-icon
+          icon-name="utility:chevronleft"
+          onclick={onClickBackWeek}
+          disabled={disabledBackButton}
+        ></lightning-button-icon>
+        <span class="slds-p-horizontal_medium"
+          >{selectedWeekStartDate} - {selectedWeekEndDate}</span
+        >
+        <lightning-button-icon
+          icon-name="utility:chevronright"
+          onclick={onClickNextWeek}
+        ></lightning-button-icon>
+      </div>
+    </div>
+    <div
+      class="cstm-body slds-scrollable_y slds-p-around_medium"
+      style="height: 400px; border: 1px solid black"
+    >
+      <div class="slds-grid slds-grid_align-center">
+        <template for:each={days} for:item="day">
+          <div
+            key={day.id}
+            class="slds-col slds-size_1-of-5 slds-text-align_center slds-p-horizontal_small"
+          >
+            <div class="slds-grid slds-wrap">
+              <div
+                class="slds-col slds-size_1-of-1 slds-box slds-m-bottom_large"
+              >
+                <p>{day.value}</p>
+              </div>
+              <template if:false={day.isHoliday}>
+                <template for:each={day.hours} for:item="hour">
+                  <div
+                    key={hour.start}
+                    class="slds-col slds-size_1-of-1 slds-box"
+                    style={hour.cssClass}
+                    data-available={hour.isAvailable}
+                    data-key={hour.id}
+                    onclick={onClickAppointmentSlot}
+                  >
+                    <span>{hour.start} - {hour.end}</span>
+                  </div>
+                </template>
+              </template>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </lightning-card>
+  <template if:true={showModal}>
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="modal-heading-01"
+      aria-modal="true"
+      aria-describedby="modal-content-id-1"
+      class="slds-modal slds-fade-in-open"
+    >
+      <!-- class="slds-modal__container" -->
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <!-- <template if:true={showCloseBtn}> -->
+          <lightning-button-icon
+            class="slds-modal__close"
+            title="Close"
+            icon-name="utility:close"
+            icon-class="slds-button_icon-inverse"
+            onclick={handleDialogClose}
+          ></lightning-button-icon>
+          <!-- </template> -->
+
+          <!-- <template if:true={hasHeaderString}> -->
+          <h2 class="slds-text-heading_medium slds-hyphenate header-string">
+            Appuntamento
+          </h2>
+          <!-- </template> -->
+          <!-- <template if:false={hasHeaderString}>
+                    <h2 class="slds-text-heading_medium slds-hyphenate header-slot">
+                        <slot name="header">Appuntamento</slot>
+                    </h2>
+                </template> -->
+        </header>
+        <div
+          class="slds-modal__content slds-p-around_medium"
+          id="modal-content-id-1"
+        >
+          <lightning-input label="Note" required></lightning-input>
+        </div>
+
+        <footer class="slds-modal__footer">
+          <lightning-button
+            label="Chiudi"
+            onclick={handleDialogClose}
+            class="slds-p-horizontal_small"
+            disabled={btnDisabled}
+          ></lightning-button>
+          <lightning-button
+            label="Salva"
+            variant="brand"
+            onclick={saveAppointment}
+            disabled={btnDisabled}
+          ></lightning-button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

@@ -1,0 +1,161 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <div class="container">
+    <div class="slds-grid slds-gutters">
+      <div class="slds-col slds-size_6-of-12">
+        <lightning:card>
+          <aura:set attribute="title"> </aura:set>
+          <div class="row1">
+            <div class="col1">
+              <img src="{!$Resource.IconaPortafoglio1}" class="imageBlack" />
+            </div>
+            <div class="col2">
+              <div class="canvasContainer">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col central-top">
+                    <span class="slds-badge badge">></span>
+                  </div>
+                  <div class="slds-col central-top">
+                    <span class="slds-badge badge">></span>
+                  </div>
+                  <div class="slds-col central-top">
+                    <span class="slds-badge badge">></span>
+                  </div>
+                  <div class="slds-col central-top">
+                    <span class="slds-badge badge">></span>
+                  </div>
+                </div>
+              </div>
+              <div class="canvasContainer">
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-col slds-size_3-of-12 central">
+                    <div class="div-col central-top">
+                      <span class="span-number">24</span>
+                    </div>
+                    <div class="div-col span-title">Aziende da contattare</div>
+                  </div>
+                  <div class="slds-col slds-size_3-of-12 central">
+                    <div class="div-col central-top">
+                      <span class="span-number">10</span>
+                    </div>
+                    <div class="div-col span-title">
+                      Opportunità da finalizzare
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_3-of-12 central">
+                    <div class="div-col central-top">
+                      <span class="span-number">8</span>
+                    </div>
+                    <div class="div-col span-title">
+                      Contratti da far firmare
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_3-of-12 central">
+                    <div class="div-col central-top">
+                      <span class="span-number">22</span>
+                    </div>
+                    <div class="div-col span-title">Clienti da attivare</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </lightning:card>
+      </div>
+      <div class="slds-col slds-size_3-of-12">
+        <lightning:card>
+          <aura:set attribute="title"> </aura:set>
+          <div class="row1">
+            <div class="col1b">
+              <img src="{!$Resource.IconaPortafoglio2}" class="imageBlack" />
+            </div>
+            <div class="col2b">
+              <div class="slds-grid slds-wrap height-max">
+                <div class="slds-col height-max-plus">
+                  <div class="div-col">
+                    <div class="div-title">
+                      <span>Clienti ATTIVATI</span>
+                    </div>
+                    <div class="div-number">
+                      <span class="span-number">+22</span>
+                      <img src="{!$Resource.FrecciaVerde}" class="image" />
+                    </div>
+                  </div>
+                  <div class="div-col row-grey">
+                    <div class="div-title">Clienti INCERTI</div>
+                    <div class="div-number">
+                      <span class="span-number">-10</span>
+                      <img src="{!$Resource.FrecciaRossa}" class="image" />
+                    </div>
+                  </div>
+                  <div class="div-col">
+                    <div class="div-title">Clienti DORMIENTI</div>
+                    <div class="div-number">
+                      <span class="span-number">10</span>
+                      <img src="{!$Resource.FrecciaGrigia}" class="image" />
+                    </div>
+                  </div>
+                  <div class="div-col row-grey">
+                    <div class="div-title">Clienti INATTIVI/Ex clienti</div>
+                    <div class="div-number">
+                      <span class="span-number">6</span>
+                      <img src="{!$Resource.FrecciaGrigia}" class="image" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </lightning:card>
+      </div>
+      <div class="slds-col slds-size_3-of-12">
+        <lightning:card>
+          <aura:set attribute="title"> </aura:set>
+          <div class="row1">
+            <div class="col1b">
+              <img src="{!$Resource.IconaPortafoglio3}" class="imageBlack" />
+            </div>
+            <div class="col2b">
+              <div class="slds-grid slds-wrap height-max">
+                <div class="slds-col height-max">
+                  <div class="slds-grid slds-wrap height-max">
+                    <div class="slds-col height-max-lr">
+                      <div class="circle-container">
+                        <div class="BlueCircle">
+                          <h6 class="BlueCircleTitle">2</h6>
+                          <span class="BlueCircleSpan">Maggio</span>
+                        </div>
+                      </div>
+                      <div class="div-text" style="padding-top: 10px">
+                        <div class="div-block">
+                          <p
+                            class="slds-truncate span-number-xx-small"
+                            title="Results 1Q18, Approvazione dei risultati del primo trimestre"
+                          >
+                            Results 1Q18, Approvazione dei risultati del primo
+                            trimestre
+                          </p>
+                        </div>
+                        <div class="div-block">
+                          <p
+                            class="slds-truncate span-xx-small"
+                            title="Sed ut perspiciatis unde omni natused iatis undes"
+                          >
+                            Sed ut perspiciatis unde omni natused iatis undes
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </lightning:card>
+      </div>
+    </div>
+  </div>
+</aura:component>

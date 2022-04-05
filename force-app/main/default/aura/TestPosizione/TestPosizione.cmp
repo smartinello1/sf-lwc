@@ -1,0 +1,166 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction"
+  access="global"
+>
+  <aura:attribute
+    name="title"
+    type="String"
+    default="FACTORING"
+    access="global"
+  />
+  <aura:attribute name="color" type="String" default="lightblue" />
+  <aura:attribute name="colortext" type="String" default="white" />
+
+  <aura:attribute name="col1" type="String" default="#Linee" />
+  <aura:attribute name="col2" type="String" default="Accordato" />
+  <aura:attribute name="col3" type="String" default="Impiego" />
+  <aura:attribute name="col4" type="String" default="Outstanding" />
+  <aura:attribute name="col5" type="String" default="Turnover 12 mesi" />
+  <aura:attribute name="col6" type="String" default="Data ultima cessione" />
+  <aura:attribute name="col7" type="String" default="MDI 12 mesi" />
+  <aura:attribute name="col8" type="String" default="Impiego 12 mesi" />
+  <aura:attribute name="col9" type="String" default="% MDI / impiego" />
+  <aura:attribute name="col10" type="String" default="Finanziabilità" />
+  <aura:attribute name="col11" type="String" default="Cedenti" />
+  <aura:attribute name="col12" type="String" default="Plafond" />
+  <aura:attribute name="col13" type="String" default="Di cui prosoluto" />
+  <aura:attribute name="col14" type="String" default="Outstanding" />
+  <aura:attribute name="col15" type="String" default="Di cui confermato" />
+  <aura:attribute name="col16" type="String" default="Turnover 12 Mesi" />
+  <aura:attribute name="col17" type="String" default="Tempo medio pagamento" />
+  <aura:attribute
+    name="col18"
+    type="String"
+    default="Tempo medio riconoscimento"
+  />
+  <aura:attribute
+    name="col19"
+    type="String"
+    default="Ritardo medio pagamento"
+  />
+  <aura:attribute name="col20" type="String" default="Dilazione" />
+
+  <aura:attribute name="col1val" type="String" default="3" />
+  <aura:attribute name="col2val" type="String" default="€230.000" />
+  <aura:attribute name="col3val" type="String" default="€120.000" />
+  <aura:attribute name="col4val" type="String" default="123" />
+  <aura:attribute name="col5val" type="String" default="€60.000" />
+  <aura:attribute name="col6val" type="String" default="12-09-2017" />
+  <aura:attribute name="col7val" type="String" default="€60.000" />
+  <aura:attribute name="col8val" type="String" default="€90.000" />
+  <aura:attribute name="col9val" type="String" default="90" />
+  <aura:attribute name="col10val" type="String" default="123" />
+  <aura:attribute name="col11val" type="String" default="12" />
+  <aura:attribute name="col12val" type="String" default="€560.000" />
+  <aura:attribute name="col13val" type="String" default="€200.000" />
+  <aura:attribute name="col14val" type="String" default="€60.000" />
+  <aura:attribute name="col15val" type="String" default="€60.000" />
+  <aura:attribute name="col16val" type="String" default="€50.000" />
+  <aura:attribute name="col17val" type="String" default="4 mesi" />
+  <aura:attribute name="col18val" type="String" default="20 gg" />
+  <aura:attribute name="col19val" type="String" default="20 gg" />
+  <aura:attribute name="col20val" type="String" default="Si 12 gg max 90 gg" />
+
+  <div
+    class="slds-m-around_x-small"
+    style="{! 'background-color: ' + v.color + ';' + 'color: ' + v.colortext + '; border-radius:10px; box-shadow: 1px 1px 20px lightgrey;'}"
+  >
+    <lightning:layout multipleRows="true">
+      <lightning:layoutItem> {!v.title} </lightning:layoutItem>
+    </lightning:layout>
+    <lightning:layout>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12"> {!v.col1} </lightning:layoutItem>
+          <lightning:layoutItem size="12"> {!v.col1val} </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12"> {!v.col2} </lightning:layoutItem>
+          <lightning:layoutItem size="12"> {!v.col2val} </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12"> {!v.col3} </lightning:layoutItem>
+          <lightning:layoutItem size="12"> {!v.col3val} </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12"> {!v.col4} </lightning:layoutItem>
+          <lightning:layoutItem size="12"> {!v.col4val} </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12"> {!v.col5} </lightning:layoutItem>
+          <lightning:layoutItem size="12"> {!v.col5val} </lightning:layoutItem>
+        </lightning:layout>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <div>{!v.col6}</div>
+        <div>{!v.col6val}</div>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <div>{!v.col7}</div>
+        <div>{!v.col7val}</div>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <div>{!v.col8}</div>
+        <div>{!v.col8val}</div>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <div>{!v.col9}</div>
+        <div>{!v.col9val}</div>
+      </lightning:layoutItem>
+      <lightning:layoutItem class="slds-p-horizontal_x-small">
+        <div>{!v.col10}</div>
+        <div>{!v.col10val}</div>
+      </lightning:layoutItem>
+    </lightning:layout>
+    <div class="slds-grid">
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col1}</div>
+        <div>{!v.col1val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col2}</div>
+        <div>{!v.col2val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col3}</div>
+        <div>{!v.col3val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col4}</div>
+        <div>{!v.col4val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col5}</div>
+        <div>{!v.col5val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col6}</div>
+        <div>{!v.col6val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col7}</div>
+        <div>{!v.col7val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col8}</div>
+        <div>{!v.col8val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col9}</div>
+        <div>{!v.col9val}</div>
+      </div>
+      <div class="slds-col slds-p-horizontal_x-small">
+        <div class="slds-align_absolute-center">{!v.col10}</div>
+        <div>{!v.col10val}</div>
+      </div>
+    </div>
+  </div>
+</aura:component>

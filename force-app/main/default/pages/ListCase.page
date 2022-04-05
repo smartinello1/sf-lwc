@@ -1,0 +1,32 @@
+<apex:page standardController="Case"
+  extensions="ListCaseController"
+  recordSetVar="cases"
+  lightningStylesheets="true"
+>
+  <script type="text/javascript">
+    window.onload = function () {
+      init();
+    };
+
+    function init() {
+      var cases = "{!cases}";
+      console.log("@@@ cases ", cases);
+      var arrayCases = cases.replace("[").replace("]").split(",");
+      console.log("@@@ arrayCases ", arrayCases);
+      ListCaseController.init(arrayCases, function callback(response) {
+        console.log("@@@ response ", response);
+
+        if (response == "ok") {
+          console.log("@@@ messaggio");
+          sforce.one.showToast({
+            title: "Success!",
+            message: "Assegnazione effettuata",
+            type: "success"
+          });
+
+          sforce.one.navigateToURL("/lightning/page/home");
+        }
+      });
+    }
+  </script>
+</apex:page>

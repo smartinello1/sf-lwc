@@ -1,0 +1,43 @@
+<template>
+  <lightning-card title={title} icon-name="standard:flow">
+    <div slot="actions">
+      <lightning-button label="Refresh" onclick={refreshBtn}></lightning-button>
+    </div>
+    <template if:false={isLoaded}>
+      <lightning-spinner
+        alternative-text="CARICAMENTO..."
+        variant="brand"
+      ></lightning-spinner>
+    </template>
+    <template if:true={isLoaded}>
+      <div class="cstm-card__body">
+        <lightning-layout>
+          <lightning-layout-item size="12" class="slds-p-around_small">
+            <template if:true={hasFlowRecords}>
+              <lightning-datatable
+                key-field="id"
+                data={flowsList}
+                columns={columns}
+                onrowselection={getSelectedFlow}
+              >
+              </lightning-datatable>
+            </template>
+            <template if:false={hasFlowRecords}>
+              <p>{noFlowsLabel}</p>
+            </template>
+          </lightning-layout-item>
+        </lightning-layout>
+        <!-- FOOTER -->
+        <lightning-layout>
+          <lightning-layout-item size="12" class="slds-modal__footer">
+            <lightning-button
+              variant="brand"
+              label="Confirm"
+              onclick={deleteVersion}
+            ></lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </template>
+  </lightning-card>
+</template>

@@ -1,0 +1,21 @@
+<aura:component
+  implements="flexipage:availableForRecordHome,force:hasRecordId"
+  controller="GeneraCodice"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="res" type="String" />
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+  <lightning:card
+    class="card"
+    iconName="standard:email"
+    title="Genera Codice"
+    variant="narrow"
+  >
+    <lightning:button
+      label="Genera Codice"
+      iconName="action:apex"
+      onclick="{!c.GeneraCodice}"
+    />
+    <lightning:formattedText value="{!v.res}" />
+  </lightning:card>
+</aura:component>

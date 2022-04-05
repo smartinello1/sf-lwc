@@ -1,0 +1,14 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+  <aura:attribute name="message" type="String" />
+
+  <!-- Handler -->
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:handler event="c:appEv" action="{!c.handleEvent}" />
+
+  <lightning:card title="Application Event Handler" iconName="standard:account">
+    <div class="slds-p-around_small">
+      <span>This is the message from the component : {!v.message}</span>
+    </div>
+  </lightning:card>
+</aura:component>

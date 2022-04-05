@@ -1,0 +1,13 @@
+<template>
+  <lightning-card title="Custom Global Search" icon-name="utility:search">
+    <div slot="actions">
+      <button onclick={search}>Search</button>
+    </div>
+    <div class="slds-p-around_small">
+      <c-global_search_filter></c-global_search_filter>
+    </div>
+    <div class="slds-p-around_small">
+      <c-global_search_results results={results}></c-global_search_results>
+    </div>
+  </lightning-card>
+</template>

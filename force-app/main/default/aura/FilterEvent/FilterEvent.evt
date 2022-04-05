@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template">
+    <aura:attribute name="value" type="String" />
+    <aura:attribute name="label" type="String" />
+    <aura:attribute name="isTeam" type="Boolean" />
+</aura:event>

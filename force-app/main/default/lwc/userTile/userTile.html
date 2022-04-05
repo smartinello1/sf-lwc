@@ -1,0 +1,30 @@
+<template>
+  <div class="cstm-tile-container">
+    <div class="cstm-upper-tile">
+      <div class="cstm-image-container">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100"
+          height="100"
+          class="image"
+        >
+          ;
+          <use xlink:href={svgURL}></use>
+        </svg>
+      </div>
+    </div>
+    <div class="cstm-bottom-tile">
+      <lightning-layout multiple-rows="true" class="slds-p-top_large">
+        <lightning-layout-item
+          size="12"
+          class="slds-text-align_center slds-p-around_small"
+        >
+          <h1>Nome Cognome</h1>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-text-align_center">
+          <button class="cstm-btn">CONTACT ME</button>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+  </div>
+</template>

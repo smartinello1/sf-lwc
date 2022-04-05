@@ -1,0 +1,24 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <!-- Attributes -->
+  <aura:attribute name="testo" type="String" default="" />
+
+  <!-- Handlers -->
+  <aura:registerEvent name="appEv" type="c:appEv" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <lightning:card>
+    <aura:set attribute="title">
+      <h1>Componente di esempio</h1>
+    </aura:set>
+    <aura:set attribute="actions">
+      <lightning:button label="Clicca qui" onclick="{!c.onClickBtn}" />
+    </aura:set>
+    <div class="slds-p-around_small">
+      <span>Inserisci il messaggio da passare come parametro</span>
+      <lightning:input type="text" value="{!v.testo}" />
+    </div>
+  </lightning:card>
+</aura:component>

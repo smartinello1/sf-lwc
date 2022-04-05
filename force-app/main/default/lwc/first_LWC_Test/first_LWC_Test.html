@@ -1,0 +1,37 @@
+<template>
+  <lightning-card title="First LWC" icon-name="standard:account">
+    <div>
+      <lightning-input
+        class="required"
+        type="number"
+        name="first"
+        label="first number"
+        value={first}
+        onchange={changeVal}
+      ></lightning-input>
+      <lightning-input
+        type="number"
+        name="second"
+        label="second number"
+        value={second}
+        onchange={changeVal}
+      ></lightning-input>
+    </div>
+    <div slot="footer">
+      <span>Risultato</span>
+      <div>
+        <lightning-badge label={result}></lightning-badge>
+      </div>
+      <div>
+        <button class="btn-animator">Label</button>
+        <lightning-button class="btn-animator" label="Test"></lightning-button>
+      </div>
+      <div class="animator">
+        <span>test css</span>
+      </div>
+      <div if:true={condition}>
+        <span style="color: red"></span>
+      </div>
+    </div>
+  </lightning-card>
+</template>

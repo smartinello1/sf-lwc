@@ -1,0 +1,90 @@
+<aura:component
+  implements="flexipage:availableForRecordHome,force:hasRecordId"
+  controller="EmailController"
+>
+  <aura:handler name="init" value="{!this}" action="{!c.myAction}" />
+  <aura:attribute name="prova" type="string" default="ciao" />
+  <aura:attribute name="prova2" type="string" />
+  <aura:attribute name="data" type="string" />
+  <aura:attribute name="toAddress" type="string" />
+  <aura:attribute name="fromAddress" type="string" />
+  <aura:attribute name="subject" type="string" />
+  <aura:attribute name="body" type="string" />
+  <aura:attribute name="response" type="string" />
+  <p class="prova">{!v.prova}</p>
+  <lightning:formattedText
+    aura:id="text2"
+    value="{!v.prova2}"
+  ></lightning:formattedText>
+  <br />
+  <br />
+  <lightning:formattedText
+    class="datac"
+    value="{!v.data}"
+  ></lightning:formattedText>
+  <br />
+  <br />
+  <lightning:button
+    iconName="custom:custom1"
+    label="Click Me"
+    onclick="{!c.handleClick}"
+  />
+  <lightning:button iconName="action:apex" label="Reset" onclick="{!c.Reset}" />
+  <br />
+  <br />
+  <lightning:layout aura:id="error" class="lay" horizontalAlign="center">
+    <lightning:layoutItem
+      class="layIt"
+      flexibility="shrink"
+      padding="horizontal-small"
+    >
+      1
+    </lightning:layoutItem>
+    <lightning:layoutItem
+      class="layIt"
+      flexibility="shrink"
+      padding="horizontal-small"
+    >
+      2
+    </lightning:layoutItem>
+    <lightning:layoutItem
+      class="layIt"
+      flexibility="shrink"
+      padding="horizontal-small"
+    >
+      3
+    </lightning:layoutItem>
+    <lightning:layoutItem
+      class="layIt"
+      flexibility="shrink"
+      padding="horizontal-small"
+    >
+      4
+    </lightning:layoutItem>
+  </lightning:layout>
+  <lightning:card
+    class="card"
+    iconName="standard:email"
+    title="Email"
+    variant="narrow"
+  >
+    <ui:inputEmail
+      label="to address"
+      aura:id="toAddress"
+      value="{!v.toAddress}"
+    />
+    <ui:inputEmail
+      label="from address"
+      aura:id="fromAddress"
+      value="{!v.fromAddress}"
+    />
+    <ui:inputText label="subject" aura:id="subject" value="{!v.subject}" />
+    <ui:inputTextArea label="body" aura:id="body" value="{!v.body}" />
+    <lightning:button
+      class="btn"
+      iconName="action:apex"
+      label="Invia Email"
+      onclick="{!c.InviaMail}"
+    />
+  </lightning:card>
+</aura:component>

@@ -1,0 +1,126 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+>
+  <ltng:require
+    scripts="{!join(',', 
+                           '/resource/jQuery',
+                           '/resource/masonry',
+                           '/resource/chart/Chart.js')}"
+    afterScriptsLoaded="{!c.init}"
+  />
+
+  <aura:attribute name="title" type="String" default="Profilo" />
+  <aura:attribute name="valData" type="String" />
+  <!-- <div class="slds-grid slds-gutters slds-wrap">
+    	<div class="slds-col slds-size_12-of-12">
+        	<img src="{!$Resource.Grafico4}" />
+        </div>
+    </div> -->
+  <div class="container">
+    <lightning:card>
+      <aura:set attribute="title">
+        <!-- <lightning:icon iconName="utility:dayview" size="small"/> -->
+        <div class="title">{! v.title }</div>
+        <!-- with container -->
+        <div class="open-component">
+          <lightning:buttonIcon
+            iconName="utility:expand"
+            variant="container"
+            alternativeText="Settings"
+            onclick="{!c.navigateToMyComponent}"
+          />
+        </div>
+      </aura:set>
+
+      <div class="grid">
+        <div class="grid-sizer"></div>
+        <div class="grid-item grid-item--width50">
+          <img src="{!$Resource.Grafico4}" />
+          <div class="slds-align_absolute-center grid-item grid-item--width100">
+            <button
+              style="
+                background-color: #00bc3e;
+                color: white;
+                padding-left: 50px;
+                padding-right: 50px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                border-radius: 25px;
+                border: none;
+              "
+            >
+              DOSSIER CERVED
+            </button>
+          </div>
+          <!-- <c:CircularProgress theme="green" size="small" totalProgress="2000" actualProgress="200" />1 -->
+        </div>
+        <div class="grid-item grid-item--width50">
+          <ul>
+            <li style="color: blue">CONTATTO PRINCIPALE</li>
+            <li style="color: black; font-weight: bold">Centralino</li>
+            <li class="slds-item" style="color: grey">+39 340 2368339</li>
+            <li style="color: blue">REFERENTI INTERNI</li>
+            <li style="color: black; font-weight: bold">Maria Castello</li>
+            <li class="slds-item" style="color: grey">CFO - +39 340 5768399</li>
+            <li style="color: black; font-weight: bold">Fabio Valpredo</li>
+            <li class="slds-item" style="color: grey">
+              CEO - +39 340 43583956
+            </li>
+            <li style="color: black; font-weight: bold">Claudio Brambilla</li>
+            <li class="slds-item" style="color: grey">+39 340 5768399</li>
+          </ul>
+          <div>
+            <h3 style="color: blue">AZIENDE CORRELATE</h3>
+            <div class="slds-grid slds-gutters slds-wrap">
+              <div class="slds-col slds-size_6-of-12">
+                <div
+                  style="
+                    background-color: blue;
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 25px;
+                  "
+                ></div>
+                <p style="color: grey">Fornitori</p>
+              </div>
+              <div class="slds-col slds-size_6-of-12">
+                <div
+                  style="
+                    background-color: green;
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 25px;
+                  "
+                ></div>
+                <p style="color: grey">Clienti</p>
+              </div>
+              <div class="slds-col slds-size_6-of-12">
+                <div
+                  style="
+                    background-color: red;
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 25px;
+                  "
+                ></div>
+                <p style="color: grey">Stesso ATECO</p>
+              </div>
+              <div class="slds-col slds-size_6-of-12">
+                <div
+                  style="
+                    background-color: yellow;
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 25px;
+                  "
+                ></div>
+                <p style="color: grey">Vicinanza Geo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </lightning:card>
+  </div>
+</aura:component>

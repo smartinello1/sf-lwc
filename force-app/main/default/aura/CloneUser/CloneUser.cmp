@@ -1,0 +1,54 @@
+<aura:component
+  implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
+  controller="CloneUserController"
+>
+  <aura:attribute name="usr" type="SObject" />
+  <aura:attribute name="usrId" type="String" />
+  <aura:attribute name="FirstName" type="String" />
+  <aura:attribute name="LastName" type="String" />
+  <aura:attribute name="Alias" type="String" />
+  <aura:attribute name="Username" type="String" />
+  <aura:attribute name="Email" type="String" />
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+  <div class="slds-scope">
+    <lightning:input
+      value="{!v.FirstName}"
+      type="String"
+      name="input1"
+      label="FirstName"
+    />
+    <lightning:input
+      value="{!v.LastName}"
+      type="String"
+      name="input2"
+      label="LastName"
+    />
+    <lightning:input
+      value="{!v.Alias}"
+      type="String"
+      name="input3"
+      label="Alias"
+    />
+    <lightning:input
+      value="{!v.Username}"
+      type="String"
+      name="input4"
+      label="Username"
+    />
+    <lightning:input
+      value="{!v.Email}"
+      type="String"
+      name="input4"
+      label="Email"
+    />
+    <h1>Do you want to clone this user?</h1>
+    <lightning:button
+      label="Clone"
+      iconName="utility:download"
+      onclick="{!c.doSomething}"
+    />
+  </div>
+  <div class="slds-scope">
+    <h3 name="utentecreato"></h3>
+  </div>
+</aura:component>

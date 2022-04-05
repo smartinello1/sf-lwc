@@ -1,0 +1,40 @@
+.THIS {
+  margin: 10px;
+  padding: 10px;
+}
+.THIS.prova {
+  width: 50%;
+  background-color: blue;
+}
+
+.THIS.datac {
+  width: 50%;
+  background-color: red;
+}
+
+.THIS.Lay {
+  width: 50%;
+  border: 1px solid green;
+}
+
+.THIS.LayIt {
+  width: 50%;
+  border: 1px solid green;
+}
+
+.THIS.errorc {
+  width: 50%;
+  display: none;
+}
+
+.THIS.btn {
+  width: 50%;
+  text-align: center;
+  position: center;
+}
+
+.THIS.card {
+  margin-left: 50px;
+  text-align: center;
+  width: 50%;
+}

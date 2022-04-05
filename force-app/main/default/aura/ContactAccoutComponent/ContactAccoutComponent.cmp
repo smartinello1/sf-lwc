@@ -1,0 +1,52 @@
+<aura:component
+  controller="ContactAccount_Controller"
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"
+  access="global"
+>
+  <aura:attribute name="accountData" type="Account" />
+  <aura:attribute name="isLoaded" type="Boolean" default="false" />
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <lightning:card title="Account Information" iconName="standard:account">
+    <aura:if isTrue="{!v.isLoaded}">
+      <div class="slds-p-around_small">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12" class="slds-box">
+            <div class="column">
+              <label>Nome</label>
+            </div>
+            <div class="column">
+              <lightning:formattedText
+                label="Nome"
+                value="{!v.accountData.Name}"
+              />
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem size="6" class="slds-box">
+            <div class="column">
+              <label>Owner</label>
+            </div>
+            <div class="column">
+              <lightning:formattedText
+                label="Owner"
+                value="{!v.accountData.Owner.Name}"
+              />
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem size="6" class="slds-box">
+            <div class="column">
+              <label>Rating</label>
+            </div>
+            <div class="column">
+              <lightning:formattedText value="{!v.accountData.Rating}" />
+            </div>
+          </lightning:layoutItem>
+        </lightning:layout>
+      </div>
+      <aura:set attribute="else">
+        <lightning:spinner alternativeText="Loading Content" />
+      </aura:set>
+    </aura:if>
+  </lightning:card>
+</aura:component>

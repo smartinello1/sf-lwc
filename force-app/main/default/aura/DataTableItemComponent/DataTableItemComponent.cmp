@@ -1,0 +1,11 @@
+<aura:component
+  implements="flexipage:AvailableForRecordHome,force:HasRecordId"
+  controller="DataTableController"
+>
+  <aura:attribute name="contact" type="Contact" />
+  <aura:attribute name="recordId" type="String" />
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+  <lightning:recordViewForm recordId="{!v.recordId}" objectAPIName="Contact">
+    {!v.recordId} {!v.contact.FirstName}
+  </lightning:recordViewForm>
+</aura:component>
