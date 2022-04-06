@@ -59,9 +59,9 @@ jobs:
         shell: bash
         run: "echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA"
 
-      # - name: 'Authenticate against dev hub'
-      #   run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a LRQA
+      - name: 'Authenticate against dev hub'
+        run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
-      - name: Authenticate to DevOrg
-        run: |
-          sfdx auth:sfdxurl:store -f {{secret.SFDX_SECRETKEY}} -s -a MyDev
+      # - name: Authenticate to DevOrg
+        # run: |
+          # sfdx auth:sfdxurl:store -f {{secret.SFDX_SECRETKEY}} -s -a MyDev
