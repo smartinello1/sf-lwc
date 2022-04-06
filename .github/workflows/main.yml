@@ -85,4 +85,4 @@ jobs:
         id: Deploy
         if: github.event_name == 'push'
         run:
-          node_modules/sfdx-cli/bin/run force:mdapi:deploy -f ./deployChanges -l RunLocalTests -u MyDev --json --loglevel fatal
+          node_modules/sfdx-cli/bin/run force:mdapi:deploy -f ./deployChanges/unpackaged.zip -l RunLocalTests -u MyDev --json --loglevel fatal
