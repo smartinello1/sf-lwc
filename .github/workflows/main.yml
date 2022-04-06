@@ -76,13 +76,13 @@ jobs:
         # run: 
           # node_modules/sfdx-cli/bin/run force:apex:test:run --resultformat tap --codecoverage -c -r human
 
-      - name: Deploy source
+      - name: Deploy check
         id: DeployCheck
         if: github.event_name == 'pull_request'
         run:
-          node_modules/sfdx-cli/bin/run force:source:deploy -p diffdeploy/force-app -u MyDev --json --loglevel fatal
+          node_modules/sfdx-cli/bin/run force:mdapi:deploy -c -f ./deployChanges -l RunLocalTests -u MyDev --json --loglevel fatal
       - name: Deploy source
         id: Deploy
         if: github.event_name == 'push'
         run:
-          node_modules/sfdx-cli/bin/run force:source:deploy -p diffdeploy/force-app -u MyDev --json --loglevel fatal
+          node_modules/sfdx-cli/bin/run force:mdapi:deploy -f ./deployChanges -l RunLocalTests -u MyDev --json --loglevel fatal
