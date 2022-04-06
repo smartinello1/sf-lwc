@@ -4,5 +4,9 @@
         <members>bikeCard</members>
         <name>LightningComponentBundle</name>
     </types>
+    <types>
+        <members>LightningLoginFormControllerTest</members>
+        <name>ApexClass</name>
+    </types>
     <version>54.0</version>
 </Package>
