@@ -11,8 +11,10 @@ on:
     # branches: [ master ]
     paths:
       - "force-app/**"
-  # push:
-    # branches: [master]
+  push:
+    branches: [master]
+    paths:
+      - "force-app/**"
     # pull_request:
     # branches: [ master ]
     # paths:
@@ -43,7 +45,7 @@ jobs:
         run: echo Hello, world!
 
       - name: Check Event Name
-        run: echo ${{ github.event.event_name }}
+        run: echo ${{ github.event_name }}
       - name: Check Event opened
         run: echo ${{ github.event.pull_request.opened }}
 
