@@ -11,14 +11,10 @@ on:
     # branches: [ master ]
     paths:
       - "force-app/**"
-  push:
-    branches: [master]
-    paths:
-      - "force-app/**"
-    # pull_request:
-    # branches: [ master ]
-    # paths:
-      # - "force-app/**"
+  # push:
+  #   branches: [master]
+  #   paths:
+  #     - "force-app/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -46,7 +42,7 @@ jobs:
 
       - name: Check Event Name
         run: echo ${{ github.event_name }}
-        
+
       - name: Check Event opened
         run: echo ${{ github.event.pull_request.opened }}
 
