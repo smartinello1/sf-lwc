@@ -87,7 +87,7 @@ jobs:
       #  run:
       #    node_modules/sfdx-cli/bin/run force:mdapi:deploy -f ./deployChanges -l RunLocalTests -u MyDev --json --loglevel fatal
       - name: Deploy source
-        id: DeploySource
+        id: CheckDeploySource
         if: github.event.opened == true
         run:
           node_modules/sfdx-cli/bin/run force:source:deploy -p -c -l RunLocalTests -u MyDev --json --loglevel fatal
