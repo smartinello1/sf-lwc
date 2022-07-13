@@ -46,6 +46,7 @@ jobs:
 
       - name: Check Event Name
         run: echo ${{ github.event_name }}
+        
       - name: Check Event opened
         run: echo ${{ github.event.pull_request.opened }}
 
