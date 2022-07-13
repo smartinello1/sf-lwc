@@ -42,6 +42,8 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
+      - name: Check Event Name
+        run: echo ${{ github.event.event_name }}
       - name: Check Event opened
         run: echo ${{ github.event.pull_request.opened }}
 
