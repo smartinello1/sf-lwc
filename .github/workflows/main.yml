@@ -76,13 +76,23 @@ jobs:
         # run: 
           # node_modules/sfdx-cli/bin/run force:apex:test:run --resultformat tap --codecoverage -c -r human
 
-      - name: Deploy check
-        id: DeployCheck
-        if: github.event_name == 'pull_request'
-        run:
-          node_modules/sfdx-cli/bin/run force:mdapi:deploy -w -1 -c -f ./deployChanges/unpackaged.zip -l RunLocalTests -u MyDev --json --loglevel fatal
+      # - name: Deploy check
+      #  id: DeployCheck
+      #  if: github.event_name == 'pull_request'
+      #  run:
+      #    node_modules/sfdx-cli/bin/run force:mdapi:deploy -c -f ./deployChanges/unpackaged.zip -l RunLocalTests -u MyDev --json --loglevel fatal
+      # - name: Deploy source
+      #  id: Deploy
+      #  if: github.event_name == 'push'
+      #  run:
+      #    node_modules/sfdx-cli/bin/run force:mdapi:deploy -f ./deployChanges -l RunLocalTests -u MyDev --json --loglevel fatal
       - name: Deploy source
-        id: Deploy
-        if: github.event_name == 'push'
+        id: DeploySource
+        if: github.event.opened == true
         run:
-          node_modules/sfdx-cli/bin/run force:mdapi:deploy -w -1 -f ./deployChanges/unpackaged.zip -l RunLocalTests -u MyDev --json --loglevel fatal
+          node_modules/sfdx-cli/bin/run force:source:deploy -p -c -l RunLocalTests -u MyDev --json --loglevel fatal
+      - name: Deploy source
+        id: DeploySource
+        if: github.event.pull_request.merged == true
+        run:
+          node_modules/sfdx-cli/bin/run force:source:deploy -p -c -l RunLocalTests -u MyDev --json --loglevel fatal
