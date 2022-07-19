@@ -49,7 +49,7 @@ jobs:
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
       - name: Create Diff Commit
-        run: sfdx sfpowerkit:project:diff -d incremental -r develop -x true
+        run: sfdx sfpowerkit:project:diff -d incremental -r dev -x true
 
       # - name: Deploy source
       #   id: CheckDeploySource
