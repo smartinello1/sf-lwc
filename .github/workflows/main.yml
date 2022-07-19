@@ -5,12 +5,10 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  pull_request:
-    branches: [master]
-    # pull_request:
-    # branches: [ master ]
-    paths:
-      - "force-app/**"
+  # pull_request:
+  #   branches: [master]
+  #   paths:
+  #     - "force-app/**"
   push:
     branches: [master]
     paths:
@@ -100,6 +98,6 @@ jobs:
           node_modules/sfdx-cli/bin/run force:source:deploy -p -c -l RunLocalTests -u MyDev --json --loglevel fatal
       - name: Deploy source
         id: DeploySource
-        if: github.event.pull_request.merged == true
+        if: github.github.event_name == 'push'
         run:
-          node_modules/sfdx-cli/bin/run force:source:deploy -p -c -l RunLocalTests -u MyDev --json --loglevel fatal
+          node_modules/sfdx-cli/bin/run force:source:deploy -p -l RunLocalTests -u MyDev --json --loglevel fatal
