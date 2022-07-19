@@ -39,7 +39,7 @@ jobs:
           node_modules/sfdx-cli/bin/run plugins --core
 
       - name: Install sfpowerkit
-        run: sfdx plugins:install sfpowerkit
+        run: node_modules/sfdx-cli/bin/run plugins:install sfpowerkit
 
       - name: "Populate auth file with SFDX_URL secret"
         shell: bash
@@ -49,7 +49,7 @@ jobs:
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
       - name: Create Diff Commit
-        run: sfdx sfpowerkit:project:diff -d incremental -r dev -x true
+        run: node_modules/sfdx-cli/bin/run sfpowerkit:project:diff -d incremental -r dev -x true
 
       # - name: Deploy source
       #   id: CheckDeploySource
