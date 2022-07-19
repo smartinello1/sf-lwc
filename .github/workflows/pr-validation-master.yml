@@ -39,7 +39,9 @@ jobs:
           node_modules/sfdx-cli/bin/run plugins --core
 
       - name: Install sfpowerkit
-        run: node_modules/sfdx-cli/bin/run plugins:install sfpowerkit
+        run: |
+          node_modules/sfdx-cli/bin/run plugins:install sfpowerkit
+          y
 
       - name: "Populate auth file with SFDX_URL secret"
         shell: bash
