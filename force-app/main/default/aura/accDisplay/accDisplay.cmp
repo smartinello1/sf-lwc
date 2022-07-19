@@ -38,5 +38,6 @@
       </ui:message>
     </div>
     <div></div>
+    <div></div>
   </aura:if>
 </aura:component>
