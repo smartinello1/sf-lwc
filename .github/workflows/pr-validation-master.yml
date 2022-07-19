@@ -71,4 +71,4 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: node_modules/sfdx-cli/bin/run force:source:deploy -p code-artifact -c -l RunLocalTests -u MyDev --json --loglevel fatal
+        run: node_modules/sfdx-cli/bin/run force:source:deploy -p ./code-artifact -c -l RunLocalTests -u MyDev --json --loglevel fatal
