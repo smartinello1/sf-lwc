@@ -37,6 +37,5 @@
         {!v.newAccountError}
       </ui:message>
     </div>
-    <div></div>
   </aura:if>
 </aura:component>
