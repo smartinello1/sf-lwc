@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: code-artifact
-          path: force-app/main/default
+          path: incremental
 
       - name: Validate
         if: ${{ success() }}
