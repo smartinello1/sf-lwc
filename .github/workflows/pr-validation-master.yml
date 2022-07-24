@@ -57,8 +57,8 @@ jobs:
           echo "$HOME/sfdx/bin" >> $GITHUB_PATH
           ~/sfdx/bin/sfdx version
 
-      # - name: Install sfpowerkit
-      #   run: echo 'y' | npx sfdx plugins:install sfpowerkit
+      - name: Install sfpowerkit
+        run: echo 'y' | npx sfdx plugins:install sfpowerkit
 
       - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
