@@ -71,7 +71,7 @@ jobs:
       # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
       - name: 'Installing sfdx git delta'
         run: |
-          echo y | sfdx plugins:install sfdx-git-delta
+          echo y | node_modules/sfdx-cli/bin/run plugins:install sfdx-git-delta
           sfdx plugins
 
       - name: Create delta
