@@ -10,6 +10,7 @@ public class CalloutAPIProva {
     Map<String, Object> root = (Map<String, Object>) JSON.deserializeUntyped(
       res.getBody()
     );
+    System.debug('RESPONSE: '+ res.getBody());
     String value = (String) root.get('value');
 
     return value;
