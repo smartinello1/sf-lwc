@@ -15,7 +15,7 @@ private with sharing class AccountsControllerTest {
 
 	@isTest
 	static void delAccountTest() {
-		Account acc = [SELECT Id FROM Account LIMIT 1];
+		Account acc = [SELECT Id, Name FROM Account LIMIT 1];
 		Test.startTest();
 		AccountsController.delAccount(acc);
 		Test.stopTest();
