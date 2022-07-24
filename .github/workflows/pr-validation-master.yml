@@ -86,6 +86,11 @@ jobs:
           name: code-artifact
           path: incremental
 
+      - uses: actions/download-artifact@v3
+        with:
+          name: code-artifact
+          path: code-artifact
+
       - name: Validate
         if: ${{ success() }}
-        run: node_modules/sfdx-cli/bin/run force:source:deploy -p ./code-artifact -c -l RunLocalTests -u MyDev --json --loglevel fatal
+        run: node_modules/sfdx-cli/bin/run force:source:deploy -p ./incremental -c -l RunLocalTests -u MyDev --json --loglevel fatal
