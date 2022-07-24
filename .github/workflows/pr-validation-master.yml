@@ -27,7 +27,7 @@ jobs:
           ref: master 
 
       - name: Set sha on master
-        run: echo "sha_prod=${{ github.sha }}" >> $GITHUB_ENV
+        run: echo "sha_prod=${{ github.head.sha }}" >> $GITHUB_ENV
 
       - name: Checkout to dev
         uses: actions/checkout@v3
