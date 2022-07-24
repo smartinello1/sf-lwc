@@ -77,7 +77,7 @@ jobs:
           sfdx plugins
 
       - name: Create delta
-        run: sfdx sgd:source:delta -W -d incremental -from ${{ github.event.pull_request.head.sha }} -to ${{ env.sha_prod }} -s ./force-app/main/default
+        run: sfdx sgd:source:delta -W -d incremental -f ${{ github.event.pull_request.head.sha }} -t ${{ env.sha_prod }} -s ./force-app/main/default
 
       - name: Create code artifact backup
         uses: actions/upload-artifact@v3
