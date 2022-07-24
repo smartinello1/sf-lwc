@@ -56,6 +56,11 @@ jobs:
       - name: Set sha on master
         run: echo "sha_prod=${{ github.sha }}" >> $GITHUB_ENV
 
+      - name: Checkout to dev
+        uses: actions/checkout@v3
+        with:
+          ref: dev 
+
       - name: Create Diff Commit
         run: node_modules/sfdx-cli/bin/run sfpowerkit:project:diff -d incremental -p ./force-app/main/default --revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }} -x
 
