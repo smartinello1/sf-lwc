@@ -24,7 +24,12 @@ jobs:
       - name: Checkout to master
         uses: actions/checkout@v3
         with:
-          ref: master 
+          ref: master
+
+      - name: Show GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
       - name: Set sha on master
         run: echo "sha_prod=${{ github.head.sha }}" >> $GITHUB_ENV
