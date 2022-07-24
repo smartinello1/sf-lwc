@@ -55,8 +55,8 @@ jobs:
           node_modules/sfdx-cli/bin/run --version
           node_modules/sfdx-cli/bin/run plugins --core
 
-      - name: Install sfpowerkit
-        run: echo 'y' | npx sfdx plugins:install sfpowerkit
+      # - name: Install sfpowerkit
+      #   run: echo 'y' | npx sfdx plugins:install sfpowerkit
 
       - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
@@ -65,8 +65,17 @@ jobs:
       - name: 'Authenticate against dev hub'
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
-      - name: Create Diff Commit
-        run: node_modules/sfdx-cli/bin/run sfpowerkit:project:diff -d incremental -p ./force-app/main/default --revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }} -x
+      # - name: Create Diff Commit
+      #   run: node_modules/sfdx-cli/bin/run sfpowerkit:project:diff -d incremental -p ./force-app/main/default --revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }} -x
+
+      # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
+      - name: 'Installing sfdx git delta'
+        run: |
+          echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
+
+      - name: Create delta
+        run: node_modules/sfdx-cli/bin/run sgd:source:delta -W -d incremental -from ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }} -s ./force-app/main/default
 
       - name: Create code artifact backup
         uses: actions/upload-artifact@v3
