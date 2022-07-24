@@ -10,7 +10,7 @@ on:
     # pull_request:
     # branches: [ master ]
     paths:
-      - "force-app/**"
+      - 'force-app/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -37,13 +37,13 @@ jobs:
       - name: Checkout to dev
         uses: actions/checkout@v3
         with:
-          ref: dev 
+          ref: dev
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       # Node.js
       - uses: actions/setup-node@v1
         with:
-          node-version: ">=14"
+          node-version: '>=14'
           check-latest: true
 
       - name: Check Event Name
@@ -58,15 +58,15 @@ jobs:
       - name: Install sfpowerkit
         run: echo 'y' | npx sfdx plugins:install sfpowerkit
 
-      - name: "Populate auth file with SFDX_URL secret"
+      - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
-        run: "echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA"
+        run: 'echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA'
 
-      - name: "Authenticate against dev hub"
+      - name: 'Authenticate against dev hub'
         run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
       - name: Create Diff Commit
-        run: node_modules/sfdx-cli/bin/run sfpowerkit:project:diff -d incremental -p ./force-app/main/default --revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }} -x
+        run: node_modules/sfdx-cli/bin/run sfpowerkit:project:diff -d incremental -p ./force-app/main/default --revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }}
 
       - name: Create code artifact backup
         uses: actions/upload-artifact@v3
