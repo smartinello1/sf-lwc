@@ -69,7 +69,7 @@ jobs:
 
       # node_modules/sfdx-cli/bin/run
       - name: Create Diff Commit
-        run: sfdx sfpowerkit:project:diff -d incremental -p ./force-app/main/default -x #--revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }}
+        run: sfdx sfpowerkit:project:diff -d incremental -p ./force-app/main/default --revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto master -x #${{ env.sha_prod }} -x
 
       # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
       # - name: 'Installing sfdx git delta'
