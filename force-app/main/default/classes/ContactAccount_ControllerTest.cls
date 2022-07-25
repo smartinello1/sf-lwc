@@ -14,6 +14,7 @@ private with sharing class ContactAccount_ControllerTest {
 		insert c;
 
 		Contact cc = new Contact(FirstName = 'test2', LastName = 'test3');
+		String s;
 		insert cc;
 	}
 
