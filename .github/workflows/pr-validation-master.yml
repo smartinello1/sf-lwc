@@ -81,7 +81,7 @@ jobs:
       - name: Create delta
         run: |
           mkdir incremental
-          sfdx sgd:source:delta -W --output incremental/ --to "origin/master" --from "origin/dev"  -s ./force-app/main/default
+          sfdx sgd:source:delta -W --output incremental/ --to "origin/master" --from "origin/dev"
 
       - name: Create code artifact backup
         uses: actions/upload-artifact@v3

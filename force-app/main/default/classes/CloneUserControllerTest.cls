@@ -16,6 +16,7 @@ private with sharing class CloneUserControllerTest {
 		);
 		insert u;
 		String s;
+		String s1;
 	}
 
 	@isTest
