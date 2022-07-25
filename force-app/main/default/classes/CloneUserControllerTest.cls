@@ -15,6 +15,7 @@ private with sharing class CloneUserControllerTest {
 			UserName = 'standarduser@testorgdev.com' + UserInfo.getOrganizationId()
 		);
 		insert u;
+		String s;
 	}
 
 	@isTest

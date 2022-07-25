@@ -77,10 +77,11 @@ jobs:
           echo y | sfdx plugins:install sfdx-git-delta
           sfdx plugins
 
+      #-from ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }}
       - name: Create delta
         run: |
           mkdir incremental
-          sfdx sgd:source:delta -W --output incremental/ --to "origin/master" --from "origin/dev"  -s ./force-app/main/default #-from ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }}
+          sfdx sgd:source:delta -W --output incremental/ --to "origin/master" --from "origin/dev"  -s ./force-app/main/default
 
       - name: Create code artifact backup
         uses: actions/upload-artifact@v3
