@@ -13,7 +13,7 @@ private with sharing class ContactAccount_ControllerTest {
 		);
 		insert c;
 
-		Contact cc = new Contact(FirstName = 'test2', LastName = 'test3');
+		Contact cc = new Contact(FirstName = 'test2', LastName = 'test2');
 		insert cc;
 	}
 
