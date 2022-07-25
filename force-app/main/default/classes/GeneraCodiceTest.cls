@@ -16,7 +16,6 @@ public with sharing class GeneraCodiceTest {
 	static void generaCodiceTest() {
 		Test.startTest();
 		GeneraCodice.Codice('', 'ciao');
-		String s;
 		Test.stopTest();
 	}
 }
