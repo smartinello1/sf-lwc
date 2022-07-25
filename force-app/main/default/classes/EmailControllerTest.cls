@@ -16,6 +16,7 @@ private with sharing class EmailControllerTest {
 		EmailController.getPicklist();
 		EmailController.getEmailTemplate();
 		String str;
+		String aa;
 		Test.stopTest();
 	}
 }
