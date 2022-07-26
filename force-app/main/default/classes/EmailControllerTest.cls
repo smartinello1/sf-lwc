@@ -17,7 +17,6 @@ private with sharing class EmailControllerTest {
 		EmailController.getEmailTemplate();
 		String str;
 		String aa;
-		String b;
 		Test.stopTest();
 	}
 }
