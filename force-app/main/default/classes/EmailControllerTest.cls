@@ -18,7 +18,6 @@ private with sharing class EmailControllerTest {
 		String str;
 		String aa;
 		String b;
-		String c;
 		Test.stopTest();
 	}
 }
