@@ -12,19 +12,15 @@ private with sharing class ContactAccount_ControllerTest {
 			LastName = 'test'
 		);
 		insert c;
-
-		Contact cc = new Contact(FirstName = 'test2', LastName = 'test2');
-		insert cc;
 	}
 
 	@isTest
 	static void getAccountInfoTest() {
 		Contact c = [SELECT Id FROM Contact WHERE AccountId != NULL];
-		Contact cc = [SELECT Id FROM Contact WHERE AccountId = NULL];
 
 		Test.startTest();
 		ContactAccount_Controller.getAccountInfo(c.Id);
-		ContactAccount_Controller.getAccountInfo(cc.Id);
+		ContactAccount_Controller.getAccountInfo('ab');
 		Test.stopTest();
 	}
 }
