@@ -12,7 +12,7 @@ on:
   push:
     branches: [master]
     paths:
-      - "force-app/**"
+      - 'force-app/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -26,78 +26,84 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Checkout to master
+        uses: actions/checkout@v3
+        with:
+          ref: master
+      - name: Checkout to dev
+        uses: actions/checkout@v3
+        with:
+          ref: dev
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       # Node.js
       - uses: actions/setup-node@v1
         with:
-          node-version: ">=14"
+          node-version: '>=14'
           check-latest: true
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      - name: Check Event Name
-        run: echo ${{ github.event_name }}
-
-      - name: Check Event opened
-        run: echo ${{ github.event.pull_request.opened }}
-
-      - name: Check Event merged
-        run: echo ${{ github.event.pull_request.merged }}
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-
-      # Install Salesforce CLI
-      # - name: Install Salesforce CLI
-      #   run: |
-      #     wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-      #     mkdir sfdx-cli
-      #     tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
-      #     ./sfdx-cli/install
       - name: Install Salesforce CLI
         run: |
-          npm install sfdx-cli
-          node_modules/sfdx-cli/bin/run --version
-          node_modules/sfdx-cli/bin/run plugins --core
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+          mkdir ~/sfdx
+          tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+          echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+          ~/sfdx/bin/sfdx version
 
-      - name: "Populate auth file with SFDX_URL secret"
+      - name: Install sfpowerkit
+        run: echo 'y' | npx sfdx plugins:install sfpowerkit
+
+      - name: 'Populate auth file with SFDX_URL secret'
         shell: bash
-        run: "echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA"
+        run: 'echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA'
 
-      - name: "Authenticate against dev hub"
-        run: node_modules/sfdx-cli/bin/run force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
+      - name: 'Authenticate against dev hub'
+        run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
-      # - name: Authenticate to DevOrg
-      #   run: |
-      #     sfdx auth:sfdxurl:store -f {{secret.SFDX_SECRETKEY}} -s -a MyDev
+      # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
+      - name: 'Installing sfdx git delta'
+        run: |
+          echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
 
-      # - name: Run Apex test
-        # run: 
-          # node_modules/sfdx-cli/bin/run force:apex:test:run --resultformat tap --codecoverage -c -r human
+      - name: Create delta
+        run: |
+          mkdir incremental
+          sfdx sgd:source:delta -W --output incremental/ --to origin/dev --from origin/master -s force-app/**
 
-      # - name: Deploy check
-      #  id: DeployCheck
-      #  if: github.event_name == 'pull_request'
-      #  run:
-      #    node_modules/sfdx-cli/bin/run force:mdapi:deploy -c -f ./deployChanges/unpackaged.zip -l RunLocalTests -u MyDev --json --loglevel fatal
-      # - name: Deploy source
-      #  id: Deploy
-      #  if: github.event_name == 'push'
-      #  run:
-      #    node_modules/sfdx-cli/bin/run force:mdapi:deploy -f ./deployChanges -l RunLocalTests -u MyDev --json --loglevel fatal
-      - name: Deploy source
-        id: CheckDeploySource
-        if: github.event.pull_request.opened == true
-        run:
-          node_modules/sfdx-cli/bin/run force:source:deploy -p -c -l RunLocalTests -u MyDev --json --loglevel fatal
-      - name: Deploy source
-        id: DeploySource
-        if: github.github.event_name == 'push'
-        run:
-          node_modules/sfdx-cli/bin/run force:source:deploy -p -l RunLocalTests -u MyDev --json --loglevel fatal
+      - name: Create code artifact backup dev
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-artifact-backup-dev
+          path: force-app/main/default
+
+      - name: Create incremental package
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-artifact
+          path: incremental
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: code-artifact
+          path: code-artifact
+
+      - name: Validate
+        if: ${{ success() }}
+        run: sfdx force:source:deploy -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
+
+      - name: Checkout to master
+        if: ${{ success() }}
+        uses: actions/checkout@v3
+        with:
+          ref: master
+
+      - name: Create code artifact backup prod
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-artifact-backup-prod
+          path: force-app/main/default
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: code-artifact-backup-prod

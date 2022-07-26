@@ -34,9 +34,6 @@ jobs:
           node-version: '>=14'
           check-latest: true
 
-      - name: Check Event Name
-        run: echo ${{ github.event_name }}
-
       - name: Install Salesforce CLI
         run: |
           wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
@@ -72,7 +69,7 @@ jobs:
       #     name: code-artifact-backup
       #     path: force-app/main/default
 
-      - name: Create code artifact
+      - name: Create incremental package
         uses: actions/upload-artifact@v3
         with:
           name: code-artifact
