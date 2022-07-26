@@ -18,6 +18,7 @@ private with sharing class DataTableControllerTest {
 		Contact c = [SELECT Id FROM Contact LIMIT 1];
 		Test.startTest();
 		DataTableController.getRelatedContacts(c.Id);
+		String s;
 		Test.stopTest();
 	}
 }
