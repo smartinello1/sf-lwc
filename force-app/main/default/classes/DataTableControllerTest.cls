@@ -19,6 +19,8 @@ private with sharing class DataTableControllerTest {
 		Test.startTest();
 		DataTableController.getRelatedContacts(c.Id);
 		String s;
+		String str;
+		String s;
 		Test.stopTest();
 	}
 }
