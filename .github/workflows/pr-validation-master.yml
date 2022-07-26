@@ -82,7 +82,7 @@ jobs:
         run: |
           mkdir incremental
           git checkout master
-          sfdx sgd:source:delta -W --output incremental/ --to "HEAD" --from "origin/dev" --generate-delta
+          sfdx sgd:source:delta -W --output incremental/ --to "HEAD" --from "origin/dev"
 
       - name: Create code artifact backup
         uses: actions/upload-artifact@v3
