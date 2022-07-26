@@ -1,5 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
+# Workflow to validate a pr into master branch
 name: pr-validation-master
 
 # Controls when the workflow will run
@@ -7,8 +6,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   pull_request:
     branches: [master]
-    # pull_request:
-    # branches: [ master ]
     paths:
       - 'force-app/**'
 
@@ -21,23 +18,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout to master
-        uses: actions/checkout@v3
-        with:
-          ref: master
-
-      - name: Show GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
-      - name: Set sha on master
-        run: echo "sha_prod=${{ github.event.pull_request.base.sha }}" >> $GITHUB_ENV
-
-      - name: Checkout to dev
-        uses: actions/checkout@v3
-        with:
-          ref: dev
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       # Node.js
@@ -67,27 +47,22 @@ jobs:
       - name: 'Authenticate against dev hub'
         run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
-      # node_modules/sfdx-cli/bin/run
-      # - name: Create Diff Commit
-      #   run: sfdx sfpowerkit:project:diff -d incremental -p ./force-app/main/default --revisionfrom ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }} -x
-
       # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
       - name: 'Installing sfdx git delta'
         run: |
           echo y | sfdx plugins:install sfdx-git-delta
           sfdx plugins
 
-      #-from ${{ github.event.pull_request.head.sha }} --revisionto ${{ env.sha_prod }}
       - name: Create delta
         run: |
           mkdir incremental
           sfdx sgd:source:delta -W --output incremental/ --to origin/dev --from origin/master -s force-app/**
 
-      - name: Create code artifact backup
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-artifact-backup
-          path: force-app/main/default
+      # - name: Create code artifact backup
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: code-artifact-backup
+      #     path: force-app/main/default
 
       - name: Create code artifact
         uses: actions/upload-artifact@v3

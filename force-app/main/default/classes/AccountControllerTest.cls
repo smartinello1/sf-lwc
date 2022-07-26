@@ -10,7 +10,6 @@ private with sharing class AccountControllerTest {
 	static void getAllActiveAccountsTest() {
 		Test.startTest();
 		AccountController.getAllActiveAccounts();
-		String s;
 		Test.stopTest();
 	}
 }
