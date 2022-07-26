@@ -91,19 +91,3 @@ jobs:
       - name: Validate
         if: ${{ success() }}
         run: sfdx force:source:deploy -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
-
-      - name: Checkout to master
-        if: ${{ success() }}
-        uses: actions/checkout@v3
-        with:
-          ref: master
-
-      - name: Create code artifact backup prod
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-artifact-backup-prod
-          path: force-app/main/default
-
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: code-artifact-backup-prod
