@@ -85,7 +85,7 @@ jobs:
         run: sfdx force:source:deploy -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -c -l RunLocalTests -u MyDev --json --loglevel fatal
 
       - name: Checkout to master
-        if: ${{ success() }}
+        # if: ${{ success() }}
         uses: actions/checkout@v3
         with:
           ref: master
