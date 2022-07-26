@@ -102,4 +102,4 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force:source:deploy -p ./code-artifact -c -l RunLocalTests -u MyDev --json --loglevel fatal
+        run: sfdx force:source:deploy -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -c -l RunLocalTests -u MyDev --json --loglevel fatal
