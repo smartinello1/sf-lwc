@@ -81,7 +81,7 @@ jobs:
       - name: Create delta
         run: |
           mkdir incremental
-          sfdx sgd:source:delta -W --output incremental/ --to "HEAD" --from 'HEAD^'
+          sfdx sgd:source:delta -W --output incremental/ --to origin/dev --from origin/master
 
       - name: Create code artifact backup
         uses: actions/upload-artifact@v3
