@@ -101,4 +101,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: code-artifact-backup-prod
-          tag: backup-prod-${{ (date +'%Y-%m-%dT%H:%M:%S') }}
+          tag: backup-prod-$data
+          env:
+            data: (date +'%Y-%m-%dT%H:%M:%S')
