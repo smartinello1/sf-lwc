@@ -30,6 +30,7 @@ private with sharing class CloneUserControllerTest {
 			'test@test.com.dev' + UserInfo.getOrganizationId()
 		);
 		String str;
+		String s;
 		Test.stopTest();
 	}
 }
