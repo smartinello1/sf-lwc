@@ -91,7 +91,7 @@ jobs:
           ref: master
 
       - name: Create code artifact backup prod
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
           name: code-artifact-backup-prod
           path: force-app/main/default
