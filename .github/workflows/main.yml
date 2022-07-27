@@ -26,14 +26,14 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout to master
-        uses: actions/checkout@v3
-        with:
-          ref: master
       - name: Checkout to dev
         uses: actions/checkout@v3
         with:
           ref: dev
+      - name: Checkout to master
+        uses: actions/checkout@v3
+        with:
+          ref: master
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       # Node.js
@@ -71,11 +71,11 @@ jobs:
           mkdir incremental
           sfdx sgd:source:delta -W --output incremental/ --to origin/dev --from origin/master -s force-app/**
 
-      - name: Create code artifact backup dev
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-artifact-backup-dev
-          path: force-app/main/default
+      # - name: Create code artifact backup dev
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: code-artifact-backup-dev
+      #     path: force-app/main/default
 
       - name: Create incremental package
         uses: actions/upload-artifact@v3
@@ -91,3 +91,13 @@ jobs:
       - name: Validate
         if: ${{ success() }}
         run: sfdx force:source:deploy -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
+
+      - name: Set current date
+        if: ${{ success() }}
+        run: echo "DATE=$(date +'%Y-%m-%dT%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create backup release from prod
+        if: ${{ success() }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: backup-prod-${{ env.DATE }}
