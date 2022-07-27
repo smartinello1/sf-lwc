@@ -97,8 +97,11 @@ jobs:
           name: code-artifact-backup-prod
           path: force-app/main/default
 
+      - name: Set current date
+        run: echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
       - name: Create backup release from prod
         uses: ncipollo/release-action@v1
         with:
           artifacts: code-artifact-backup-prod
-          tag: backup-prod-${{ ::date(date +'%Y-%m-%dT%H:%M:%S') }}
+          tag: backup-prod-$DATE
