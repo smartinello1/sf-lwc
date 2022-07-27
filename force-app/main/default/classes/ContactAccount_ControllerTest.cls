@@ -21,7 +21,6 @@ private with sharing class ContactAccount_ControllerTest {
 		Test.startTest();
 		ContactAccount_Controller.getAccountInfo(c.Id);
 		ContactAccount_Controller.getAccountInfo('ab');
-		String s;
 		Test.stopTest();
 	}
 }
