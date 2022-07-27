@@ -104,4 +104,4 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: code-artifact-backup-prod
-          tag: backup-prod-$DATE
+          tag: backup-prod-${{ env.DATE }}
