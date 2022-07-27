@@ -75,7 +75,8 @@ jobs:
           name: code-artifact
           path: incremental
 
-      - uses: actions/download-artifact@v3
+      - name: Download incremental package
+        uses: actions/download-artifact@v3
         with:
           name: code-artifact
           path: code-artifact
@@ -91,13 +92,13 @@ jobs:
           ref: master
 
       - name: Create code artifact backup prod
-      - uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
           name: code-artifact-backup-prod
           path: force-app/main/default
 
       - name: Create backup release from prod
-      - uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: code-artifact-backup-prod
           tag: $(date +'%Y-%m-%dT%H:%M:%S')
