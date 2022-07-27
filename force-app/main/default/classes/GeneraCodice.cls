@@ -16,9 +16,4 @@ public with sharing class GeneraCodice {
 		result = result + '.' + owner + '.' + anno;
 		return result;
 	}
-
-	public String prova() {
-		String str = 'aaa';
-		return str;
-	}
 }
