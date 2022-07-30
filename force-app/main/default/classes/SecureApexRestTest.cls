@@ -12,8 +12,9 @@ private without sharing class SecureApexRestTest {
 		RestRequest req = new RestRequest();
 		RestResponse res = new RestResponse();
 
-		req.requestURI = '/services/apexrest/secureApexRest?id=' + c.Id; //Request URL
+		req.requestURI = '/services/apexrest/secureApexRest'; //Request URL
 		req.httpMethod = 'GET'; //HTTP Request Type
+		req.addParameter('id', c.Id);
 		RestContext.request = req;
 		RestContext.response = res;
 
