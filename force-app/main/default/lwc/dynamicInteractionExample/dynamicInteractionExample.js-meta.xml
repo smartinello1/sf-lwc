@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Dynamic Interaction Example</masterLabel>
+    <description>Sample component to use with Dynamic Interaction</description>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <property name="apiName" type="String" />
+            <property name="listViewApiName" type="String" />
+            <event name="itemselected" label="Item Selected">
+                <schema>
+                    {
+                        "properties": {
+                            "apiName": {
+                                "type": "string"
+                            },
+                            "recId": {
+                                "description": "The selected id of a record",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                </schema>
+            </event>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

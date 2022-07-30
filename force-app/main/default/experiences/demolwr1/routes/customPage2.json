@@ -1,0 +1,10 @@
+{
+  "activeViewId" : "83b34999-5df3-4fd6-a875-66820c583c07",
+  "appPageId" : "2df8e7c2-da4a-4b37-b07b-f2f394b914b3",
+  "configurationTags" : [ ],
+  "id" : "5f0cd3c4-7439-4a5f-af29-9bfa3e363706",
+  "label" : "custom page 2",
+  "routeType" : "custom-custom-page-2",
+  "type" : "route",
+  "urlPrefix" : "custom-page-2"
+}

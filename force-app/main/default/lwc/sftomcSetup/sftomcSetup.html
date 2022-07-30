@@ -1,0 +1,54 @@
+<template>
+  <lightning-card title="Setup MailChimp" icon-name="standard:settings">
+    <div slot="actions">
+      <lightning-button
+        label="Save"
+        name="save"
+        variant="brand"
+        onclick={save}
+      ></lightning-button>
+    </div>
+    <template if:false={setupCompleted}>
+      <lightning-layout multiple-rows>
+        <lightning-layout-item size="12">
+          <lightning-input
+            type="text"
+            label="Named Credential API Name"
+            name="namedCredentialName"
+            value={namedCredentialName}
+            onchange={handleChangeNamedCredential}
+          ></lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+    <template if:true={setupCompleted}>
+      <lightning-layout>
+        <lightning-layout-item size="6" padding="around-small">
+          <lightning-input
+            type="time"
+            name="Scheduled_DataSync_SF_to_MC__c"
+            label="Scheduled Data-Sync SF to MC"
+            value={settings.Scheduled_DataSync_SF_to_MC__c}
+            onchange={handleFieldChange}
+          ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="6" padding="around-small">
+          <lightning-layout-item size="6">
+            <lightning-helptext
+              content="Allow the connector to update Salesforce Objects from MailChimp data based on most updated version"
+            ></lightning-helptext>
+          </lightning-layout-item>
+          <lightning-layout-item size="6">
+            <lightning-input
+              type="toggle"
+              name="Allow_MC_to_SF_Sync__c"
+              label="Allow Data-Sync MailChimp to Salesforce"
+              checked={settings.Allow_MC_to_SF_Sync__c}
+              onchange={handleFieldChange}
+            ></lightning-input>
+          </lightning-layout-item>
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+  </lightning-card>
+</template>

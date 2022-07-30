@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>s.martinello@lutech.it</contactEmail>
+    <label>Test Lightning App</label>
+    <startUrl>https://martinellosimone-dev-ed.lightning.force.com/c/provaEmail.app</startUrl>
+</ConnectedApp>

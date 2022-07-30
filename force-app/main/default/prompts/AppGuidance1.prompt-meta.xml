@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>App Guidance1</masterLabel>
+    <promptVersions>
+        <body>&lt;p&gt;Ciao, questa è una guida sull&apos;app&lt;/p&gt;</body>
+        <customApplication>MC4SF__MailChimp_for_Salesforce</customApplication>
+        <delayDays>1</delayDays>
+        <dismissButtonLabel>Chiudi</dismissButtonLabel>
+        <displayType>Targeted</displayType>
+        <endDate>2022-04-21</endDate>
+        <isPublished>true</isPublished>
+        <masterLabel>App Guidance1</masterLabel>
+        <publishedDate>2022-04-21</publishedDate>
+        <referenceElementContext>{&quot;component&quot;:&quot;flexipageRuntimeComponent&quot;,&quot;attributes&quot;:{&quot;id&quot;:&quot;SimpleParentComponent&quot;},&quot;version&quot;:1}</referenceElementContext>
+        <shouldDisplayActionButton>false</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>true</shouldIgnoreGlobalDelay>
+        <startDate>2022-04-21</startDate>
+        <targetPageKey1>home</targetPageKey1>
+        <targetPageType>standard__namedPage</targetPageType>
+        <themeColor>Theme1</themeColor>
+        <themeSaturation>Dark</themeSaturation>
+        <timesToDisplay>5</timesToDisplay>
+        <title>App Guidance</title>
+        <userAccess>Everyone</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+    </promptVersions>
+</Prompt>

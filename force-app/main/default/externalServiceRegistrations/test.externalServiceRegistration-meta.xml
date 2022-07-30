@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>test</label>
+    <namedCredential>Bank</namedCredential>
+    <operations>
+        <active>true</active>
+        <name>getusersbyuserid</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>postusers</name>
+    </operations>
+    <schema>{
+  &quot;swagger&quot;: &quot;2.0&quot;,
+  &quot;info&quot;: {
+    &quot;title&quot;: &quot;bankService&quot;,
+    &quot;description&quot;: &quot;API description in Markdown.&quot;,
+    &quot;version&quot;: &quot;1.0.0&quot;
+  },
+  &quot;host&quot;: &quot;api.example.com&quot;,
+  &quot;basePath&quot;: &quot;/v1&quot;,
+  &quot;schemes&quot;: [
+    &quot;https&quot;
+  ],
+  &quot;definitions&quot;: {
+    &quot;User&quot;: {
+      &quot;properties&quot;: {
+        &quot;id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;name&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;phones&quot;:{
+          &quot;type&quot;:&quot;array&quot;,
+          &quot;items&quot;:{
+             &quot;type&quot;: &quot;object&quot;,
+             &quot;$ref&quot;: &quot;#/definitions/Phone&quot;
+          }
+        }
+      }
+    },
+    &quot;Phone&quot;:{
+      &quot;properties&quot;:{
+        &quot;typeofphone&quot;:{
+          &quot;type&quot;:&quot;string&quot;
+        },
+        &quot;phone&quot;:{
+          &quot;type&quot;:&quot;string&quot;
+        }
+      }
+    }
+  },
+  &quot;paths&quot;: {
+    &quot;/users/{userId}&quot;: {
+      &quot;get&quot;: {
+        &quot;summary&quot;: &quot;Returns a user by ID.&quot;,
+        &quot;parameters&quot;: [{
+          &quot;in&quot;: &quot;path&quot;,
+          &quot;name&quot;: &quot;userId&quot;,
+          &quot;required&quot;: true,
+          &quot;type&quot;: &quot;integer&quot;
+        }],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;OK&quot;,
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/User&quot;
+            }
+          }
+        }
+      }
+    },
+    &quot;/users&quot;: {
+      &quot;post&quot;: {
+        &quot;summary&quot;: &quot;Creates a new user.&quot;,
+        &quot;parameters&quot;: [{
+          &quot;in&quot;: &quot;body&quot;,
+          &quot;name&quot;: &quot;user&quot;,
+          &quot;schema&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/User&quot;
+          }
+        }],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;OK&quot;
+          }
+        }
+      }
+    }
+  }
+}</schema>
+    <schemaType>OpenApi</schemaType>
+    <serviceBinding>{&quot;compatibleMediaTypes&quot;:{}}</serviceBinding>
+    <status>Complete</status>
+</ExternalServiceRegistration>
