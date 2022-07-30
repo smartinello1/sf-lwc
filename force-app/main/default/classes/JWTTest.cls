@@ -8,7 +8,6 @@ private without sharing class JWTTest {
 		j.aud = 'a';
 		j.exp = 'a';
 		j.iat = 'a';
-		j.cert = 'a';
 		j.pkcs8 = 'a';
 		j.privateKey = 'a';
 		j.issue();
