@@ -1,16 +1,10 @@
 @isTest
 private without sharing class ListCaseControllerTest {
-	@TestSetup
-	static void makeData() {
-		Case c = new Case(Status = 'Open');
-		insert c;
-	}
-
 	@isTest
-	static void redirectTest() {
-		List<Case> ccc = new List<Case>([SELECT Id FROM Case]);
+	static void initTest() {
 		Test.startTest();
-		ListCaseController.init(JSON.serialize(ccc));
+		ListCaseController.init(new List<String>());
+		ListCaseController.init(new List<String>{ 'test' });
 		Test.stopTest();
 	}
 
