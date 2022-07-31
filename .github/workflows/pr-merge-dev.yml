@@ -69,12 +69,6 @@ jobs:
           mkdir incremental
           sfdx sgd:source:delta -W --output incremental/ --to "HEAD" --from "HEAD^" -s force-app/**
 
-      # - name: Create code artifact backup dev
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: code-artifact-backup-dev
-      #     path: force-app/main/default
-
       - name: Create incremental package
         uses: actions/upload-artifact@v3
         with:
