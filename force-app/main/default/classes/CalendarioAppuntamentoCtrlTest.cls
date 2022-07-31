@@ -12,5 +12,6 @@ private without sharing class CalendarioAppuntamentoCtrlTest {
 			System.Today(),
 			System.today().addDays(1)
 		);
+		CalendarioAppuntamentiCtrl.createAppointments(new Appuntamento__c());
 	}
 }
