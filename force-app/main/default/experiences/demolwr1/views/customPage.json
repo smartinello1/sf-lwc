@@ -1,0 +1,101 @@
+{
+  "appPageId" : "2df8e7c2-da4a-4b37-b07b-f2f394b914b3",
+  "componentName" : "community_layout:sldsFlexibleLayout",
+  "id" : "08e80f0e-c5e6-4fd8-a43f-4ae7293ea179",
+  "label" : "Custom Page",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "backgroundImageConfig" : "",
+        "backgroundImageOverlay" : "rgba(0,0,0,0)",
+        "sectionConfig" : "{\"UUID\":\"c22f88c9-6eff-4bb9-ace4-437569f7b84b\",\"columns\":[{\"UUID\":\"bc2646ee-7ea7-422a-999b-c2460d777ef0\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}"
+      },
+      "componentName" : "community_layout:section",
+      "id" : "c22f88c9-6eff-4bb9-ace4-437569f7b84b",
+      "regions" : [ {
+        "id" : "bc2646ee-7ea7-422a-999b-c2460d777ef0",
+        "regionLabel" : "Column 1",
+        "regionName" : "col1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "scopedBrandingSetId" : null,
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "backgroundImageConfig" : "",
+        "backgroundImageOverlay" : "rgba(0,0,0,0)",
+        "sectionConfig" : "{\"UUID\":\"849fd83d-3eb5-4301-b4e3-1f8de8cd0948\",\"columns\":[{\"UUID\":\"b23f4d3d-f584-4913-9d23-b45952789462\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}"
+      },
+      "componentName" : "community_layout:section",
+      "id" : "849fd83d-3eb5-4301-b4e3-1f8de8cd0948",
+      "regions" : [ {
+        "id" : "b23f4d3d-f584-4913-9d23-b45952789462",
+        "regionLabel" : "Column 1",
+        "regionName" : "col1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "scopedBrandingSetId" : null,
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "backgroundImageConfig" : "",
+        "backgroundImageOverlay" : "rgba(0,0,0,0)",
+        "sectionConfig" : "{\"UUID\":\"6a46dadd-eb24-4ff6-8266-29534b0e2b0a\",\"columns\":[{\"UUID\":\"79b5723d-cb9b-4d22-9f40-0b31a416f0de\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"4\",\"seedComponents\":[]},{\"UUID\":\"4569f03f-ff0b-4782-8441-9da5d97928b1\",\"columnName\":\"Column 2\",\"columnKey\":\"57fa1\",\"columnWidth\":\"4\",\"seedComponents\":[]},{\"UUID\":\"cb7a83d6-b29f-4d98-84cf-4c6b7e2cefd2\",\"columnName\":\"Column 3\",\"columnKey\":\"a3f11\",\"columnWidth\":\"4\",\"seedComponents\":[]}]}"
+      },
+      "componentName" : "community_layout:section",
+      "id" : "6a46dadd-eb24-4ff6-8266-29534b0e2b0a",
+      "regions" : [ {
+        "id" : "79b5723d-cb9b-4d22-9f40-0b31a416f0de",
+        "regionLabel" : "Column 1",
+        "regionName" : "col1",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "id" : "4569f03f-ff0b-4782-8441-9da5d97928b1",
+        "regionLabel" : "Column 2",
+        "regionName" : "57fa1",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "id" : "cb7a83d6-b29f-4d98-84cf-4c6b7e2cefd2",
+        "regionLabel" : "Column 3",
+        "regionName" : "a3f11",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "scopedBrandingSetId" : null,
+      "type" : "component"
+    } ],
+    "id" : "345c2dd1-8685-4347-988b-0133ae7b6fed",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "pageTitle" : "Custom Page",
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "community_builder:seoAssistant",
+      "id" : "db2293b1-b99d-44f0-b756-6f29bdd09cb4",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "db6dcab9-10c8-4446-8e79-5cd8b751ec98",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "6NuDsKFGTirAXhcvbazKUbKI4buoxw",
+  "type" : "view",
+  "viewType" : "custom-custom-page"
+}

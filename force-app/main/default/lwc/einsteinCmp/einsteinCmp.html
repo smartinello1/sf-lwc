@@ -1,0 +1,21 @@
+<template>
+  <lightning-card title="Upload Documents" icon-name="standard:documents">
+    <lightning-combobox
+      options={options}
+      value={doc}
+      onchange={handleChangeDoc}
+    ></lightning-combobox>
+    <template if:true={isChosenDocType}>
+      <lightning-file-upload
+        record-id={recordId}
+        onuploadfinished={handleUploadFinished}
+      ></lightning-file-upload>
+      <template if:true={recordInfo}>
+        <div class="slds-grid slds-wrap">
+          <div class="slds-col">Cognome: {recordInfo.cognome}</div>
+          <div class="slds-col">Cognome: {labels.dynamic}</div>
+        </div>
+      </template>
+    </template>
+  </lightning-card>
+</template>

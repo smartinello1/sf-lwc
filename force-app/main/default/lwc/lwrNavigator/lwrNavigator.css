@@ -1,0 +1,5 @@
+:host {
+  --slds-c-button-brand-color-background: purple;
+  --slds-c-button-brand-color-border: purple;
+  --slds-c-button-brand-color: white;
+}

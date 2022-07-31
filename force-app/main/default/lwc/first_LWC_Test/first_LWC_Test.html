@@ -23,7 +23,7 @@
         <lightning-badge label={result}></lightning-badge>
       </div>
       <div>
-        <button class="btn-animator">Label</button>
+        <button class="btn-animator" onclick={handleClick}>Label</button>
         <lightning-button class="btn-animator" label="Test"></lightning-button>
       </div>
       <div class="animator">
@@ -31,6 +31,9 @@
       </div>
       <div if:true={condition}>
         <span style="color: red"></span>
+      </div>
+      <div if:false={condition}>
+        <p>CIAO!</p>
       </div>
     </div>
   </lightning-card>

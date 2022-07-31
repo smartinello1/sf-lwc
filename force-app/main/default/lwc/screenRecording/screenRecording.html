@@ -1,0 +1,29 @@
+<template>
+  <lightning-card title="Screen Recording" icon-name="standard:account">
+    <lightning-button
+      slot="actions"
+      class="slds-var-p-around_x-small"
+      label="Start Recording"
+      disabled={recordingDisabled}
+      onclick={handleStartRecording}
+    ></lightning-button>
+    <lightning-button
+      slot="actions"
+      class="slds-var-p-around_x-small"
+      label="Download Video"
+      disabled={downloadDisabled}
+      onclick={handleDownload}
+    ></lightning-button>
+    <div lwc:dom="manual" class="download-container"></div>
+    <div class="slds-grid slds-wrap">
+      <div class="slds-col slds-size_1-of-1 slds-text-align_center">
+        <p>Streaming</p>
+        <video class="vvv" width="320" height="240" controls></video>
+      </div>
+      <div class="slds-col slds-size_1-of-1 slds-text-align_center">
+        <p>Preview</p>
+        <video src={videoSource} width="320" height="240" controls></video>
+      </div>
+    </div>
+  </lightning-card>
+</template>

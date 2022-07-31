@@ -1,0 +1,24 @@
+<template>
+  <div class="slds-form-element slds-form-element_readonly">
+    <span class="slds-form-element__label">{label}</span>
+    <div class="slds-form-element__control">
+      <div class="slds-form-element__static">
+        <template if:true={isDate}>
+          <lightning-formatted-date-time
+            value={value}
+          ></lightning-formatted-date-time>
+        </template>
+        <template if:true={isNumber}>
+          <lightning-formatted-number
+            value={value}
+            format-style={format}
+          ></lightning-formatted-number>
+        </template>
+        <template if:true={isText}>
+          <!-- <lightning-formatted-text value={value}></lightning-formatted-text> -->
+          {value}
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

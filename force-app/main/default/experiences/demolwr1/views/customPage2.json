@@ -1,0 +1,35 @@
+{
+  "appPageId" : "2df8e7c2-da4a-4b37-b07b-f2f394b914b3",
+  "componentName" : "c:customPageLayout",
+  "id" : "83b34999-5df3-4fd6-a875-66820c583c07",
+  "label" : "custom page 2",
+  "regions" : [ {
+    "id" : "9a9aff40-76e4-4a87-8a94-343c78ee2eb8",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "dd5c7051-4c60-45e8-87e0-b2890d831d39",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "pageTitle" : "custom page 2",
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "community_builder:seoAssistant",
+      "id" : "c152e7be-65af-495e-b2a1-fe93f2ecfb34",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "649f8840-ecec-4c27-9980-fbb0a5025d57",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-custom-page-2"
+}

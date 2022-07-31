@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WaveApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assetIcon>/analytics/wave/web/proto/images/app/icons/11.png</assetIcon>
+    <description>Contains datasets, lenses and dashboards for the Wave Analytics trail</description>
+    <folder>My_Exploration</folder>
+    <masterLabel>My Exploration</masterLabel>
+    <shares>
+        <accessLevel>Manage</accessLevel>
+        <sharedTo>martinellosimone@lutech.it</sharedTo>
+        <sharedToType>User</sharedToType>
+    </shares>
+</WaveApplication>

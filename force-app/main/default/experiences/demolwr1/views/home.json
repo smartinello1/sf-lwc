@@ -1,0 +1,65 @@
+{
+  "appPageId" : "2df8e7c2-da4a-4b37-b07b-f2f394b914b3",
+  "componentName" : "community_layout:sldsFlexibleLayout",
+  "id" : "4efc844c-d047-438e-b0fe-e6c8ebc3f9e1",
+  "label" : "Home",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "backgroundImageConfig" : "",
+        "backgroundImageOverlay" : "rgba(0,0,0,0)",
+        "sectionConfig" : "{\"UUID\":\"3193e375-1521-4b4f-bd44-5ded2497e574\",\"columns\":[{\"UUID\":\"a661e41f-2d48-4004-b8b5-7b735f224a18\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}"
+      },
+      "componentName" : "community_layout:section",
+      "id" : "3193e375-1521-4b4f-bd44-5ded2497e574",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "alignment" : "center",
+            "size" : "standard",
+            "stretch" : "standard",
+            "text" : "Button",
+            "type" : "primary"
+          },
+          "componentName" : "dxp_base:button",
+          "id" : "fd795e02-7058-4c9a-82b5-e7177faf75cb",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "a661e41f-2d48-4004-b8b5-7b735f224a18",
+        "regionLabel" : "Column 1",
+        "regionName" : "col1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "scopedBrandingSetId" : null,
+      "type" : "component"
+    } ],
+    "id" : "47b33446-d89a-4e13-8ad8-f5799aab0328",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "pageTitle" : "Home",
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "community_builder:seoAssistant",
+      "id" : "5574b059-27b8-4d9b-ada4-7c51656a4cd8",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "830450ba-4359-4472-8e4e-db9111f2261a",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "6NuDsKFGTirAXhcvbazKUbKI4buoxw",
+  "type" : "view",
+  "viewType" : "home"
+}

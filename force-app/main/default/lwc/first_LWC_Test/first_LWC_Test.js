@@ -1,4 +1,4 @@
-import { LightningElement, api } from "lwc";
+import { LightningElement, api, track, wire } from "lwc";
 //Import utils.js
 //import utils from './utils';
 
@@ -35,5 +35,9 @@ export default class First_LWC_Test extends LightningElement {
 			this.condition = false;
         }, 30000);
         */
+  }
+
+  handleClick(event) {
+    this.condition = !this.condition;
   }
 }

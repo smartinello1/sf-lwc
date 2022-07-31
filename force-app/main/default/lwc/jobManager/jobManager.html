@@ -1,0 +1,22 @@
+<template>
+  <lightning-card title="Async Job Manager" icon-name="standard:account">
+    <template if:false={error}>
+      <lightning-layout multiple-rows horizontal-align="center">
+        <template if:true={hasJobs}>
+          <p class="slds-text-align_center">No Async Job in the current org!</p>
+        </template>
+        <template for:each={jobs} for:item="job" for:index="jobIndex">
+          <c-job-item key={job.Id} item={job}></c-job-item>
+        </template>
+      </lightning-layout>
+    </template>
+
+    <template if:true={error}>
+      <lightning-layout>
+        <lightning-layout-item size="12">
+          <p>{error}</p>
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+  </lightning-card>
+</template>

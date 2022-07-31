@@ -1,0 +1,153 @@
+<template>
+  <lightning-card title="Audiences" icon-name="standard:customers">
+    <lightning-button
+      slot="actions"
+      label="Refresh"
+      onclick={handleRefresh}
+    ></lightning-button>
+    <lightning-button
+      slot="actions"
+      label="New"
+      onclick={createNewAudience}
+      disabled={blockCreateAudiences}
+    ></lightning-button>
+    <template if:true={isLoading}>
+      <lightning-spinner
+        alternative-text="LOADING"
+        variant="brand"
+        size="large"
+      ></lightning-spinner>
+    </template>
+    <template if:false={isLoading}>
+      <template if:true={errors}>
+        <p>{errors.message}</p>
+      </template>
+      <template if:false={errors}>
+        <template if:false={lists}>
+          <p>no list available</p>
+        </template>
+        <template if:true={lists}>
+          <div
+            class="slds-grid slds-grid_align-end slds-var-p-horizontal_medium"
+          >
+            <div class="slds-col">
+              {data.constraints.current_total_instances} Audiences out of
+              {data.constraints.max_instances}
+            </div>
+          </div>
+          <lightning-accordion allow-multiple-sections-open>
+            <template for:each={lists} for:item="list" for:index="i">
+              <lightning-accordion-section
+                title={list.name}
+                label={list.name}
+                key={list.id}
+              >
+                <div class="slds-var-p-around_medium">
+                  <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title slds-theme_shade">
+                      <span
+                        class="slds-truncate slds-var-p-horizontal_small"
+                        title="Main Information"
+                        >Main Information</span
+                      >
+                    </h3>
+                    <div aria-hidden="false" class="slds-section__content">
+                      <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-var-p-around_medium">
+                          <c-sftomc-output-field
+                            label="MailChimp Id"
+                            value={list.mc_id}
+                          ></c-sftomc-output-field>
+                        </div>
+                        <div class="slds-col slds-var-p-around_medium">
+                          <c-sftomc-output-field
+                            label="Web Id"
+                            value={list.web_id}
+                          ></c-sftomc-output-field>
+                        </div>
+                        <div class="slds-col slds-var-p-around_medium">
+                          <c-sftomc-output-field
+                            label="Name"
+                            value={list.name}
+                          ></c-sftomc-output-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title slds-theme_shade">
+                      <span
+                        class="slds-truncate slds-var-p-horizontal_small"
+                        title="Statistics"
+                        >Statistics</span
+                      >
+                    </h3>
+                    <div aria-hidden="false" class="slds-section__content">
+                      <div class="slds-grid slds-wrap">
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-var-p-around_medium"
+                        >
+                          <c-sftomc-output-field
+                            label="Member Count"
+                            value={list.stats.member_count}
+                          ></c-sftomc-output-field>
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-var-p-around_medium"
+                        >
+                          <c-sftomc-output-field
+                            label="Last Subscription Date"
+                            value={list.stats.last_sub_date}
+                            type="date"
+                          ></c-sftomc-output-field>
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-var-p-around_medium"
+                        >
+                          <c-sftomc-output-field
+                            label="Last Unsubscription Date"
+                            value={list.stats.last_unsub_date}
+                            type="date"
+                          ></c-sftomc-output-field>
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-var-p-around_medium"
+                        >
+                          <c-sftomc-output-field
+                            label="Number of campaigns"
+                            value={list.stats.campaign_count}
+                            type="number"
+                          ></c-sftomc-output-field>
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-var-p-around_medium"
+                        >
+                          <c-sftomc-output-field
+                            label="Open rate"
+                            value={list.stats.open_rate}
+                            type="number"
+                            format="percent"
+                          ></c-sftomc-output-field>
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-var-p-around_medium"
+                        >
+                          <c-sftomc-output-field
+                            label="Click rate"
+                            value={list.stats.click_rate}
+                            type="number"
+                            format="percent"
+                          ></c-sftomc-output-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </lightning-accordion-section>
+            </template>
+          </lightning-accordion>
+        </template>
+      </template>
+    </template>
+  </lightning-card>
+</template>
