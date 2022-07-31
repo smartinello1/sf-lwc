@@ -1,5 +1,5 @@
 # Workflow to validate a pr into master branch
-name: pr-validation-master
+name: pr-validation-dev
 
 # Controls when the workflow will run
 on:
