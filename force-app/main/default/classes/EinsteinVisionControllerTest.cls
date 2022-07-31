@@ -11,6 +11,6 @@ private without sharing class EinsteinVisionControllerTest {
 		insert cv;
 		Account acc = new Account(Name = 'test24143123');
 		insert acc;
-		EinsteinVisionController.createPublicLink(cv.Id, acc.Id);
+		// EinsteinVisionController.createPublicLink(cv.Id, acc.Id);
 	}
 }
