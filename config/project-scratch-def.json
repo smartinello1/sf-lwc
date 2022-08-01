@@ -1,13 +1,77 @@
 {
-  "orgName": "Demo company",
-  "edition": "Developer",
-  "features": ["EnableSetPasswordInApi"],
-  "settings": {
-    "lightningExperienceSettings": {
-      "enableS1DesktopEnabled": true
-    },
-    "mobileSettings": {
-      "enableS1EncryptedStoragePref2": false
-    }
-  }
+	"orgName": "Demo company",
+	"edition": "Developer",
+	"features": [
+		"EnableSetPasswordInApi",
+		"AnalyticsAdminPerms",
+		"AnalyticsAppEmbedded",
+		"API",
+		"AuthorApex",
+		"CascadeDelete",
+		"ChangeDataCapture",
+		"Chatbot",
+		"Communities",
+		"ConAppPluginExecuteAsUser",
+		"ConnectedAppToolingAPI",
+		"CPQ",
+		"CustomNotificationType",
+		"DebugApex",
+		"DevelopmentWave",
+		"EinsteinAnalyticsPlus",
+		"EinsteinArticleRecommendations",
+		"EinsteinBuilderFree",
+		"EinsteinRecommendationBuilder",
+		"EinsteinRecommendationBuilderMetadata",
+		"Entitlements",
+		"EventLogFile",
+		"ExternalIdentityLogin",
+		"FlowSites",
+		"ForceComPlatform",
+		"GenericStreaming",
+		"IdentityProvisioningFeatures",
+		"HighVelocitySales",
+		"IndustriesActionPlan",
+		"IndustriesManufacturing",
+		"IndustriesManufacturingCmty",
+		"Knowledge",
+		"LegacyLiveAgentRouting",
+		"LightningSalesConsole",
+		"LightningScheduler",
+		"LightningServiceConsole",
+		"LiveAgent",
+		"LiveMessage",
+		"Macros",
+		"NonprofitCloudCaseManagementUser",
+		"OrderManagement",
+		"OutboundMessageHTTPSession",
+		"PersonAccounts",
+		"ProcessBuilder",
+		"ProductsAndSchedules",
+		"PublicSectorAccess",
+		"PublicSectorApplicationUsageCreditsAddOn",
+		"PublicSectorSiteTemplate",
+		"RecordTypes",
+		"SalesCloudEinstein",
+		"SalesforceIdentityForCommunities",
+		"SalesUser",
+		"ServiceCloud",
+		"ServiceCloudVoicePartnerTelephony",
+		"ServiceUser",
+		"Sites",
+		"SocialCustomerService",
+		"StreamingAPI",
+		"SustainabilityCloud",
+		"TransactionFinalizers",
+		"WavePlatform",
+		"Workflow",
+		"PlatformCache"
+	],
+	"settings": {
+		"lightningExperienceSettings": {
+			"enableS1DesktopEnabled": true
+		},
+		"mobileSettings": {
+			"enableS1EncryptedStoragePref2": false
+		}
+	}
 }
