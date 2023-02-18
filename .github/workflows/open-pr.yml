@@ -1,0 +1,69 @@
+name: Open PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: 'starting point of the PR'
+        required: true
+      to:
+        description: 'branch where the PR needs to be merged'
+        required: true
+      environment:
+        description: 'test run Salesforce environment'
+        type: environment
+
+jobs:
+  openPR:
+    runs-on: ubuntu-latest
+    steps:
+      # Set Variables
+      - run: |
+          echo "from branch: $FROM"
+          echo "to branch: $TO"
+          echo "env: $ENV"
+        env:
+          FROM: ${{ inputs.from }}
+          TO: ${{ inputs.to }}
+          ENV: ${{ inputs.environment }}
+      # Checkout Source
+      - name: Checkout to branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.to }}
+          fetch-depth: 2
+      - name: Checkout from branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.from }}
+          fetch-depth: 2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      # Setup Node
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '>=14'
+          check-latest: true
+      # Install SFDX
+      - name: Install Salesforce CLI
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+          mkdir ~/sfdx
+          tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+          echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+          ~/sfdx/bin/sfdx version
+          
+      # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
+      - name: 'Installing sfdx git delta'
+        run: |
+          echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
+
+      - name: Authenticate
+        shell: bash
+        run: 'echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA'
+
+      - name: 'Authenticate against dev hub'
+        run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
