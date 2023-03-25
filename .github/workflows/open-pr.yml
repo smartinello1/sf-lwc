@@ -4,14 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       from:
-        description: 'starting point of the PR'
+        description: 'From branch of the PR'
         required: true
       to:
-        description: 'branch where the PR needs to be merged'
+        description: 'To branch of the PR'
         required: true
       environment:
         description: 'test run Salesforce environment'
         type: environment
+      testLevel:
+        description: 'Test level to run'
+        required: true
+      testClassToRun:
+        description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
 
 jobs:
   openPR:
@@ -23,21 +28,13 @@ jobs:
           echo "to branch: $TO"
           echo "env: $ENV"
           echo "username: ${{ vars.USERNAME }}"
+          echo "username: ${{ inputs.environment.USERNAME }}"
+          echo "username: ${{ vars.SERVER_KEY }}"
+          echo "username: ${{ inputs.environment.SERVER_KEY }}"
         env:
           FROM: ${{ inputs.from }}
           TO: ${{ inputs.to }}
           ENV: ${{ inputs.environment }}
-      # Checkout Source
-      # - name: Checkout to branch
-      #   uses: actions/checkout@v3
-      #   with:
-      #     ref: ${{ inputs.to }}
-      #     fetch-depth: 2
-      # - name: Checkout from branch
-      #   uses: actions/checkout@v3
-      #   with:
-      #     ref: ${{ inputs.from }}
-      #     fetch-depth: 2
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
@@ -62,18 +59,21 @@ jobs:
           echo y | sfdx plugins:install sfdx-git-delta
           sfdx plugins
 
-      - name: Authenticate
-        shell: bash
-        run: 'echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA'
+      # - name: Authenticate
+      #   shell: bash
+      #   run: 'echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA'
 
       #- name: 'Authenticate against dev hub'
       #  run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
+      - name: Authenticate JWT
+        run: |
+          sfdx auth:jwt:grant --clientid ${{ vars.CLIENT_ID }} --jwtkeyfile ${{ vars.SERVER_KEY }} --username ${{ vars.USERNAME }} --instanceurl https://test.salesforce.com
+
       - name: Create delta
         run: |
           mkdir incremental
-          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
-          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "HEAD" --from "${{ inputs.to }}" -s force-app/**
+          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "${{ inputs.from }}" --from "${{ inputs.to }}" -s force-app/**
       
       - name: Create incremental package
         uses: actions/upload-artifact@v3
@@ -91,6 +91,7 @@ jobs:
       #   run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
 
       - name: Automatically open pull request
+        if: ${{ success() }}
         uses: devops-infra/action-pull-request@v0.5.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -103,7 +104,7 @@ jobs:
           assignee: ""
           label: ""
           milestone: ""
-          draft: true
+          draft: false
           old_string: "<!-- Add your description here -->"
           new_string: "** Automatic pull request**"
           get_diff: true
