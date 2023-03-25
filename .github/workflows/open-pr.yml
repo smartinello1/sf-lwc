@@ -66,8 +66,8 @@ jobs:
         shell: bash
         run: 'echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA'
 
-      - name: 'Authenticate against dev hub'
-        run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
+      #- name: 'Authenticate against dev hub'
+      #  run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
 
       - name: Create delta
         run: |
