@@ -22,6 +22,7 @@ jobs:
           echo "from branch: $FROM"
           echo "to branch: $TO"
           echo "env: $ENV"
+          echo "username: ${{ vars.USERNAME }}"
         env:
           FROM: ${{ inputs.from }}
           TO: ${{ inputs.to }}
