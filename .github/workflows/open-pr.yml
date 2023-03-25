@@ -67,3 +67,33 @@ jobs:
 
       - name: 'Authenticate against dev hub'
         run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
+
+      - name: Create delta
+        run: |
+          mkdir incremental
+          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "HEAD" --from "HEAD^" -s force-app/**
+      
+      - name: Create incremental package
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-artifact
+          path: incremental
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: code-artifact
+          path: code-artifact
+
+      - name: Validate
+        if: ${{ success() }}
+        run: sfdx force:source:deploy -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
+
+      - name: Set current date
+        if: ${{ success() }}
+        run: echo "DATE=$(date +'%Y-%m-%dT%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create backup release from prod
+        if: ${{ success() }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: backup-prod-${{ env.DATE }}
