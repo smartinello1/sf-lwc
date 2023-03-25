@@ -19,7 +19,7 @@ on:
         description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
 
 jobs:
-  Open PR:
+  Open_PR:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
