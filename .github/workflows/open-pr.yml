@@ -74,7 +74,8 @@ jobs:
 
       - name: Authenticate JWT
         run: |
-          sfdx auth:jwt:grant --clientid ${{ vars.CLIENT_ID }} --jwtkeyfile "${{ secrets.SERVER_KEY }}" --username ${{ vars.USERNAME }} --instanceurl https://test.salesforce.com
+          echo ${{ secrets.SERVER_KEY }} > SERVER_KEY
+          sfdx auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file "SERVER_KEY" --username ${{ vars.USERNAME }} --instance-url https://test.salesforce.com
 
       - name: Create delta
         run: |
