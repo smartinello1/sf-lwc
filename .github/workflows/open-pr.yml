@@ -15,6 +15,13 @@ on:
       testLevel:
         description: 'Test level to run'
         required: true
+        default: 'NoTestRun'
+        type: choice
+        options:
+        - NoTestRun
+        - RunLocalTests
+        - RunSpecifiedTests
+        - RunAllTestsInOrg
       testClassToRun:
         description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
 
