@@ -94,7 +94,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: ${{ inputs.from }}
           target_branch: ${{ inputs.to }}
-          title: "AUTOM-" + ${{ inputs.from }}
+          title: "AUTOM-${{ inputs.from }}"
           template: ""
           body: "**Automated pull request**"
           reviewer: ""
@@ -107,4 +107,3 @@ jobs:
           get_diff: true
           ignore_users: "dependabot"
           allow_no_diff: false
-      
