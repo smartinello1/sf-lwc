@@ -28,20 +28,20 @@ jobs:
           TO: ${{ inputs.to }}
           ENV: ${{ inputs.environment }}
       # Checkout Source
-      - name: Checkout to branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.to }}
-          fetch-depth: 2
-      - name: Checkout from branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.from }}
-          # fetch-depth: 2
+      # - name: Checkout to branch
+      #   uses: actions/checkout@v3
+      #   with:
+      #     ref: ${{ inputs.to }}
+      #     fetch-depth: 2
+      # - name: Checkout from branch
+      #   uses: actions/checkout@v3
+      #   with:
+      #     ref: ${{ inputs.from }}
+      #     fetch-depth: 2
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       # Setup Node
       - uses: actions/setup-node@v1
         with:
@@ -73,7 +73,7 @@ jobs:
         run: |
           mkdir incremental
           git fetch origin "+refs/heads/*:refs/remotes/origin/*"
-          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "${{ inputs.from }}" --from "${{ inputs.to }}" -s force-app/**
+          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "HEAD" --from "${{ inputs.to }}" -s force-app/**
       
       - name: Create incremental package
         uses: actions/upload-artifact@v3
