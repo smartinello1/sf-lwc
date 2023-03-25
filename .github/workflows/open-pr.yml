@@ -24,6 +24,8 @@ on:
         - RunAllTestsInOrg
       testClassToRun:
         description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
+      description:
+        description: 'Description of the changes in the PR'
 
 jobs:
   Open_PR:
@@ -88,7 +90,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ secrets.USERNAME }} --json --loglevel fatal
+        run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
 
       - name: Automatically open pull request
         if: ${{ success() }}
@@ -99,7 +101,7 @@ jobs:
           target_branch: ${{ inputs.to }}
           title: "AUTOM-${{ inputs.from }}"
           template: ""
-          body: "**Automated pull request**"
+          body: "**Automated pull request** \n ${{ inputs.description }}"
           reviewer: ""
           assignee: ""
           label: ""
