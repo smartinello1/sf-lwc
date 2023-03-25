@@ -88,7 +88,7 @@ jobs:
         if: ${{ success() }}
         run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
 
-      - name: Open PR
+      - name: Open PR Action
       uses: devops-infra/action-pull-request@v0.5.5
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
