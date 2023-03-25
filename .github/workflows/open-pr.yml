@@ -101,12 +101,13 @@ jobs:
           target_branch: ${{ inputs.to }}
           title: "AUTOM-${{ inputs.from }}"
           template: ""
-          body: "**Automated pull request** \n ${{ inputs.description }}"
+          body: |
+            **Automated pull request**
+            ${{ inputs.description }}
           reviewer: ""
           assignee: ""
           label: ""
           milestone: ""
-          draft: false
           old_string: "<!-- Add your description here -->"
           new_string: "** Automatic pull request**"
           get_diff: true
