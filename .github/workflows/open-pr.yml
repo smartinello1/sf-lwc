@@ -65,17 +65,6 @@ jobs:
           echo y | sfdx plugins:install sfdx-git-delta
           sfdx plugins
 
-      # - name: Authenticate
-      #   shell: bash
-      #   run: 'echo ${{ secrets.SFDX_SECRETKEY }} > SFDX_QA'
-
-      #- name: 'Authenticate against dev hub'
-      #  run: sfdx force:auth:sfdxurl:store -f SFDX_QA -s -a MyDev
-
-      # - name: Write Server.key
-      #   shell: bash
-      #   run: 'echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key'
-
       - name: Authenticate JWT
         run: |
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
@@ -84,7 +73,7 @@ jobs:
       - name: Create delta
         run: |
           mkdir incremental
-          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "${{ inputs.from }}" --from "${{ inputs.to }}" -s force-app/**
+          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to ${{ inputs.from }} --from ${{ inputs.to }} -s force-app/**
       
       - name: Create incremental package
         uses: actions/upload-artifact@v3
