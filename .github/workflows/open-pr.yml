@@ -89,21 +89,21 @@ jobs:
         run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
 
       - name: Automatically open pull request
-      uses: devops-infra/action-pull-request@v0.5.5
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        source_branch: ${{ inputs.from }}
-        target_branch: ${{ inputs.to }}
-        title: "AUTOM-" + ${{ inputs.from }}
-        template: ""
-        body: "**Automated pull request**"
-        reviewer: ""
-        assignee: ""
-        label: ""
-        milestone: ""
-        draft: true
-        old_string: "<!-- Add your description here -->"
-        new_string: "** Automatic pull request**"
-        get_diff: true
-        ignore_users: "dependabot"
-        allow_no_diff: false
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ inputs.from }}
+          target_branch: ${{ inputs.to }}
+          title: "AUTOM-" + ${{ inputs.from }}
+          template: ""
+          body: "**Automated pull request**"
+          reviewer: ""
+          assignee: ""
+          label: ""
+          milestone: ""
+          draft: true
+          old_string: "<!-- Add your description here -->"
+          new_string: "** Automatic pull request**"
+          get_diff: true
+          ignore_users: "dependabot"
+          allow_no_diff: false
