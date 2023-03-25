@@ -71,7 +71,7 @@ jobs:
       - name: Create delta
         run: |
           mkdir incremental
-          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "HEAD" --from "HEAD^" -s force-app/**
+          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to "${{ inputs.from }}" --from "${{ inputs.to }}" -s force-app/**
       
       - name: Create incremental package
         uses: actions/upload-artifact@v3
