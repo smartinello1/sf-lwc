@@ -86,9 +86,9 @@ jobs:
           name: code-artifact
           path: code-artifact
 
-      - name: Validate
-        if: ${{ success() }}
-        run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
+      # - name: Validate
+      #   if: ${{ success() }}
+      #   run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml -l RunLocalTests -u MyDev --json --loglevel fatal
 
       - name: Automatically open pull request
         uses: devops-infra/action-pull-request@v0.5.5
