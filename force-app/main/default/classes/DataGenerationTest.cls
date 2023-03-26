@@ -3,10 +3,10 @@ private class DataGenerationTest {
   @testSetup
   static void dataCreation() {
     //   Account account = TestFactory.getAccount('Muddy Waters Inc.', true);
-    Account acc = new Account(
+    Account account = new Account(
         Name = 'Muddy Waters Inc.'
     );
-    insert acc;
+    insert account;
     //   Contact contact = TestFactory.getContact(account.Id, 'Muddy', 'Waters', true);
     Contact contact = new Contact();
     contact.LastName = 'aaa';
