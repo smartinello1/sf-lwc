@@ -41,10 +41,6 @@
         <type>CustomApplication</type>
     </appMenuItems>
     <appMenuItems>
-        <name>Dataloader_Partner</name>
-        <type>ConnectedApp</type>
-    </appMenuItems>
-    <appMenuItems>
         <name>Forcecom_IDE</name>
         <type>ConnectedApp</type>
     </appMenuItems>
