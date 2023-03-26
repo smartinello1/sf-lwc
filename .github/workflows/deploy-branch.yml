@@ -3,14 +3,11 @@ name: Deploy Branch
 on:
   workflow_dispatch:
     inputs:
-      from:
-        description: 'From branch of the PR'
-        required: true
-      to:
-        description: 'To branch of the PR'
+      branchToDeploy:
+        description: 'Branch name to deploy'
         required: true
       environment:
-        description: 'test run Salesforce environment'
+        description: 'Salesforce environment where to execute the full deploy'
         type: environment
       testLevel:
         description: 'Test level to run'
@@ -34,14 +31,9 @@ jobs:
     steps:
       # Set Variables
       - run: |
-          echo "from branch: $FROM"
-          echo "to branch: $TO"
           echo "env: $ENV"
-          echo "username: ${{ vars.USERNAME }}"
-          echo "username: ${{ secrets.SERVER_KEY }}"
         env:
-          FROM: ${{ inputs.from }}
-          TO: ${{ inputs.to }}
+          BRANCH_TO_DEPLOY: ${{ inputs.branchToDeploy }}
           ENV: ${{ inputs.environment }}
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -72,22 +64,6 @@ jobs:
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
           sfdx auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --instance-url https://login.salesforce.com
 
-      - name: Create delta
-        run: |
-          mkdir incremental
-          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to origin/${{ inputs.from }} --from origin/${{ inputs.to }} -s force-app/**
-      
-      - name: Create incremental package
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-artifact
-          path: incremental
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: code-artifact
-          path: code-artifact
-
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+        run: sfdx force:source:deploy -p ./force-app/main/default --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
