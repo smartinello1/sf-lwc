@@ -2,8 +2,15 @@
 private class DataGenerationTest {
   @testSetup
   static void dataCreation() {
-      Account account = TestFactory.getAccount('Muddy Waters Inc.', true);
-      Contact contact = TestFactory.getContact(account.Id, 'Muddy', 'Waters', true);
+    //   Account account = TestFactory.getAccount('Muddy Waters Inc.', true);
+    Account acc = new Account(
+        Name = 'Muddy Waters Inc.'
+    );
+    insert acc;
+    //   Contact contact = TestFactory.getContact(account.Id, 'Muddy', 'Waters', true);
+    Contact contact = new Contact();
+    contact.LastName = 'aaa';
+    insert contact;
       Opportunity opp = New Opportunity();
       opp.Name = 'Long lost record';
       opp.AccountId = account.Id;
