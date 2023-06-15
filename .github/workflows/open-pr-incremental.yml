@@ -90,7 +90,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+        run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml --testlevel ${{ inputs.testLevel }} ${{ inputs.testLevel == "RunSpecifiedTests" ? "--runtests" }} "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
 
       - name: Automatically open pull request
         if: ${{ success() }}
