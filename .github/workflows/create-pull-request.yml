@@ -78,7 +78,7 @@ jobs:
 
       - name: Calculate test class to run
         run: |
-          if [[ $TESTCLASSVALUE -eq true ]]; then
+          if [[ $TESTCLASSVALUE -eq true ]]
             echo " --runtests \"${{ inputs.testClassToRun }}\" " > $TESTCLASS
             echo "specific classes to run"
           else
