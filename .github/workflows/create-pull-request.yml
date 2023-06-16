@@ -41,7 +41,6 @@ jobs:
           echo "testLevel: $TESTLEVEL"
           echo "testClassToRun: $TESTCLASSVALUE"
           echo "username: ${{ vars.USERNAME }}"
-          echo "username: ${{ secrets.SERVER_KEY }}"
         env:
           FROM: ${{ inputs.from }}
           TO: ${{ inputs.to }}
@@ -78,7 +77,7 @@ jobs:
 
       - name: Calculate test class to run
         run: |
-          if ${TESTCLASSVALUE} -eq true; then
+          if [[ $TESTCLASSVALUE -eq true ]] then
             echo " --runtests \"${{ inputs.testClassToRun }}\" " >> $TESTCLASS
             echo "specific classes to run"
           else
