@@ -1,0 +1,97 @@
+name: Create Pull Request
+
+on:
+  workflow-dispatch:
+    inputs:
+        from:
+          description: 'From branch of the PR'
+          required: true
+        to:
+          description: 'To branch of the PR'
+          required: true
+        environment:
+          description: 'test run Salesforce environment'
+          type: environment
+        testLevel:
+          description: 'Test level to run'
+          required: true
+          default: 'NoTestRun'
+          type: choice
+          options:
+          - NoTestRun
+          - RunLocalTests
+          - RunSpecifiedTests
+          - RunAllTestsInOrg
+        testClassToRun:
+          description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
+        description:
+          description: 'Description of the changes in the PR'
+
+jobs:
+  Create Pull Request:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      # Init Variables
+      - run: |
+          echo "from branch: $FROM"
+          echo "to branch: $TO"
+          echo "env: $ENV"
+          echo "username: ${{ vars.USERNAME }}"
+          echo "username: ${{ secrets.SERVER_KEY }}"
+        env:
+          FROM: ${{ inputs.from }}
+          TO: ${{ inputs.to }}
+          ENV: ${{ inputs.environment }}
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Setup Node
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '>=14'
+          check-latest: true
+
+      # Install SFDX
+      - name: Install Salesforce CLI
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+          mkdir ~/sfdx
+          tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+          echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+          ~/sfdx/bin/sfdx version
+
+      # Authenticate with JWT
+      - name: Authenticate JWT
+        run: |
+          echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
+          sfdx auth jwt grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
+
+      - name: Validate
+        if: ${{ success() }}
+        run: sfdx force source deploy -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+
+      - name: Automatically open pull request
+        if: ${{ success() }}
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ inputs.from }}
+          target_branch: ${{ inputs.to }}
+          title: "AUTOM-${{ inputs.from }}"
+          template: ""
+          body: |
+            **Automated pull request**
+            ${{ inputs.description }}
+          reviewer: ""
+          assignee: ""
+          label: ""
+          milestone: ""
+          old_string: "<!-- Add your description here -->"
+          new_string: "** Automatic pull request**"
+          get_diff: true
+          ignore_users: "dependabot"
+          allow_no_diff: false
