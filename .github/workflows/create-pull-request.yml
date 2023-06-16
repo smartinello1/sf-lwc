@@ -77,18 +77,21 @@ jobs:
           sfdx auth jwt grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
 
       - name: Calculate test class to run
+        id: testClass
         run: |
-          if [[ $TESTCLASSVALUE -eq true ]]
-            echo " --runtests \"${{ inputs.testClassToRun }}\" " > $TESTCLASS
+          if [$TESTCLASSVALUE == true]
+          then
+            echo " --runtests \"${{ inputs.testClassToRun }}\" "
+            echo "::set-output name=value:: --runtests "${{ inputs.testClassToRun }}" "
             echo "specific classes to run"
           else
-            echo "" > $TESTCLASS
+            echo "::set-output name=value::"
             echo "no specific classes to run"
           fi
 
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force source deploy -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} $TESTCLASS --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+        run: sfdx force source deploy -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} ${{ steps.testClass.value }} --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
 
       - name: Automatically open pull request
         if: ${{ success() }}
