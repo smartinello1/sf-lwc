@@ -82,10 +82,10 @@ jobs:
           if [$TESTCLASSVALUE == true]
           then
             echo " --runtests \"${{ inputs.testClassToRun }}\" "
-            echo "::set-output name=value:: --runtests "${{ inputs.testClassToRun }}" "
+            echo "name= --runtests "${{ inputs.testClassToRun }}" " >> $TESTCLASS
             echo "specific classes to run"
           else
-            echo "::set-output name=value::"
+            echo "name=" >> $TESTCLASS
             echo "no specific classes to run"
           fi
 
