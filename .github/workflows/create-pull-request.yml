@@ -1,7 +1,7 @@
 name: Create Pull Request
 
 on:
-  workflow_dispatch:
+  workflow-dispatch:
     inputs:
         from:
           description: 'From branch of the PR'
@@ -28,7 +28,7 @@ on:
           description: 'Description of the changes in the PR'
 
 jobs:
-  Create-Pull-Request:
+  Create Pull Request:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -37,12 +37,17 @@ jobs:
           echo "from branch: $FROM"
           echo "to branch: $TO"
           echo "env: $ENV"
+          echo "testLevel: $TESTLEVEL"
+          echo "testClassToRun: $TESTCLASSTORUN"
           echo "username: ${{ vars.USERNAME }}"
           echo "username: ${{ secrets.SERVER_KEY }}"
         env:
           FROM: ${{ inputs.from }}
           TO: ${{ inputs.to }}
           ENV: ${{ inputs.environment }}
+          TESTLEVEL: ${{ inputs.testLevel }}
+          TESTCLASSTORUN: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -70,9 +75,19 @@ jobs:
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
           sfdx auth jwt grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
 
+      - name: Calculate test class to run
+        run: |
+          if ${TESTCLASSTORUN} == true; then
+            echo " --runtests "${{ inputs.testClassToRun }}" " >> $TESTCLASS
+            echo "specific classes to run"
+          else
+            echo "" >> $TESTCLASS
+            echo "no specific classes to run"
+          fi
+
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force source deploy -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+        run: sfdx force source deploy -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} $TESTCLASS --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
 
       - name: Automatically open pull request
         if: ${{ success() }}
