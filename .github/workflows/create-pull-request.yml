@@ -1,7 +1,7 @@
 name: Create Pull Request
 
 on:
-  workflow-dispatch:
+  workflow_dispatch:
     inputs:
         from:
           description: 'From branch of the PR'
@@ -28,7 +28,7 @@ on:
           description: 'Description of the changes in the PR'
 
 jobs:
-  Create Pull Request:
+  Create-Pull-Request:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
