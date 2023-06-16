@@ -33,12 +33,13 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       # Init Variables
+      name: Init variables
       - run: |
           echo "from branch: $FROM"
           echo "to branch: $TO"
           echo "env: $ENV"
           echo "testLevel: $TESTLEVEL"
-          echo "testClassToRun: $TESTCLASSTORUN"
+          echo "testClassToRun: $TESTCLASSVALUE"
           echo "username: ${{ vars.USERNAME }}"
           echo "username: ${{ secrets.SERVER_KEY }}"
         env:
@@ -46,7 +47,7 @@ jobs:
           TO: ${{ inputs.to }}
           ENV: ${{ inputs.environment }}
           TESTLEVEL: ${{ inputs.testLevel }}
-          TESTCLASSTORUN: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
 
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -77,7 +78,7 @@ jobs:
 
       - name: Calculate test class to run
         run: |
-          if ${TESTCLASSTORUN} == true; then
+          if ${TESTCLASSVALUE} == true; then
             echo " --runtests \"${{ inputs.testClassToRun }}\" " >> $TESTCLASS
             echo "specific classes to run"
           else
