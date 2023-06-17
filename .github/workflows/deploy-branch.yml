@@ -21,8 +21,6 @@ on:
         - RunAllTestsInOrg
       testClassToRun:
         description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
-      description:
-        description: 'Description of the changes in the PR'
 
 jobs:
   Deploy_Branch:
@@ -30,6 +28,7 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       # Set Variables
+      name: Init variables
       - run: |
           echo "env: $ENV"
           echo "TESTCLASSVALUE: $TESTCLASSVALUE"
@@ -84,9 +83,6 @@ jobs:
             echo "testClass=" >> $GITHUB_ENV
             echo "$TESTCLASSVALUE - no specific classes to run"
           fi
-
-      - name: checkout branch
-        run: git checkout ${{ inputs.branchToDeploy }}
 
       - name: Deploy
         if: ${{ success() }}
