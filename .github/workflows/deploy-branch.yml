@@ -28,7 +28,7 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       # Set Variables
-      name: Init variables
+      - name: Init variables
       - run: |
           echo "env: $ENV"
           echo "TESTCLASSVALUE: $TESTCLASSVALUE"
