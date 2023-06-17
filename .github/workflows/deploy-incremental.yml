@@ -78,6 +78,20 @@ jobs:
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
           sfdx auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --instance-url https://login.salesforce.com
 
+      - name: Calculate test class to run
+        env: 
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+        run: |
+          if [ $TESTCLASSVALUE ]
+          then
+            echo " --runtests "${{ inputs.testClassToRun }}" "
+            echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
+            echo "$TESTCLASSVALUE - specific classes to run"
+          else
+            echo "testClass=" >> $GITHUB_ENV
+            echo "$TESTCLASSVALUE - no specific classes to run"
+          fi
+
       - name: Create delta
         run: |
           mkdir incremental

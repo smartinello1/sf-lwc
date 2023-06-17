@@ -68,15 +68,17 @@ jobs:
           sfdx auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
 
       - name: Calculate test class to run
+        env: 
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
         run: |
-          if ${TESTCLASSVALUE} == true
+          if [ $TESTCLASSVALUE ]
           then
             echo " --runtests "${{ inputs.testClassToRun }}" "
             echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
-            echo "specific classes to run"
+            echo "$TESTCLASSVALUE - specific classes to run"
           else
             echo "testClass=" >> $GITHUB_ENV
-            echo "no specific classes to run"
+            echo "$TESTCLASSVALUE - no specific classes to run"
           fi
 
       - name: Deploy
