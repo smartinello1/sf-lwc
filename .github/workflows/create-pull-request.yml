@@ -67,7 +67,8 @@ jobs:
       - name: Install DotEnv
         run: |
           npm install -g dotenv-cli
-          
+          dotenv
+
       # Install SFDX
       - name: Install Salesforce CLI
         run: |
@@ -88,7 +89,7 @@ jobs:
           if ${TESTCLASSVALUE} == true
           then
             echo " --runtests "${{ inputs.testClassToRun }}" "
-            echo "testClass=--runtests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
+            echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
             echo "specific classes to run"
           else
             echo "testClass=" >> $GITHUB_ENV
@@ -97,7 +98,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sfdx project deploy start -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
+        run: sfdx project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
 
       - name: Automatically open pull request
         if: ${{ success() }}
