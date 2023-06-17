@@ -66,9 +66,6 @@ jobs:
 
       - name: Load .env file
         uses: xom9ikk/dotenv@v2
-        with:
-          path: .env
-          load-mode: strict
 
       # Install SFDX
       - name: Install Salesforce CLI
