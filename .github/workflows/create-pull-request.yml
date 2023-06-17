@@ -87,7 +87,7 @@ jobs:
           then
             echo " --runtests "${{ inputs.testClassToRun }}" "
             echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
-            echo "specific classes to run"
+            echo "${TESTCLASSVALUE} specific classes to run"
           else
             echo "testClass=" >> $GITHUB_ENV
             echo "no specific classes to run"
@@ -119,7 +119,7 @@ jobs:
           body: |
             **Automated pull request**
             ${{ inputs.description }}
-            ${{ inputs.testClassToRun }}
+            TEST CLASSES: ${{ inputs.testClassToRun }}
           reviewer: ""
           assignee: ""
           label: ""
