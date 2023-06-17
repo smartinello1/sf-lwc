@@ -64,6 +64,10 @@ jobs:
           node-version: '>=14'
           check-latest: true
 
+      - name: Install DotEnv
+        run: |
+          npm install -g dotenv-cli
+          
       # Install SFDX
       - name: Install Salesforce CLI
         run: |
