@@ -119,6 +119,7 @@ jobs:
           body: |
             **Automated pull request**
             ${{ inputs.description }}
+            ${{ inputs.testClassToRun }}
           reviewer: ""
           assignee: ""
           label: ""
