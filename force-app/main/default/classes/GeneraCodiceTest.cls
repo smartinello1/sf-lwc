@@ -7,7 +7,8 @@ public with sharing class GeneraCodiceTest {
 		Opportunity o = new Opportunity(
 			Name = acc.Name,
 			StageName = 'Closed/Won',
-			AccountId = acc.Id
+			AccountId = acc.Id,
+			CloseDate = System.today().addDays(30)
 		);
 		insert o;
 	}
@@ -15,7 +16,7 @@ public with sharing class GeneraCodiceTest {
 	@isTest
 	static void generaCodiceTest() {
 		Test.startTest();
-		GeneraCodice.Codice('', 'ciao');
+		GeneraCodice.Codice(null, 'ciao');
 		Test.stopTest();
 	}
 }
