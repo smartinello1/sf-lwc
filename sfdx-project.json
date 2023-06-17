@@ -12,8 +12,8 @@
   "replacements": [
     {
       "filename": "force-app/main/default/classes/AccountController.cls",
-      "stringToReplace": "_ACCOUNT_FILTER",
-      "replaceWithEnv": "_ACCOUNT_FILTER"
+      "stringToReplace": "PLCH_ACCOUNT_FILTER",
+      "replaceWithEnv": "PLCH_ACCOUNT_FILTER"
     }
   ]
 }
