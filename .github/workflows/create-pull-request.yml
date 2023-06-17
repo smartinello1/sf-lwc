@@ -57,7 +57,7 @@ jobs:
 
       - name: checkout branch
         run: git checkout ${{ inputs.from }}
-        
+
       # Setup Node
       - uses: actions/setup-node@v1
         with:
@@ -93,7 +93,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force source deploy -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} ${{ env.testClass }} --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+        run: sfdx project deploy start -c --sourcepath ./force-app/main/default --testlevel ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
 
       - name: Automatically open pull request
         if: ${{ success() }}
