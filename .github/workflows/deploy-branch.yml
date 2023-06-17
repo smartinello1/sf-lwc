@@ -32,6 +32,7 @@ jobs:
       # Set Variables
       - run: |
           echo "env: $ENV"
+          echo "TESTCLASSVALUE: $TESTCLASSVALUE"
         env:
           BRANCH_TO_DEPLOY: ${{ inputs.branchToDeploy }}
           ENV: ${{ inputs.environment }}
@@ -86,7 +87,7 @@ jobs:
 
       - name: checkout branch
         run: git checkout ${{ inputs.branchToDeploy }}
-        
+
       - name: Deploy
         if: ${{ success() }}
         run: sfdx project deploy start --source-dir ./force-app/main/default --testlevel ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
