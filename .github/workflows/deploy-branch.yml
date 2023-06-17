@@ -89,4 +89,4 @@ jobs:
 
       - name: Deploy
         if: ${{ success() }}
-        run: sfdx project deploy start --source-dir ./force-app/main/default --testlevel ${{ inputs.testLevel }} --target-org ${{ vars.USERNAME }}
+        run: sfdx project deploy start --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} --target-org ${{ vars.USERNAME }}
