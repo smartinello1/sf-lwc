@@ -82,6 +82,8 @@ jobs:
           sfdx auth jwt grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
 
       - name: Calculate test class to run
+        env: 
+        TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
         run: |
           if [ $TESTCLASSVALUE ]
           then
