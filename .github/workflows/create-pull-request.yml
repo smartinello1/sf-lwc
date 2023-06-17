@@ -83,11 +83,11 @@ jobs:
 
       - name: Calculate test class to run
         run: |
-          if ${{ env.TESTCLASSVALUE }} == true
+          if $TESTCLASSVALUE == true
           then
             echo " --runtests "${{ inputs.testClassToRun }}" "
             echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
-            echo "${TESTCLASSVALUE} specific classes to run"
+            echo "$TESTCLASSVALUE specific classes to run"
           else
             echo "testClass=" >> $GITHUB_ENV
             echo "no specific classes to run"
