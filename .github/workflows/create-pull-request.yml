@@ -86,7 +86,7 @@ jobs:
           TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
         run: |
           echo "TESTCLASSVALUE - $TESTCLASSVALUE"
-          if [ $TESTCLASSVALUE ]
+          if $TESTCLASSVALUE;
           then
             echo " --runtests "${{ inputs.testClassToRun }}" "
             echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
