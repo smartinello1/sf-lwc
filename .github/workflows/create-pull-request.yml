@@ -93,8 +93,8 @@ jobs:
             echo "no specific classes to run"
           fi
 
-      - name: checkout branch
-        run: git checkout ${{ inputs.from }}
+      #- name: checkout branch
+      #  run: git checkout ${{ inputs.from }}
         
       - name: Validate
         if: ${{ success() }}
