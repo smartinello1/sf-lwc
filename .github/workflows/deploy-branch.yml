@@ -31,7 +31,9 @@ jobs:
       - name: Init variables
         run: |
           echo "env: $ENV"
-          echo "TESTCLASSVALUE: $TESTCLASSVALUE"
+          echo "testLevel: $TESTLEVEL"
+          echo "testClassToRun: $TESTCLASSVALUE"
+          echo "username: ${{ vars.USERNAME }}"
         env:
           BRANCH_TO_DEPLOY: ${{ inputs.branchToDeploy }}
           ENV: ${{ inputs.environment }}
