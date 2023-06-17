@@ -55,6 +55,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: checkout branch
+        run: git checkout ${{ inputs.from }}
+        
       # Setup Node
       - uses: actions/setup-node@v1
         with:
@@ -80,7 +83,7 @@ jobs:
         run: |
           if ${TESTCLASSVALUE} == true
           then
-            echo " --runtests \"${{ inputs.testClassToRun }}\" "
+            echo " --runtests "${{ inputs.testClassToRun }}" "
             echo "testClass=--runtests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
             echo "specific classes to run"
           else
