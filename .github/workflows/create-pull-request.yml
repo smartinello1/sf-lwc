@@ -105,6 +105,12 @@ jobs:
 
       - name: Run Code Scan
         run: sf scanner:run --target ./force-app/main/default --format csv
+
+      - name: Install Jest LWC
+        run: sf force lightning lwc test setup
+      
+      - name: Run Jest LWC
+        run: sf force lightning lwc test run
         
       - name: Validate
         if: ${{ success() }}
