@@ -108,7 +108,7 @@ jobs:
         
       - name: Validate
         if: ${{ success() }}
-        run: sfdx project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
+        run: sfdx project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
 
       - name: Automatically open pull request
         if: ${{ success() }}
