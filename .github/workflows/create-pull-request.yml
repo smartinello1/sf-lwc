@@ -67,7 +67,7 @@ jobs:
       - name: Install DotEnv
         run: |
           npm install -g dotenv-cli
-          dotenv
+          dotenv -e .env
 
       # Install SFDX
       - name: Install Salesforce CLI
