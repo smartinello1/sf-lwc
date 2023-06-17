@@ -37,7 +37,7 @@ ehthumbs.db
 $RECYCLE.BIN/
 
 # Local environment variables
-.env
+#.env
 
 # manifest folder
 manifest/
