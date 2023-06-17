@@ -28,7 +28,7 @@ on:
         description: 'Description of the changes in the PR'
 
 jobs:
-  Deploy_Incremental:
+  Deploy-Incremental:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -43,15 +43,21 @@ jobs:
           FROM: ${{ inputs.from }}
           TO: ${{ inputs.to }}
           ENV: ${{ inputs.environment }}
+          TESTLEVEL: ${{ inputs.testLevel }}
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+          TESTCLASS: ""
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       # Setup Node
       - uses: actions/setup-node@v1
         with:
           node-version: '>=14'
           check-latest: true
+
       # Install SFDX
       - name: Install Salesforce CLI
         run: |

@@ -35,6 +35,9 @@ jobs:
         env:
           BRANCH_TO_DEPLOY: ${{ inputs.branchToDeploy }}
           ENV: ${{ inputs.environment }}
+          TESTLEVEL: ${{ inputs.testLevel }}
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+          TESTCLASS: ""
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
@@ -44,6 +47,12 @@ jobs:
         with:
           node-version: '>=14'
           check-latest: true
+        
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2
+        with:
+          path: ./force-app/main/env
+
       # Install SFDX
       - name: Install Salesforce CLI
         run: |
@@ -52,18 +61,24 @@ jobs:
           tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
           echo "$HOME/sfdx/bin" >> $GITHUB_PATH
           ~/sfdx/bin/sfdx version
-          
-      # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
-      - name: 'Installing sfdx git delta'
-        run: |
-          echo y | sfdx plugins:install sfdx-git-delta
-          sfdx plugins
 
       - name: Authenticate JWT
         run: |
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
-          sfdx auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --instance-url https://login.salesforce.com
+          sfdx auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
 
-      - name: Validate
+      - name: Calculate test class to run
+        run: |
+          if ${TESTCLASSVALUE} == true
+          then
+            echo " --runtests "${{ inputs.testClassToRun }}" "
+            echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
+            echo "specific classes to run"
+          else
+            echo "testClass=" >> $GITHUB_ENV
+            echo "no specific classes to run"
+          fi
+
+      - name: Deploy
         if: ${{ success() }}
-        run: sfdx force:source:deploy -p ./force-app/main/default --testlevel ${{ inputs.testLevel }} --runtests "${{ inputs.testClassToRun }}" --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+        run: sfdx project deploy start --source-dir ./force-app/main/default --testlevel ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}

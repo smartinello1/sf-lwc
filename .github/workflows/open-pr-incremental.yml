@@ -103,6 +103,13 @@ jobs:
       - name: checkout branch
         run: git checkout ${{ inputs.from }}
 
+      # Install SFDX scanner
+      - name: 'Installing SFDX scanner'
+        run: sfdx plugins:install @salesforce/sfdx-scanner
+
+      - name: Run Code Scan
+        run: sfdx scanner:run --target ./force-app/main/default --format csv
+
       - name: Validate
         if: ${{ success() }}
         run: sfdx project deploy start --dry-run -x ./incremental/package/package.xml --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
