@@ -64,18 +64,18 @@ jobs:
       # install SFDX-Git-Delta plugin - https://github.com/scolladon/sfdx-git-delta
       - name: 'Installing sfdx git delta'
         run: |
-          echo y | sfdx plugins:install sfdx-git-delta
-          sfdx plugins
+          echo y | sf plugins install sfdx-git-delta
+          sf plugins
 
       - name: Authenticate JWT
         run: |
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
-          sfdx auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --instance-url https://login.salesforce.com
+          sf auth:jwt:grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --instance-url https://login.salesforce.com
 
       - name: Create delta
         run: |
           mkdir incremental
-          sfdx sgd:source:delta -W --generate-delta --output incremental/ --to origin/${{ inputs.from }} --from origin/${{ inputs.to }} -s force-app/**
+          sf sgd:source:delta -W --generate-delta --output incremental/ --to origin/${{ inputs.from }} --from origin/${{ inputs.to }} -s force-app/**
       
       - name: Create incremental package
         uses: actions/upload-artifact@v3
@@ -107,14 +107,14 @@ jobs:
 
       # Install SFDX scanner
       - name: 'Installing SFDX scanner'
-        run: sfdx plugins:install @salesforce/sfdx-scanner
+        run: sf plugins install @salesforce/sfdx-scanner
 
       - name: Run Code Scan
-        run: sfdx scanner:run --target ./force-app/main/default --format csv
+        run: sf scanner:run --target ./force-app/main/default --format csv
 
       - name: Validate
         if: ${{ success() }}
-        run: sfdx project deploy start --dry-run -x ./incremental/package/package.xml --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
+        run: sf project deploy start --dry-run -x ./incremental/package/package.xml --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
 
       - name: Automatically open pull request
         if: ${{ success() }}

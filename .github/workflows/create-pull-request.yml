@@ -79,7 +79,7 @@ jobs:
       - name: Authenticate JWT
         run: |
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
-          sfdx auth jwt grant --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
+          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
 
       - name: Calculate test class to run
         env: 
@@ -101,14 +101,14 @@ jobs:
 
       # Install SFDX scanner
       - name: 'Installing SFDX scanner'
-        run: sfdx plugins:install @salesforce/sfdx-scanner
+        run: sf plugins install @salesforce/sfdx-scanner
 
       - name: Run Code Scan
-        run: sfdx scanner:run --target ./force-app/main/default --format csv
+        run: sf scanner:run --target ./force-app/main/default --format csv
         
       - name: Validate
         if: ${{ success() }}
-        run: sfdx project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }} --concise
+        run: sf project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }} --concise
 
       - name: Automatically open pull request
         if: ${{ success() }}
