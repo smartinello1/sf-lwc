@@ -28,7 +28,7 @@ on:
         description: 'Description of the changes in the PR'
 
 jobs:
-  Open_PR_Incremental:
+  Open-PR-Incremental:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -38,11 +38,11 @@ jobs:
           echo "to branch: $TO"
           echo "env: $ENV"
           echo "username: ${{ vars.USERNAME }}"
-          echo "username: ${{ secrets.SERVER_KEY }}"
         env:
           FROM: ${{ inputs.from }}
           TO: ${{ inputs.to }}
           ENV: ${{ inputs.environment }}
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
@@ -88,9 +88,24 @@ jobs:
           name: code-artifact
           path: code-artifact
 
+      - name: Calculate test class to run
+        run: |
+          if ${TESTCLASSVALUE} == true
+          then
+            echo " --runtests "${{ inputs.testClassToRun }}" "
+            echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
+            echo "specific classes to run"
+          else
+            echo "testClass=" >> $GITHUB_ENV
+            echo "no specific classes to run"
+          fi
+
+      - name: checkout branch
+        run: git checkout ${{ inputs.from }}
+
       - name: Validate
         if: ${{ success() }}
-        run: sfdx force:source:deploy -c -x ./incremental/package/package.xml --postdestructivechanges ./incremental/destructiveChanges/destructiveChanges.xml --testlevel ${{ inputs.testLevel }} --targetusername ${{ vars.USERNAME }} --json --loglevel fatal
+        run: sfdx project deploy start --dry-run -x ./incremental/package/package.xml --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }}
 
       - name: Automatically open pull request
         if: ${{ success() }}
