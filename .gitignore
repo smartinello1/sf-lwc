@@ -42,3 +42,6 @@ $RECYCLE.BIN/
 
 # manifest folder
 manifest/
+
+# remote container
+.npmignore
