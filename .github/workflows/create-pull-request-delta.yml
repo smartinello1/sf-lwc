@@ -27,6 +27,7 @@ jobs:
     # In this case, we are going to run our commands on the latest version
     # of ubuntu
     runs-on: ubuntu-latest
+    environment: DEV
     container:
       image: ghcr.io/smartinello1/sf-devops-container-1:main
       credentials:
