@@ -27,7 +27,6 @@ jobs:
     # In this case, we are going to run our commands on the latest version
     # of ubuntu
     runs-on: ubuntu-latest
-    environment: DEV
     container:
       image: ghcr.io/smartinello1/sf-devops-container-1:main
       credentials:
@@ -86,7 +85,7 @@ jobs:
         run: |
           echo $PR_BODY > ./devops/pr_body.txt
           node ./devops/parsePR.js              
-          TESTS=$(cat ./devops/testsToRun.txt)
+          TESTS=$(cat testsToRun.txt)
           echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
 
       - name: Load .env file
@@ -98,7 +97,7 @@ jobs:
       - name: Authenticate JWT
         run: |
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
-          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --set-default
+          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
 
       # We use SFDX Git Delta to create a directory with only the metadata that has changed.
       # this allows us to deploy only those changes, as opposed to deploying the entire branch.
@@ -106,7 +105,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir changed-sources
-          sf sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
 
       # Now we can use the sfdx scanner to scan the code in the delta directory
       # The output of the scan is stored in a file called apexScanResults.sarif
@@ -134,13 +133,14 @@ jobs:
         if: ${{ env.APEX_TESTS != 'all' }}
         run: |
           echo ${{env.APEX_TESTS}}
-          sf project deploy start -p "changed-sources/force-app" --checkonly --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --json
+          sf project deploy start --dry-run --source-dir "changed-sources/force-app" --test-level RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --concise
 
       # If the env variable equals all, we run all tests
       - name: 'Check-only deploy delta changes - run all tests'
         if: ${{ env.APEX_TESTS == 'all' }}
         run: |
-          sf project deploy start -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
+          sf project deploy start --dry-run --source-dir "changed-sources/force-app" --test-level RunLocalTests  --concise
 
       - name: 'Deploy destructive changes (if any)'
-        run: sf project deploy start -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings
+        if: ${{ success() }}
+        run: sf project deploy start --dry-run --source-dir "changed-sources/destructiveChanges" --ignorewarnings
