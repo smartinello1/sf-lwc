@@ -7,7 +7,7 @@ async function extractTests() {
 	await fs.promises.writeFile(testsFile, 'all');
 
 	const lines = readline.createInterface({
-		input: fs.createReadStream(__dirname + '/devops/pr_body.txt'),
+		input: fs.createReadStream(__dirname + '/pr_body.txt'),
 		crlfDelay: Infinity
 	});
 
