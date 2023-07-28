@@ -68,4 +68,52 @@ jobs:
       - name: Authenticate JWT
         run: |
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
-          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
+          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --set-default
+
+      - name: Calculate test class to run
+        env:
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+        run: |
+          echo "TESTCLASSVALUE - $TESTCLASSVALUE"
+          if $TESTCLASSVALUE;
+          then
+            echo " --runtests "${{ inputs.testClassToRun }}" "
+            echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
+            echo "$TESTCLASSVALUE - specific classes to run"
+          else
+            echo "testClass=" >> $GITHUB_ENV
+            echo "$TESTCLASSVALUE - no specific classes to run"
+          fi
+
+      #- name: checkout branch
+      #  run: git checkout ${{ inputs.from }}
+
+      - name: Run Code Scan
+        run: sf scanner:run --target ./force-app/main/default --format csv
+
+      - name: Validate
+        if: ${{ success() }}
+        run: sf project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }} --concise
+
+      - name: Automatically open pull request
+        if: ${{ success() }}
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ inputs.from }}
+          target_branch: ${{ inputs.to }}
+          title: 'AUTOM-${{ inputs.from }}'
+          template: ''
+          body: |
+            **Automated pull request**
+            ${{ inputs.description }}
+            TEST CLASSES: ${{ inputs.testClassToRun }}
+          reviewer: ''
+          assignee: ''
+          label: ''
+          milestone: ''
+          old_string: '<!-- Add your description here -->'
+          new_string: '** Automatic pull request**'
+          get_diff: true
+          ignore_users: 'dependabot'
+          allow_no_diff: false
