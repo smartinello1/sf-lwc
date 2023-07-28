@@ -85,7 +85,7 @@ jobs:
         run: |
           echo $PR_BODY > ./devops/pr_body.txt
           node ./devops/parsePR.js              
-          TESTS=$(cat ./devops/testsToRun.txt)
+          TESTS=$(cat testsToRun.txt)
           echo "APEX_TESTS=$TESTS" >> $GITHUB_ENV
 
       - name: Load .env file
