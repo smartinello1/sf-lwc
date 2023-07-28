@@ -3,11 +3,11 @@ const readline = require('readline');
 
 async function extractTests() {
 	//by default we specify that all tests should run
-	let testsFile = __dirname + '/testsToRun.txt';
+	let testsFile = __dirname + '/devops/testsToRun.txt';
 	await fs.promises.writeFile(testsFile, 'all');
 
 	const lines = readline.createInterface({
-		input: fs.createReadStream(__dirname + '/pr_body.txt'),
+		input: fs.createReadStream(__dirname + '/devops/pr_body.txt'),
 		crlfDelay: Infinity
 	});
 
