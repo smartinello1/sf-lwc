@@ -58,3 +58,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2
+        with:
+          path: ./force-app/main/env
+
+      # Authenticate with JWT
+      - name: Authenticate JWT
+        run: |
+          echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
+          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }}
