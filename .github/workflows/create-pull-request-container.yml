@@ -1,0 +1,60 @@
+name: Create Pull Request
+
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: 'From branch of the PR'
+        required: true
+      to:
+        description: 'To branch of the PR'
+        required: true
+      environment:
+        description: 'test run Salesforce environment'
+        type: environment
+      testLevel:
+        description: 'Test level to run'
+        required: true
+        default: 'NoTestRun'
+        type: choice
+        options:
+          - NoTestRun
+          - RunLocalTests
+          - RunSpecifiedTests
+          - RunAllTestsInOrg
+      testClassToRun:
+        description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
+      description:
+        description: 'Description of the changes in the PR'
+
+jobs:
+  Create-Pull-Request:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/smartinello1/sf-devops-container-1:main
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+    environment: ${{ inputs.environment }}
+    steps:
+      # Init Variables
+      - name: Init variables
+        run: |
+          echo "from branch: $FROM"
+          echo "to branch: $TO"
+          echo "env: $ENV"
+          echo "testLevel: $TESTLEVEL"
+          echo "testClassToRun: $TESTCLASSVALUE"
+          echo "username: ${{ vars.USERNAME }}"
+        env:
+          FROM: ${{ inputs.from }}
+          TO: ${{ inputs.to }}
+          ENV: ${{ inputs.environment }}
+          TESTLEVEL: ${{ inputs.testLevel }}
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+          TESTCLASS: ''
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
