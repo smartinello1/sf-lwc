@@ -9,7 +9,7 @@ public with sharing class BatchLeadConvert implements Database.Batchable<SObject
 
 	public Database.QueryLocator start(Database.BatchableContext ctx) {
 		return Database.getQueryLocator(
-			[SELECT Id FROM Lead WHERE ConvertedContactId = NULL]
+			[SELECT Id, FirstName FROM Lead WHERE ConvertedContactId = NULL]
 		);
 	}
 
