@@ -1,0 +1,130 @@
+name: Create Pull Request With Container
+
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: 'From branch / commit of the PR'
+        required: true
+      to:
+        description: 'To branch of the PR'
+        required: true
+      environment:
+        description: 'test run Salesforce environment'
+        type: environment
+      testLevel:
+        description: 'Test level to run'
+        required: true
+        default: 'NoTestRun'
+        type: choice
+        options:
+          - NoTestRun
+          - RunLocalTests
+          - RunSpecifiedTests
+          - RunAllTestsInOrg
+      testClassToRun:
+        description: 'Space separeted list of test class to run in case of RunSpecifiedTests'
+      description:
+        description: 'Description of the changes in the PR'
+
+jobs:
+  Create-Pull-Request:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/smartinello1/sf-devops-container-1:main
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+    environment: ${{ inputs.environment }}
+    steps:
+      # Init Variables
+      - name: Init variables
+        run: |
+          echo "from branch: $FROM"
+          echo "to branch: $TO"
+          echo "env: $ENV"
+          echo "testLevel: $TESTLEVEL"
+          echo "testClassToRun: $TESTCLASSVALUE"
+          echo "username: ${{ vars.USERNAME }}"
+        env:
+          FROM: ${{ inputs.from }}
+          TO: ${{ inputs.to }}
+          ENV: ${{ inputs.environment }}
+          TESTLEVEL: ${{ inputs.testLevel }}
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+          TESTCLASS: ''
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2
+        with:
+          path: ./force-app/main/env
+
+      # Authenticate with JWT
+      - name: Authenticate JWT
+        run: |
+          echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
+          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --set-default
+
+      # We use SFDX Git Delta to create a directory with only the metadata that has changed.
+      # this allows us to deploy only those changes, as opposed to deploying the entire branch.
+      # This helps reducing deployment times
+      - name: 'Create delta packages for new, modified or deleted metadata'
+        run: |
+          mkdir changed-sources
+          sf sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
+
+      - name: Calculate test class to run
+        env:
+          TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+        run: |
+          echo "TESTCLASSVALUE - $TESTCLASSVALUE"
+          if $TESTCLASSVALUE;
+          then
+            echo " --tests "${{ inputs.testClassToRun }}" "
+            echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
+            echo "$TESTCLASSVALUE - specific classes to run"
+          else
+            echo "testClass=" >> $GITHUB_ENV
+            echo "$TESTCLASSVALUE - no specific classes to run"
+          fi
+
+      #- name: checkout branch
+      #  run: git checkout ${{ inputs.from }}
+
+      - name: 'Scan code'
+        run: |
+          cd changed-sources
+          sf scanner:run --format sarif --target './**/*.cls' --category "Design,Best Practices,Performance" --outfile 'apexScanResults.sarif'  
+          cd ..
+
+      - name: Validate
+        if: ${{ success() }}
+        run: sf project deploy start --dry-run --source-dir ./changed-sources --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --concise
+
+      - name: Automatically open pull request
+        if: ${{ success() }}
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ inputs.from }}
+          target_branch: ${{ inputs.to }}
+          title: 'AUTOM-${{ inputs.from }}'
+          template: ''
+          body: |
+            **Automated pull request**
+            ${{ inputs.description }}
+            TEST CLASSES: ${{ inputs.testClassToRun }}
+          reviewer: ''
+          assignee: ''
+          label: ''
+          milestone: ''
+          old_string: '<!-- Add your description here -->'
+          new_string: '** Automatic pull request**'
+          get_diff: true
+          ignore_users: 'dependabot'
+          allow_no_diff: false
