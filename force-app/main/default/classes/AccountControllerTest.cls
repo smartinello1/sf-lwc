@@ -1,5 +1,6 @@
 @isTest
 private with sharing class AccountControllerTest {
+
 	@TestSetup
 	static void makeData() {
 		Account acc = new Account(
@@ -9,10 +10,11 @@ private with sharing class AccountControllerTest {
 		insert acc;
 	}
 
+
 	@isTest
 	static void getAllActiveAccountsTest() {
 		Test.startTest();
-		AccountController.getAllActiveAccounts();
+			AccountController.getAllActiveAccounts();
 		Test.stopTest();
 	}
 }
