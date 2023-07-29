@@ -81,6 +81,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir changed-sources
+          git config --global --add safe.directory
           sf sgd source delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
 
       - name: Calculate test class to run
