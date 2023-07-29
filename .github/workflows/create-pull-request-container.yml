@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       from:
-        description: 'From branch of the PR'
+        description: 'From branch / commit of the PR'
         required: true
       to:
         description: 'To branch of the PR'
@@ -23,7 +23,7 @@ on:
           - RunSpecifiedTests
           - RunAllTestsInOrg
       testClassToRun:
-        description: 'Comma separeted list of test class to run in case of RunSpecifiedTests'
+        description: 'Space separeted list of test class to run in case of RunSpecifiedTests'
       description:
         description: 'Description of the changes in the PR'
 
@@ -77,7 +77,7 @@ jobs:
           echo "TESTCLASSVALUE - $TESTCLASSVALUE"
           if $TESTCLASSVALUE;
           then
-            echo " --runtests "${{ inputs.testClassToRun }}" "
+            echo " --tests "${{ inputs.testClassToRun }}" "
             echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
             echo "$TESTCLASSVALUE - specific classes to run"
           else
@@ -93,7 +93,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} ${{ env.testClass }} --target-org ${{ vars.USERNAME }} --concise
+        run: sf project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --concise
 
       - name: Automatically open pull request
         if: ${{ success() }}
