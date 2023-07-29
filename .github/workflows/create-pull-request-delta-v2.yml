@@ -70,8 +70,11 @@ jobs:
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
           sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --set-default
 
-      - name: Verify
-        run: sf plugins
+      - name: Install sfdx-git-delta
+        run: |
+          echo y | sf plugins install sfdx-git-delta
+          sf plugins
+
       # We use SFDX Git Delta to create a directory with only the metadata that has changed.
       # this allows us to deploy only those changes, as opposed to deploying the entire branch.
       # This helps reducing deployment times
