@@ -1,4 +1,4 @@
-name: Create Pull Request With Container
+name: Create Pull Request Delta Container
 
 on:
   workflow_dispatch:
