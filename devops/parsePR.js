@@ -19,6 +19,8 @@ async function extractTests() {
 			await fs.promises.appendFile(testsFile, '\n');
 		}
 	}
+
+	console.log('test')
 }
 
 extractTests();
