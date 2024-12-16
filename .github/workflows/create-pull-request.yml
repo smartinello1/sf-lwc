@@ -58,7 +58,7 @@ jobs:
       # Setup Node
       - uses: actions/setup-node@v1
         with:
-          node-version: '>=14'
+          node-version: '>=20'
           check-latest: true
 
       - name: Load .env file
