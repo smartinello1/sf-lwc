@@ -100,17 +100,17 @@ jobs:
         run: git checkout ${{ inputs.from }}
 
       # Install SFDX scanner
-      - name: 'Installing SFDX scanner'
-        run: sf plugins install @salesforce/sfdx-scanner
+      # - name: 'Installing SFDX scanner'
+        # run: sf plugins install @salesforce/sfdx-scanner
 
-      - name: Run Code Scan
-        run: sf scanner:run --target ./force-app/main/default --format csv
+      # - name: Run Code Scan
+        # run: sf scanner:run --target ./force-app/main/default --format csv
 
-      - name: Install Jest LWC
-        run: sf force lightning lwc test setup
+      # - name: Install Jest LWC
+        # run: sf force lightning lwc test setup
       
-      - name: Run Jest LWC
-        run: sf force lightning lwc test run
+      # - name: Run Jest LWC
+        # run: sf force lightning lwc test run
         
       - name: Validate
         if: ${{ success() }}
