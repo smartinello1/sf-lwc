@@ -30,11 +30,6 @@ on:
 jobs:
   Create-Pull-Request:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/smartinello1/sf-devops-container-1:main
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.github_token }}
     environment: ${{ inputs.environment }}
     steps:
       # Init Variables
