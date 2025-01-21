@@ -95,7 +95,7 @@ jobs:
 
       - name: 'LS'
         run: |
-          cd ./devops/changes-sources
+          cd ./devops/changed-sources
           ls
           cd ../../
           
