@@ -93,6 +93,12 @@ jobs:
           mkdir ./devops/changed-sources
           sf sgd source delta --to "HEAD" --from "HEAD~1" --output ./devops/changed-sources/ --generate-delta --source force-app/
 
+      - name: 'LS'
+        run: |
+          cd ./devops/changes-sources
+          ls
+          cd ../../
+          
       - name: Calculate test class to run
         env:
           TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
