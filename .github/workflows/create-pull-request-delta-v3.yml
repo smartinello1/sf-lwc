@@ -69,7 +69,7 @@ jobs:
 
       - name: 'LS'
         run: |
-          cd ./devops/changed-sources
+          cd ./devops/changed-sources/force-app/
           ls
           cd ../../
           
