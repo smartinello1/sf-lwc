@@ -18,7 +18,7 @@ on:
 jobs:
   Create-Pull-Request:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'master' && 'DEV' || 'PRODUCTION' }}
+    environment: ${{ github.base_ref == 'master' && 'DEV' || 'PRODUCTION' }}
     steps:          
       # Setup Node
       - uses: actions/setup-node@v1
@@ -41,7 +41,7 @@ jobs:
           fetch-depth: 0
       - run: |
           git checkout ${{ github.head_ref }}
-          git checkout ${{ github.ref_name }}
+          git checkout ${{ github.base_ref }}
 
       - name: Load .env file
         uses: xom9ikk/dotenv@v2
@@ -65,7 +65,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to ${{ github.ref_name }} --from ${{ github.head_ref }} --output ./devops/changed-sources/ --generate-delta --source force-app/
+          sf sgd source delta --to ${{ github.base_ref }} --from ${{ github.head_ref }} --output ./devops/changed-sources/ --generate-delta --source force-app/
 
       - name: 'LS'
         run: |
@@ -107,7 +107,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: ${{ github.head_ref }}
-          target_branch: ${{ github.ref_name }}
+          target_branch: ${{ github.base_ref }}
           title: 'AUTOM-${{ github.head_ref }}'
           template: ''
           body: |
