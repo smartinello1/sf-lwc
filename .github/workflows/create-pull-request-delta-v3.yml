@@ -97,7 +97,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --dry-run -x package/package.xml --test-level NoTestRun ${{ env.testClass }} --concise
+        run: sf project deploy start --dry-run -x ./devops/changed-sources/package/package.xml --test-level NoTestRun ${{ env.testClass }} --concise
 
       # - name: Automatically open pull request
       #   if: ${{ success() }}
