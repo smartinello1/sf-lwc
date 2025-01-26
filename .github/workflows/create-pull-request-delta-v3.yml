@@ -18,7 +18,7 @@ on:
 jobs:
   Create-Pull-Request:
     runs-on: ubuntu-latest
-    environment: ${{ github.base_ref == 'master' && 'DEV' || 'PRODUCTION' }}
+    environment: ${{ github.base_ref == 'master' && 'PRODUCTION' || 'DEV' }}
     steps:          
       # Setup Node
       - uses: actions/setup-node@v1
@@ -99,24 +99,24 @@ jobs:
         if: ${{ success() }}
         run: sf project deploy start --dry-run --source-dir ./devops/changed-sources --test-level NoTestRun ${{ env.testClass }} --concise
 
-      - name: Automatically open pull request
-        if: ${{ success() }}
-        uses: devops-infra/action-pull-request@v0.5.5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ github.head_ref }}
-          target_branch: ${{ github.base_ref }}
-          title: 'AUTOM-${{ github.head_ref }}-${{ github.base_ref }}'
-          template: ''
-          body: |
-            **Automated pull request**
-            TEST CLASSES: 1
-          reviewer: ''
-          assignee: ''
-          label: ''
-          milestone: ''
-          old_string: '<!-- Add your description here -->'
-          new_string: '** Automatic pull request**'
-          get_diff: true
-          ignore_users: 'dependabot'
-          allow_no_diff: false
+      # - name: Automatically open pull request
+      #   if: ${{ success() }}
+      #   uses: devops-infra/action-pull-request@v0.5.5
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     source_branch: ${{ github.head_ref }}
+      #     target_branch: ${{ github.base_ref }}
+      #     title: 'AUTOM-${{ github.head_ref }}-${{ github.base_ref }}'
+      #     template: ''
+      #     body: |
+      #       **Automated pull request**
+      #       TEST CLASSES: 1
+      #     reviewer: ''
+      #     assignee: ''
+      #     label: ''
+      #     milestone: ''
+      #     old_string: '<!-- Add your description here -->'
+      #     new_string: '** Automatic pull request**'
+      #     get_diff: true
+      #     ignore_users: 'dependabot'
+      #     allow_no_diff: false
