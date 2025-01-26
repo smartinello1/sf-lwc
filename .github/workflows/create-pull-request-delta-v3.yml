@@ -69,9 +69,7 @@ jobs:
 
       - name: 'LS'
         run: |
-          cd ./devops/changed-sources/force-app/main/default
-          ls
-          cd ../../
+          find .
           
       # - name: Calculate test class to run
       #   env:
