@@ -18,7 +18,7 @@ on:
 jobs:
   Create-Pull-Request:
     runs-on: ubuntu-latest
-    environment: ${{ github.base_ref == 'master' && 'PRODUCTION' || 'DEV' }}
+    environment: ${{ github.base_ref == 'master' && 'PROD' || 'DEV' }}
     steps:          
       # Setup Node
       - uses: actions/setup-node@v1
