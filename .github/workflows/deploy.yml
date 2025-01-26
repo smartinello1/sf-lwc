@@ -63,6 +63,6 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --source-dir ./devops/changed-sources --test-level NoTestRun ${{ env.testClass }} --concise
+        run: sf project deploy start -x package/package.xml --test-level NoTestRun ${{ env.testClass }} --concise
 
 
