@@ -65,7 +65,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to ${{ github.base_ref }} --from ${{ github.head_ref }} --output ./devops/changed-sources/ --generate-delta --source force-app/
+          sf sgd source delta --to ${{ github.head_ref }} --from ${{ github.base_ref }} --output ./devops/changed-sources/ --generate-delta --source force-app/
 
       - name: 'LS'
         run: |
@@ -106,8 +106,8 @@ jobs:
         uses: devops-infra/action-pull-request@v0.5.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ github.head_ref }}
-          target_branch: ${{ github.base_ref }}
+          source_branch: ${{ github.base_ref }}
+          target_branch: ${{ github.head_ref }}
           title: 'AUTOM-${{ github.base_ref }}'
           template: ''
           body: |
