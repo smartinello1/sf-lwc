@@ -112,7 +112,7 @@ jobs:
           template: ''
           body: |
             **Automated pull request**
-            TEST CLASSES:
+            TEST CLASSES: 1
           reviewer: ''
           assignee: ''
           label: ''
