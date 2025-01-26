@@ -5,7 +5,8 @@ private with sharing class AccountControllerTest {
 	static void makeData() {
 		Account acc = new Account(
 			Name = 'Active', 
-			Active__c = 'Yes'
+			Active__c = 'Yes',
+			Phone = '123'
 		);
 		insert acc;
 	}
