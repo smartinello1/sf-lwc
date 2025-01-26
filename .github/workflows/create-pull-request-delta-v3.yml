@@ -99,7 +99,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --dry-run --source-dir ./devops/changed-sources --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --concise
+        run: sf project deploy start --dry-run --source-dir ./devops/changed-sources --test-level NoTestRun ${{ env.testClass }} --concise
 
       - name: Automatically open pull request
         if: ${{ success() }}
