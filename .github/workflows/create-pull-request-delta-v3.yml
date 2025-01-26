@@ -69,7 +69,7 @@ jobs:
 
       - name: 'LS'
         run: |
-          find .
+          find ./devops/changed-sources
           
       # - name: Calculate test class to run
       #   env:
