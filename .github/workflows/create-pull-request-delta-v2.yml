@@ -96,11 +96,11 @@ jobs:
           mkdir ./devops/changed-sources
           sf sgd source delta --to ${{ inputs.to }} --from ${{ inputs.from }} --output ./devops/changed-sources/ --generate-delta --source force-app/
 
-      # - name: 'LS'
-      #   run: |
-      #     cd ./devops/changed-sources/package
-      #     ls
-      #     cd ../../../
+      - name: 'LS'
+        run: |
+          cd ./devops/changed-sources/package
+          ls
+          cd ../../../
           
       - name: Calculate test class to run
         env:
