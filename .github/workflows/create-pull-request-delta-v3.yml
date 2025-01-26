@@ -1,0 +1,124 @@
+name: Create Pull Request Delta Container
+
+on:
+  pull_request:
+    # The events are that a PR is opened, or when a commit is pushed
+    # to a branch that has an existing pull request
+    types: [opened, synchronize]
+    # The branches filter allows to specify that this workflow should only
+    # run if the branch name is "develop". This way we prevent this workflow
+    # from running when PRs are opened on other branches
+    branches: [develop]
+    # We only care about changes to the force-app directory, which is the
+    # root directory of the sfdx project. This prevents the job from running
+    # when changing non-salesforce files (like this yml file).
+    paths:
+      - 'force-app/**'
+
+jobs:
+  Create-Pull-Request:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'master' && 'DEV' || 'PRODUCTION' }}
+    steps:          
+      # Setup Node
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '>=20'
+          check-latest: true
+
+      # Install SFDX
+      - name: Install Salesforce CLI
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+          mkdir ~/sfdx
+          tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+          echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+          ~/sfdx/bin/sfdx version
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: |
+          git checkout ${{ github.head_ref }}
+          git checkout ${{ github.ref_name }}
+
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2
+        with:
+          path: ./force-app/main/env
+
+      # Authenticate with JWT
+      - name: Authenticate JWT
+        run: |
+          echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
+          sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --set-default
+
+      - name: Install sfdx-git-delta
+        run: |
+          echo y | sf plugins install sfdx-git-delta
+          sf plugins
+
+      # We use SFDX Git Delta to create a directory with only the metadata that has changed.
+      # this allows us to deploy only those changes, as opposed to deploying the entire branch.
+      # This helps reducing deployment times
+      - name: 'Create delta packages for new, modified or deleted metadata'
+        run: |
+          mkdir ./devops/changed-sources
+          sf sgd source delta --to ${{ github.ref_name }} --from ${{ github.head_ref }} --output ./devops/changed-sources/ --generate-delta --source force-app/
+
+      - name: 'LS'
+        run: |
+          cd ./devops/changed-sources/package
+          ls
+          cd ../../../
+          
+      # - name: Calculate test class to run
+      #   env:
+      #     TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
+      #   run: |
+      #     echo "TESTCLASSVALUE - $TESTCLASSVALUE"
+      #     if $TESTCLASSVALUE;
+      #     then
+      #       echo " --tests "${{ inputs.testClassToRun }}" "
+      #       echo "testClass=--tests "${{ inputs.testClassToRun }}" " >> $GITHUB_ENV
+      #       echo "$TESTCLASSVALUE - specific classes to run"
+      #     else
+      #       echo "testClass=" >> $GITHUB_ENV
+      #       echo "$TESTCLASSVALUE - no specific classes to run"
+      #     fi
+
+      #- name: checkout branch
+      #  run: git checkout ${{ inputs.from }}
+
+      # - name: 'Scan code'
+      #   run: |
+      #     cd devops/changed-sources
+      #     sf scanner:run --format sarif --target './**/*.cls' --category "Design,Best Practices,Performance" --outfile 'apexScanResults.sarif'  
+      #     cd ..
+
+      - name: Validate
+        if: ${{ success() }}
+        run: sf project deploy start --dry-run --source-dir ./devops/changed-sources --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --concise
+
+      - name: Automatically open pull request
+        if: ${{ success() }}
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ github.head_ref }}
+          target_branch: ${{ github.ref_name }}
+          title: 'AUTOM-${{ github.head_ref }}'
+          template: ''
+          body: |
+            **Automated pull request**
+            TEST CLASSES:
+          reviewer: ''
+          assignee: ''
+          label: ''
+          milestone: ''
+          old_string: '<!-- Add your description here -->'
+          new_string: '** Automatic pull request**'
+          get_diff: true
+          ignore_users: 'dependabot'
+          allow_no_diff: false

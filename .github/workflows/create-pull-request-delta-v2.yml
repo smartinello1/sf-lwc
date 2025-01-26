@@ -1,4 +1,4 @@
-name: Create Pull Request With Container
+name: Create Pull Request Delta Container
 
 on:
   workflow_dispatch:
@@ -30,11 +30,6 @@ on:
 jobs:
   Create-Pull-Request:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/smartinello1/sf-devops-container-1:main
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.github_token }}
     environment: ${{ inputs.environment }}
     steps:
       # Init Variables
@@ -53,11 +48,29 @@ jobs:
           TESTLEVEL: ${{ inputs.testLevel }}
           TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
           TESTCLASS: ''
+          
+      # Setup Node
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '>=20'
+          check-latest: true
+
+      # Install SFDX
+      - name: Install Salesforce CLI
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+          mkdir ~/sfdx
+          tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+          echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+          ~/sfdx/bin/sfdx version
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - run: |
+          git checkout ${{ inputs.from }}
+          git checkout ${{ inputs.to }}
 
       - name: Load .env file
         uses: xom9ikk/dotenv@v2
@@ -70,6 +83,25 @@ jobs:
           echo "${{ secrets.SERVER_KEY }}" > SERVER_KEY.key
           sf org login jwt --client-id ${{ vars.CLIENT_ID }} --jwt-key-file SERVER_KEY.key --username ${{ vars.USERNAME }} --set-default
 
+      - name: Install sfdx-git-delta
+        run: |
+          echo y | sf plugins install sfdx-git-delta
+          sf plugins
+
+      # We use SFDX Git Delta to create a directory with only the metadata that has changed.
+      # this allows us to deploy only those changes, as opposed to deploying the entire branch.
+      # This helps reducing deployment times
+      - name: 'Create delta packages for new, modified or deleted metadata'
+        run: |
+          mkdir ./devops/changed-sources
+          sf sgd source delta --to ${{ inputs.to }} --from ${{ inputs.from }} --output ./devops/changed-sources/ --generate-delta --source force-app/
+
+      - name: 'LS'
+        run: |
+          cd ./devops/changed-sources/package
+          ls
+          cd ../../../
+          
       - name: Calculate test class to run
         env:
           TESTCLASSVALUE: ${{ inputs.testLevel == 'RunSpecifiedTests' }}
@@ -88,12 +120,15 @@ jobs:
       #- name: checkout branch
       #  run: git checkout ${{ inputs.from }}
 
-      - name: Run Code Scan
-        run: sf scanner:run --target ./force-app/main/default --format csv
+      # - name: 'Scan code'
+      #   run: |
+      #     cd devops/changed-sources
+      #     sf scanner:run --format sarif --target './**/*.cls' --category "Design,Best Practices,Performance" --outfile 'apexScanResults.sarif'  
+      #     cd ..
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --dry-run --source-dir ./force-app/main/default --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --concise
+        run: sf project deploy start --dry-run --source-dir ./devops/changed-sources --test-level ${{ inputs.testLevel }} ${{ env.testClass }} --concise
 
       - name: Automatically open pull request
         if: ${{ success() }}

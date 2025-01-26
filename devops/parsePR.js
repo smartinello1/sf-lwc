@@ -3,7 +3,7 @@ const readline = require('readline');
 
 async function extractTests() {
 	//by default we specify that all tests should run
-	let testsFile = __dirname + './devops/testsToRun.txt';
+	let testsFile = __dirname + '/devops/testsToRun.txt';
 	await fs.promises.writeFile(testsFile, 'all');
 
 	const lines = readline.createInterface({
@@ -19,6 +19,8 @@ async function extractTests() {
 			await fs.promises.appendFile(testsFile, '\n');
 		}
 	}
+
+	console.log('test')
 }
 
 extractTests();

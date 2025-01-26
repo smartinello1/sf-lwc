@@ -1,0 +1,84 @@
+<template>
+    <lightning-spinner variant="brand" alternative-text="LOADING..." lwc:if={isLoading}></lightning-spinner>
+    <div class="slds-grid slds-wrap slds-var-p-vertical_medium">
+        <div class="slds-col slds-size_1-of-1 slds-text-align_center">
+            <h1 style="color:#C5003D; font-weight: bold; font-size: 3rem;">Survey Satisfaction</h1>
+        </div>
+    </div>
+    <template lwc:if={state.landingPage}>
+        <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-top_large">
+            <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-4 slds-box">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-var-m-bottom_medium">
+                        Landing Page:
+
+                        Do you want to answer the questions?
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-text-align_center slds-var-p-top_small">
+                        <lightning-button variant="brand" icon-name="utility:reply" label="Si, voglio rispondere" name="SiVoglioRispondere" onclick={handleBtn}></lightning-button>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-text-align_center slds-var-p-top_small">
+                        <lightning-button variant="brand" icon-name="utility:reply" label="No, non voglio rispondere" name="NonVoglioRispondere" onclick={handleBtn}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template lwc:if={state.firstQuestion}>
+        <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-top_large">
+            <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-4 slds-box">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-var-m-bottom_medium">
+                        First Question:
+
+                        Do you want to answer the questions?
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-text-align_center slds-var-p-top_small">
+                        <lightning-button variant="neutral" icon-name="utility:reply" label="Si, mi piace" name="SiMiPiace" onclick={handleBtn}></lightning-button>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-text-align_center slds-var-p-top_small">
+                        <lightning-button variant="neutral" icon-name="utility:reply" label="Forse mi piace" name="ForseMiPiace" onclick={handleBtn}></lightning-button>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-text-align_center slds-var-p-top_small">
+                        <lightning-button variant="neutral" icon-name="utility:reply" label="No, non mi piace" name="NoNonMiPiace" onclick={handleBtn}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template lwc:if={state.secondQuestion}>
+        <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-top_large">
+            <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-4 slds-box">
+                Second Question
+            </div>
+        </div>
+    </template>
+    <template lwc:if={state.thirdQuestion}>
+        <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-top_large">
+            <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-4 slds-box">
+                Third Question
+            </div>
+        </div>
+    </template>
+    <template lwc:if={state.fourthQuestion}>
+        <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-top_large">
+            <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-4 slds-box">
+                Fourth Question
+            </div>
+        </div>
+    </template>
+    <template lwc:if={state.rejectPage}>
+        <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-top_large">
+            <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-4 slds-box">
+                Reject Page
+            </div>
+        </div>
+    </template>
+    <template lwc:if={state.thankYouPage}>
+        <div class="slds-grid slds-wrap slds-grid_align-center slds-var-m-top_large">
+            <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-4 slds-box">
+                Thank you
+            </div>
+        </div>
+    </template>
+</template>
