@@ -69,9 +69,9 @@ jobs:
 
       - name: 'LS'
         run: |
-          cd ./devops/changed-sources/package
+          cd ./devops/changed-sources
           ls
-          cd ../../../
+          cd ../../
           
       # - name: Calculate test class to run
       #   env:
