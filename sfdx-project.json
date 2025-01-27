@@ -13,7 +13,7 @@
     {
       "filename": "force-app/main/default/classes/AccountController.cls",
       "stringToReplace": "{PLCH_ACCOUNT_FILTER}",
-      "replaceWithEnv": "PLCH_ACCOUNT_FILTER"
+      "replaceWithEnv": "${{ vars.PLCH_ACCOUNT_FILTER }}"
     }
   ]
 }
