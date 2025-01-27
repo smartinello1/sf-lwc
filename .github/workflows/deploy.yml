@@ -33,10 +33,10 @@ jobs:
       - run: |
           git checkout ${{ github.ref }}
 
-      - name: Load .env file
-        uses: xom9ikk/dotenv@v2
-        with:
-          path: ./force-app/main/env
+      # - name: Load .env file
+      #   uses: xom9ikk/dotenv@v2
+      #   with:
+      #     path: ./force-app/main/env
 
       # Authenticate with JWT
       - name: Authenticate JWT
