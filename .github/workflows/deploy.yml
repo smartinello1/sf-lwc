@@ -5,7 +5,9 @@ on:
     branches: [ master ]
     paths:
       - 'force-app/**'
-    
+env:
+  PLCH_ACCOUNT_FILTER: ${{ vars.PLCH_ACCOUNT_FILTER }}
+  
 jobs: 
   Deploy-Last-Diff:
     runs-on: ubuntu-latest
