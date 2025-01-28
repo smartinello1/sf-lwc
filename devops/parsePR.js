@@ -6,6 +6,13 @@ async function run() {
   const files = await globber.glob()
   
   console.log('files: ' , files)
+  fileNames = files.map(f => {
+    let splitted = f.split('/')
+    let tmp = splitted[splitted.length-1]
+    return tmp.split('.')[0]
+  })
+
+  console.log('fileNames: ' , fileNames)
 }
 
 run()
