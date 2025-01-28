@@ -11,7 +11,7 @@ env:
 jobs: 
   Deploy-Last-Diff:
     runs-on: ubuntu-latest
-    environment: ${{ github.base_ref == 'master' && 'PROD' || 'DEV' }}
+    environment: ${{ github.ref == 'master' && 'PROD' || 'DEV' }}
     steps:
       # Setup Node
       - uses: actions/setup-node@v1
