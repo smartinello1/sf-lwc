@@ -29,13 +29,13 @@ jobs:
           check-latest: true
           cache: 'npm'
 
-      - run: npm install @actions/core
-      - run: npm install @actions/glob
-
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: bash
         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+        
+      - run: npm install @actions/core
+      - run: npm install @actions/glob
 
       # - name: Install actions
       #   run: |
