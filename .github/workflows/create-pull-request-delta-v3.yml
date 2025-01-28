@@ -30,7 +30,7 @@ jobs:
 
       - name: Install actions/glob
         run: |
-          npm install @actions/glob
+          npm install --global @actions/glob
 
       # Install SFDX
       - name: Install Salesforce CLI
