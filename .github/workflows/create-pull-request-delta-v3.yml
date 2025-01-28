@@ -72,6 +72,10 @@ jobs:
       - name: 'LS'
         run: |
           find ./devops/changed-sources
+
+      - name: Calculate test class to run
+        run: |
+          node ./devops/parsePR.js
           
       # - name: Calculate test class to run
       #   env:
