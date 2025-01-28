@@ -28,9 +28,9 @@ jobs:
           node-version: '>=20'
           check-latest: true
 
-      - name: Install actions/glob
-        run: |
-          npm install --global @actions/glob
+      # - name: Install actions/glob
+      #   run: |
+      #     npm install --global @actions/glob
 
       # Install SFDX
       - name: Install Salesforce CLI
@@ -79,6 +79,7 @@ jobs:
 
       - name: Calculate test class to run
         run: |
+          npm install --global @actions/glob
           node ./devops/parsePR.js
           
       # - name: Calculate test class to run
