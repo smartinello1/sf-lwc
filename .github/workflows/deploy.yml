@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'force-app/**'
+      - './force-app/**'
 env:
   PLCH_ACCOUNT_FILTER: ${{ vars.PLCH_ACCOUNT_FILTER }}
   
@@ -37,8 +37,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: |
-          git checkout ${{ github.ref }}
 
       - run: npm install @actions/core
       - run: npm install @actions/glob
@@ -60,7 +58,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to "HEAD" --from "HEAD~1" --output ./devops/changed-sources/ --generate-delta --source force-app/
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
 
       - name: 'LS'
         run: |

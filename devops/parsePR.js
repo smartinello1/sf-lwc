@@ -20,15 +20,17 @@ async function run() {
       let tmp = splitted[splitted.length-1]
       let className = tmp.split('.')[0]
       let relatedTestClassName = testClassesMap[className]
-      testClassesToRun.push(relatedTestClassName)
+      if(relatedTestClassName !== undefined && relatedTestClassName !== null) {
+        testClassesToRun.push(relatedTestClassName)
+      }
       return className
     })
   
     console.log('fileNames: ' , fileNames)
     console.log('testClassesToRun: ' , testClassesToRun)
     testLevel = testClassesToRun.length > 0 ? 'RunSpecifiedTests' : 'NoTestRun'
-    // return { testLevel, testClassesToRun }
     core.setOutput('testLevel', testLevel);
+
     let testClassesToRunParam = testClassesToRun.length > 0 ? '--tests ' + testClassesToRun.join(' ') : ''
     core.setOutput('testClassesToRun', testClassesToRunParam);
   } catch (err) {
