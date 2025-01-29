@@ -92,7 +92,6 @@ jobs:
       - name: Calculate test class to run
         id: calculate_test_class
         run: |
-          git checkout ${{ github.head_ref }}
           node ./devops/parsePR.js
 
       - name: Output Test Class
