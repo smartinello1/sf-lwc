@@ -7,7 +7,7 @@ async function run() {
   const files = await globber.glob()
   
   try {
-    const jsonString = fs.readFileSync('./testclasses.json')
+    const jsonString = fs.readFileSync('./devops/testclasses.json')
     var testClassesMap = JSON.parse(jsonString)
   } catch (err) {
     console.log('err reading testclasses.json: ' , err)
