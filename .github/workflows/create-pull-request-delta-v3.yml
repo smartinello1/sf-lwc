@@ -8,7 +8,7 @@ on:
     # The branches filter allows to specify that this workflow should only
     # run if the branch name is "develop". This way we prevent this workflow
     # from running when PRs are opened on other branches
-    branches: [master, dev, develop]
+    branches: [master, develop]
     # We only care about changes to the force-app directory, which is the
     # root directory of the sfdx project. This prevents the job from running
     # when changing non-salesforce files (like this yml file).
@@ -83,9 +83,16 @@ jobs:
           find ./devops/changed-sources
 
       - name: Calculate test class to run
+        id: calculate_test_class
         run: |
           git checkout ${{ github.head_ref }}
           node ./devops/parsePR.js
+
+      - name: Output Test Class
+        run: |
+          echo "${{ steps.calculate_test_class.outputs }}"
+          echo "${{ steps.calculate_test_class.outputs.testLevel }}"
+          echo "${{ steps.calculate_test_class.outputs.testClassesToRun }}"
           
       # - name: Calculate test class to run
       #   env:
@@ -107,7 +114,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --dry-run -x ./devops/changed-sources/package/package.xml --test-level NoTestRun ${{ env.testClass }} --verbose
+        run: sf project deploy start --dry-run -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} --tests ${{ steps.calculate_test_class.outputs.testClassesToRun }} --concise
 
       # - name: Automatically open pull request
       #   if: ${{ success() }}
