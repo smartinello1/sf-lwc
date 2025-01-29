@@ -22,6 +22,7 @@ async function run() {
     let className = tmp.split('.')[0]
     let relatedTestClassName = testClassesMap[className]
     testClassesToRun.push(relatedTestClassName)
+    return className
   })
 
   console.log('fileNames: ' , fileNames)
