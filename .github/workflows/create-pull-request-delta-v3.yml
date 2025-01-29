@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: '*'
           check-latest: true
-          cache: 'npm'
+          # cache: 'npm'
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -44,11 +44,6 @@ jobs:
         
       - run: npm install @actions/core
       - run: npm install @actions/glob
-
-      # - name: Install actions
-      #   run: |
-      #     npm install --global --save @actions/core
-      #     npm install --global --save @actions/glob
 
       # Install SFDX
       - name: Install Salesforce CLI
@@ -89,6 +84,7 @@ jobs:
 
       - name: Calculate test class to run
         run: |
+          git checkout ${{ github.head_ref }}
           node ./devops/parsePR.js
           
       # - name: Calculate test class to run
@@ -108,12 +104,6 @@ jobs:
 
       #- name: checkout branch
       #  run: git checkout ${{ inputs.from }}
-
-      # - name: 'Scan code'
-      #   run: |
-      #     cd devops/changed-sources
-      #     sf scanner:run --format sarif --target './**/*.cls' --category "Design,Best Practices,Performance" --outfile 'apexScanResults.sarif'  
-      #     cd ..
 
       - name: Validate
         if: ${{ success() }}
