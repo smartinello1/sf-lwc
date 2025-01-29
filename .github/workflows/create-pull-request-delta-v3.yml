@@ -114,7 +114,7 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --dry-run -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} --tests ${{ steps.calculate_test_class.outputs.testClassesToRun }} --concise
+        run: sf project deploy start --dry-run -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} --tests ${{ steps.calculate_test_class.outputs.testClassesToRun }} --verbose
 
       # - name: Automatically open pull request
       #   if: ${{ success() }}
