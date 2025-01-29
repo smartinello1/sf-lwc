@@ -40,6 +40,9 @@ jobs:
       - run: |
           git checkout ${{ github.ref }}
 
+      - run: npm install @actions/core
+      - run: npm install @actions/glob
+
       # - name: Load .env file
       #   uses: xom9ikk/dotenv@v2
       #   with:
@@ -63,8 +66,20 @@ jobs:
         run: |
           find ./devops/changed-sources
 
+      - name: Calculate test class to run
+        id: calculate_test_class
+        run: |
+          git checkout ${{ github.head_ref }}
+          node ./devops/parsePR.js
+
+      - name: Output Test Class
+        run: |
+          echo "${{ steps.calculate_test_class.outputs }}"
+          echo "${{ steps.calculate_test_class.outputs.testLevel }}"
+          echo "${{ steps.calculate_test_class.outputs.testClassesToRun }}"
+
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start -x ./devops/changed-sources/package/package.xml --test-level NoTestRun ${{ env.testClass }} --concise
+        run: sf project deploy start -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} --tests ${{ steps.calculate_test_class.outputs.testClassesToRun }} --concise
 
 
