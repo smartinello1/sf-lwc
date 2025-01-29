@@ -20,7 +20,9 @@ async function run() {
       let tmp = splitted[splitted.length-1]
       let className = tmp.split('.')[0]
       let relatedTestClassName = testClassesMap[className]
-      testClassesToRun.push(relatedTestClassName)
+      if(relatedTestClassName !== undefined && relatedTestClassName !== null) {
+        testClassesToRun.push(relatedTestClassName)
+      }
       return className
     })
   
