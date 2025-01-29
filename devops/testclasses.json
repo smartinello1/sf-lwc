@@ -1,3 +1,4 @@
 {
-    "AccountController": "AccountControllerTest"
+    "AccountController": "AccountControllerTest",
+    "AccountController_v2": "AccountrControllerTest_v2"
 }
