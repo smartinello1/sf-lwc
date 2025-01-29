@@ -29,7 +29,7 @@ async function run() {
     testLevel = testClassesToRun.length > 0 ? 'RunSpecifiedTests' : 'NoTestRun'
     // return { testLevel, testClassesToRun }
     core.setOutput('testLevel', testLevel);
-    core.setOutput('testClassesToRun', testClassesToRun.join(','));
+    core.setOutput('testClassesToRun', testClassesToRun.join(' '));
   } catch (err) {
     console.log('err reading testclasses.json: ' , err)
     core.setFailed(`Action failed with error ${err}`)
