@@ -3,7 +3,7 @@ private with sharing class AccountControllerTest_v2 {
 
 	@TestSetup
 	static void makeData() {
-		Account acc = new Account(
+		Account acc = new Account( 
 			Name = 'Active', 
 			Active__c = 'Yes', 
 			Phone = '123'

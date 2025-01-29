@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - './force-app/**'
+      - 'force-app/main/default/**'
 env:
   PLCH_ACCOUNT_FILTER: ${{ vars.PLCH_ACCOUNT_FILTER }}
   
