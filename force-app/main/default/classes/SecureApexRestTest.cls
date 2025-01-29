@@ -2,7 +2,7 @@
 private without sharing class SecureApexRestTest {
 	@TestSetup
 	static void makeData() {
-		Contact c = new Contact(LastName = 'a');
+		Contact c = new Contact(LastName = 'a'); 
 		insert c;
 	}
 
