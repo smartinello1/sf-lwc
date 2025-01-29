@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Diff Prod
 
 on: 
   push:
@@ -9,7 +9,7 @@ env:
   PLCH_ACCOUNT_FILTER: ${{ vars.PLCH_ACCOUNT_FILTER }}
   
 jobs: 
-  Deploy-Last-Diff:
+  deploy-diff-prod:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'master' && 'PROD' || 'DEV' }}
     steps:
@@ -17,7 +17,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '*'
-          check-latest: true
 
       # Install SFDX
       - name: Install Salesforce CLI
