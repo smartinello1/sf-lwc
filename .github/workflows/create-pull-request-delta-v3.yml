@@ -83,9 +83,16 @@ jobs:
           find ./devops/changed-sources
 
       - name: Calculate test class to run
+        id: calculate_test_class
         run: |
           git checkout ${{ github.head_ref }}
           node ./devops/parsePR.js
+
+      - name: Output Test Class
+        run: |
+          echo "${{ steps.calculate_test_class.outputs }}"
+          echo "${{ steps.calculate_test_class.outputs.testLevel }}"
+          echo "${{ steps.calculate_test_class.outputs.testClassesToRun }}"
           
       # - name: Calculate test class to run
       #   env:
