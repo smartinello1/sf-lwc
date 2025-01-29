@@ -1,3 +1,4 @@
+const core = require('@actions/core');
 const glob = require('@actions/glob');
 const fs = require('fs')
 
