@@ -34,7 +34,6 @@ jobs:
         with:
           fetch-depth: 0
       - run: |
-          git checkout ${{ github.base_ref }}
           git checkout ${{ github.head_ref }}
 
       # - name: Get npm cache directory
