@@ -34,8 +34,8 @@ jobs:
         with:
           fetch-depth: 0
       - run: |
-          git checkout ${{ github.head_ref }}
           git checkout ${{ github.base_ref }}
+          git checkout ${{ github.head_ref }}
 
       # - name: Get npm cache directory
       #   id: npm-cache-dir
@@ -81,13 +81,6 @@ jobs:
       - name: 'LS'
         run: |
           find ./devops/changed-sources
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - run: |
-          git checkout ${{ github.head_ref }}
 
       - name: Calculate test class to run
         id: calculate_test_class
