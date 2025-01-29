@@ -80,6 +80,6 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} --tests ${{ steps.calculate_test_class.outputs.testClassesToRun }} --verbose
+        run: sf project deploy start -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} ${{ steps.calculate_test_class.outputs.testClassesToRun }} --verbose
 
 
