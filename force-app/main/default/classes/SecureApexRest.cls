@@ -2,7 +2,7 @@
 global with sharing class SecureApexRest {
   @HttpGet
   global static Contact doGet() {
-    Id recordId = RestContext.request.params.get('id'); 
+    Id recordId = RestContext.request.params.get('id');  
     Contact result;
     List<Contact> results = [
       SELECT id, Name, Secret_Key__c
