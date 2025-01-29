@@ -29,8 +29,8 @@ async function run() {
     console.log('fileNames: ' , fileNames)
     console.log('testClassesToRun: ' , testClassesToRun)
     testLevel = testClassesToRun.length > 0 ? 'RunSpecifiedTests' : 'NoTestRun'
-    // return { testLevel, testClassesToRun }
     core.setOutput('testLevel', testLevel);
+
     let testClassesToRunParam = testClassesToRun.length > 0 ? '--tests ' + testClassesToRun.join(' ') : ''
     core.setOutput('testClassesToRun', testClassesToRunParam);
   } catch (err) {
