@@ -1,26 +1,42 @@
-const fs = require('fs');
-const readline = require('readline');
+const core = require('@actions/core');
+const glob = require('@actions/glob');
+const fs = require('fs')
 
-async function extractTests() {
-	//by default we specify that all tests should run
-	let testsFile = __dirname + '/devops/testsToRun.txt';
-	await fs.promises.writeFile(testsFile, 'all');
+async function run() {
+  try {
+    const patterns = ['./devops/changed-sources/force-app/main/default/classes/**.cls','./devops/changed-sources/force-app/main/default/triggers/**.cls']
+    const globber = await glob.create(patterns.join('\n'))
+    const files = await globber.glob()
+    
+    
+    const jsonString = fs.readFileSync('./devops/testclasses.json')
+    var testClassesMap = JSON.parse(jsonString)
+  
+    console.log('files: ' , files)
+    let testClassesToRun = []
+    let testLevel = 'NoTestRun'
+    fileNames = files.map(f => {
+      let splitted = f.split('/')
+      let tmp = splitted[splitted.length-1]
+      let className = tmp.split('.')[0]
+      let relatedTestClassName = testClassesMap[className]
+      if(relatedTestClassName !== undefined && relatedTestClassName !== null) {
+        testClassesToRun.push(relatedTestClassName)
+      }
+      return className
+    })
+  
+    console.log('fileNames: ' , fileNames)
+    console.log('testClassesToRun: ' , testClassesToRun)
+    testLevel = testClassesToRun.length > 0 ? 'RunSpecifiedTests' : 'NoTestRun'
+    core.setOutput('testLevel', testLevel);
 
-	const lines = readline.createInterface({
-		input: fs.createReadStream(__dirname + '/pr_body.txt'),
-		crlfDelay: Infinity
-	});
-
-	for await (const line of lines) {
-		//special delimeter for apex tests
-		if (line.includes('Apex::[') && line.includes(']::Apex')) {
-			let tests = line.substring(8, line.length - 7);
-			await fs.promises.writeFile(testsFile, tests);
-			await fs.promises.appendFile(testsFile, '\n');
-		}
-	}
-
-	console.log('test')
+    let testClassesToRunParam = testClassesToRun.length > 0 ? '--tests ' + testClassesToRun.join(' ') : ''
+    core.setOutput('testClassesToRun', testClassesToRunParam);
+  } catch (err) {
+    console.log('err reading testclasses.json: ' , err)
+    core.setFailed(`Action failed with error ${err}`)
+  }
 }
 
-extractTests();
+run()

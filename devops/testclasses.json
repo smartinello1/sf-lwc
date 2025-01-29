@@ -1,0 +1,5 @@
+{
+    "AccountController": "AccountControllerTest",
+    "AccountController_v2": "AccountControllerTest_v2",
+    "SecureApexRest": "SecureApexRestTest"
+}

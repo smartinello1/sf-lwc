@@ -1,11 +1,11 @@
 @isTest
-private with sharing class AccountControllerTest {
+private with sharing class AccountControllerTest_v2 {
 
 	@TestSetup
 	static void makeData() {
-		Account acc = new Account(
+		Account acc = new Account( 
 			Name = 'Active', 
-			Active__c = 'Yes',
+			Active__c = 'Yes', 
 			Phone = '123'
 		);
 		insert acc;
@@ -15,7 +15,7 @@ private with sharing class AccountControllerTest {
 	@isTest
 	static void getAllActiveAccountsTest() {
 		Test.startTest();
-			AccountController.getAllActiveAccounts();
+			AccountController_v2.getAllActiveAccounts();
 		Test.stopTest();
 	}
 }

@@ -1,39 +1,22 @@
-name: Create Pull Request Delta
+name: Deploy Diff Prod
 
-on:
-  pull_request:
-    # The events are that a PR is opened, or when a commit is pushed
-    # to a branch that has an existing pull request
-    types: [opened, synchronize]
-    # The branches filter allows to specify that this workflow should only
-    # run if the branch name is "develop". This way we prevent this workflow
-    # from running when PRs are opened on other branches
-    branches: [master, dev, develop]
-    # We only care about changes to the force-app directory, which is the
-    # root directory of the sfdx project. This prevents the job from running
-    # when changing non-salesforce files (like this yml file).
+on: 
+  push:
+    branches: [ master ]
     paths:
       - 'force-app/main/default/**'
 env:
   PLCH_ACCOUNT_FILTER: ${{ vars.PLCH_ACCOUNT_FILTER }}
-
-jobs:
-  create-pull-request:
+  
+jobs: 
+  deploy-diff-prod:
     runs-on: ubuntu-latest
-    environment: ${{ github.base_ref == 'master' && 'PROD' || 'DEV' }}
+    environment: ${{ github.ref_name == 'master' && 'PROD' || 'DEV' }}
     steps:
       # Setup Node
       - uses: actions/setup-node@v1
         with:
           node-version: '*'
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-        
-      - run: npm install @actions/core
-      - run: npm install @actions/glob
 
       # Install SFDX
       - name: Install Salesforce CLI
@@ -48,6 +31,19 @@ jobs:
         run: |
           echo y | sf plugins install sfdx-git-delta
           sf plugins
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - run: npm install @actions/core
+      - run: npm install @actions/glob
+
+      # - name: Load .env file
+      #   uses: xom9ikk/dotenv@v2
+      #   with:
+      #     path: ./force-app/main/env
 
       # Authenticate with JWT
       - name: Authenticate JWT
@@ -70,6 +66,7 @@ jobs:
       - name: Calculate test class to run
         id: calculate_test_class
         run: |
+          git checkout ${{ github.head_ref }}
           node ./devops/parsePR.js
 
       - name: Output Test Class
@@ -80,4 +77,6 @@ jobs:
 
       - name: Validate
         if: ${{ success() }}
-        run: sf project deploy start --dry-run -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} ${{ steps.calculate_test_class.outputs.testClassesToRun }} --verbose
+        run: sf project deploy start -x ./devops/changed-sources/package/package.xml --test-level ${{ steps.calculate_test_class.outputs.testLevel }} ${{ steps.calculate_test_class.outputs.testClassesToRun }} --verbose
+
+
