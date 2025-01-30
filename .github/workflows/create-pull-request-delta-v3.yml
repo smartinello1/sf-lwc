@@ -13,7 +13,7 @@ on:
     # root directory of the sfdx project. This prevents the job from running
     # when changing non-salesforce files (like this yml file).
     paths:
-      - '/force-app/main/default/**'
+      - 'force-app/main/default/**'
 env:
   PLCH_ACCOUNT_FILTER: ${{ vars.PLCH_ACCOUNT_FILTER }}
 
