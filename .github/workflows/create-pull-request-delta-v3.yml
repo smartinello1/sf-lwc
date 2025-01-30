@@ -36,6 +36,7 @@ jobs:
       - run: echo " ${{ github.head_ref }} "
 
       - run: git diff origin/master..origin/develop
+      - run: git diff --name-status --no-renames "HEAD~1" "HEAD"
         
       - run: npm install @actions/core
       - run: npm install @actions/glob
