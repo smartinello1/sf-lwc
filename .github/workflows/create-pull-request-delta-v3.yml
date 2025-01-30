@@ -13,7 +13,7 @@ on:
     # root directory of the sfdx project. This prevents the job from running
     # when changing non-salesforce files (like this yml file).
     paths:
-      - '/force-app/main/default/**'
+      - 'force-app/**'
 env:
   PLCH_ACCOUNT_FILTER: ${{ vars.PLCH_ACCOUNT_FILTER }}
 
@@ -64,7 +64,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to ${{ github.base_ref }} --from ${{ github.head_ref }} --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
+          sf sgd source delta --to origin/${{ github.base_ref }} --from origin/${{ github.head_ref }} --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
 
       - name: 'LS'
         run: |
