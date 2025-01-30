@@ -28,9 +28,12 @@ jobs:
           node-version: '*'
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - run: echo " ${{ github.base_ref }} "
+      - run: echo " ${{ github.head_ref }} "
         
       - run: npm install @actions/core
       - run: npm install @actions/glob
@@ -61,7 +64,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
+          sf sgd source delta --to ${{ github.base_ref }} --from ${{ github.head_ref }} --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
 
       - name: 'LS'
         run: |
