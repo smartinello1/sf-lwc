@@ -64,10 +64,15 @@ jobs:
       # We use SFDX Git Delta to create a directory with only the metadata that has changed.
       # this allows us to deploy only those changes, as opposed to deploying the entire branch.
       # This helps reducing deployment times
+      # - name: 'Create delta packages for new, modified or deleted metadata'
+      #   run: |
+      #     mkdir ./devops/changed-sources
+      #     sf sgd source delta --to origin/${{ github.base_ref }} --from origin/${{ github.head_ref }} --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
+
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to origin/${{ github.base_ref }} --from origin/${{ github.head_ref }} --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
+          sf sgd source delta --to "HEAD~1"  --from "HEAD" --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
 
       - name: 'LS'
         run: |
