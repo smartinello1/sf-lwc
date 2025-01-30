@@ -34,6 +34,9 @@ jobs:
 
       - run: echo " ${{ github.base_ref }} "
       - run: echo " ${{ github.head_ref }} "
+
+      - run: git diff --name-status --no-renames origin/master origin/develop
+      - run: git diff --name-status --no-renames "HEAD~1" "HEAD"
         
       - run: npm install @actions/core
       - run: npm install @actions/glob
@@ -61,10 +64,15 @@ jobs:
       # We use SFDX Git Delta to create a directory with only the metadata that has changed.
       # this allows us to deploy only those changes, as opposed to deploying the entire branch.
       # This helps reducing deployment times
+      # - name: 'Create delta packages for new, modified or deleted metadata'
+      #   run: |
+      #     mkdir ./devops/changed-sources
+      #     sf sgd source delta --to origin/${{ github.base_ref }} --from origin/${{ github.head_ref }} --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
+
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to origin/${{ github.base_ref }} --from origin/${{ github.head_ref }} --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
 
       - name: 'LS'
         run: |
