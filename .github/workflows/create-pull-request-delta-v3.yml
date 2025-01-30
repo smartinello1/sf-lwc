@@ -35,7 +35,7 @@ jobs:
       - run: echo " ${{ github.base_ref }} "
       - run: echo " ${{ github.head_ref }} "
 
-      - run: git git diff origin/develop..origin/master
+      - run: git diff origin/develop..origin/master
         
       # - run: npm install @actions/core
       # - run: npm install @actions/glob
