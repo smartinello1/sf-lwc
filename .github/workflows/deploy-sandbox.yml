@@ -4,7 +4,7 @@ on:
   push:
     branches: [ dev ]
     paths:
-      - 'default/**'
+      - 'force-app/**'
   
 jobs: 
   Deploy-Diff-Sandbox:
