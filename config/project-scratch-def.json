@@ -1,7 +1,6 @@
 {
 	"orgName": "Demo company",
 	"edition": "Developer",
-<<<<<<< HEAD
 	"features": [
 		"EnableSetPasswordInApi",
 		"AnalyticsAdminPerms",
@@ -67,9 +66,6 @@
 		"Workflow",
 		"PlatformCache"
 	],
-=======
-	"features": ["EnableSetPasswordInApi", "Communities", "CPQ", "ServiceCloud"],
->>>>>>> dev
 	"settings": {
 		"lightningExperienceSettings": {
 			"enableS1DesktopEnabled": true
