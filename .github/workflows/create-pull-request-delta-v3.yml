@@ -72,7 +72,7 @@ jobs:
       - name: 'Create delta packages for new, modified or deleted metadata'
         run: |
           mkdir ./devops/changed-sources
-          sf sgd source delta --to "HEAD~1"  --from "HEAD" --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
+          sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir ./devops/changed-sources/ --generate-delta --source-dir force-app/
 
       - name: 'LS'
         run: |
