@@ -1,0 +1,11 @@
+<template>
+	<iframe lwc:ref="webllmWrapper" lwc:if={initDone} src={iframeUrlWithParams}
+		style="visibility: hidden; width: 0; height: 0"></iframe>
+	<lightning-card title="webllm">
+		<lightning-spinner alternative-text="LOADING..." lwc:if={isLoading}></lightning-spinner>
+		{payload}
+
+		<lightning-textarea lwc:ref="chatInput" disabled={disableNewMessage}></lightning-textarea>
+		<lightning-button label="Send" disabled={disableNewMessage} onclick={handleSend}></lightning-button>
+	</lightning-card>
+</template>

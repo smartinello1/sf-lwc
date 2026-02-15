@@ -1,0 +1,348 @@
+<template>
+	<lightning-card
+		title="🤖 AI Document Q&A Assistant"
+		icon-name="custom:custom63"
+	>
+		<!-- Hidden iframe for AI processing -->
+		<iframe
+			src={vfPageUrl}
+			style="display: none"
+			onload={handleIframeLoad}
+			title="AI Processing Engine"
+		></iframe>
+
+		<!-- Model Selection & Status Section -->
+		<div class="slds-p-around_medium">
+			<div class="slds-grid slds-wrap slds-gutters">
+				<div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-3">
+					<lightning-combobox
+						name="modelSelect"
+						label="Select AI Model"
+						value={selectedModel}
+						placeholder="Choose a model"
+						options={modelOptions}
+						onchange={handleModelChange}
+						disabled={isModelLoading}
+						variant="label-inline"
+					></lightning-combobox>
+				</div>
+				<div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+					<div class="slds-form-element">
+						<label class="slds-form-element__label">Engine Status</label>
+						<div class="slds-form-element__control">
+							<lightning-badge
+								label={engineStatusLabel}
+								class={engineStatusClass}
+							></lightning-badge>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Model Loading Progress -->
+			<template if:true={isModelLoading}>
+				<div class="slds-m-top_medium">
+					<div class="slds-text-heading_small slds-m-bottom_x-small">
+						{modelStatus}
+					</div>
+					<lightning-progress-bar
+						value={modelLoadProgress}
+						size="large"
+						variant="circular"
+					></lightning-progress-bar>
+					<div
+						class="slds-text-body_small slds-text-color_weak slds-m-top_x-small slds-text-align_center"
+					>
+						{modelLoadProgress}% - This may take a few minutes on first load
+					</div>
+				</div>
+			</template>
+		</div>
+
+		<!-- Document Management Section -->
+		<div class="slds-p-around_medium slds-border_top">
+			<div
+				class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small"
+			>
+				<div class="slds-col">
+					<div class="slds-text-heading_small">📚 Document Library</div>
+				</div>
+				<div class="slds-col_bump-left">
+					<lightning-badge
+						label={documentsCountLabel}
+						variant="inverse"
+					></lightning-badge>
+				</div>
+			</div>
+
+			<!-- File Upload -->
+			<div class="slds-form-element">
+				<label class="slds-form-element__label">
+					Add Documents (TXT, PDF, MD, DOCX, CSV, JSON)
+				</label>
+				<div class="slds-form-element__control">
+					<lightning-input
+						type="file"
+						label="Upload Documents"
+						variant="label-hidden"
+						accept=".txt,.pdf,.md,.docx,.doc,.csv,.json"
+						onchange={handleFileUpload}
+						disabled={disableFileUpload}
+						multiple
+					></lightning-input>
+				</div>
+			</div>
+
+			<!-- Document List -->
+			<template if:true={hasDocuments}>
+				<div class="slds-m-top_medium">
+					<div class="document-list">
+						<template
+							for:each={documents}
+							for:item="doc"
+						>
+							<div
+								key={doc.id}
+								class="document-item"
+							>
+								<div class="slds-grid slds-grid_vertical-align-center">
+									<div class="slds-col">
+										<lightning-icon
+											icon-name={doc.icon}
+											size="small"
+											class="slds-m-right_x-small"
+										></lightning-icon>
+										<span class="document-name">{doc.name}</span>
+										<lightning-badge
+											label={doc.chunksLabel}
+											class="slds-m-left_small"
+										></lightning-badge>
+									</div>
+									<div class="slds-col_bump-left">
+										<lightning-button-icon
+											icon-name="utility:delete"
+											variant="bare"
+											alternative-text="Remove document"
+											title="Remove document"
+											onclick={handleRemoveDocument}
+											data-doc-id={doc.id}
+											disabled={isProcessing}
+										></lightning-button-icon>
+									</div>
+								</div>
+								<template if:true={doc.isProcessing}>
+									<div class="slds-m-top_x-small">
+										<lightning-progress-bar
+											value={doc.progress}
+											size="small"
+										></lightning-progress-bar>
+										<div class="slds-text-body_small slds-text-color_weak">
+											{doc.status}
+										</div>
+									</div>
+								</template>
+							</div>
+						</template>
+					</div>
+				</div>
+			</template>
+
+			<!-- Empty State -->
+			<template if:false={hasDocuments}>
+				<div class="slds-m-top_medium empty-state">
+					<lightning-icon
+						icon-name="utility:upload"
+						size="large"
+						class="slds-m-bottom_small"
+					></lightning-icon>
+					<p class="slds-text-body_regular slds-text-color_weak">
+						No documents uploaded yet. Add documents to start chatting!
+					</p>
+				</div>
+			</template>
+
+			<!-- Action Buttons -->
+			<template if:true={hasDocuments}>
+				<div class="slds-m-top_medium">
+					<lightning-button
+						variant="neutral"
+						label="Clear All Documents"
+						onclick={handleClearAllDocuments}
+						disabled={isProcessing}
+						icon-name="utility:clear"
+					></lightning-button>
+				</div>
+			</template>
+		</div>
+
+		<!-- Chat Section -->
+		<div class="slds-p-around_medium slds-border_top">
+			<div
+				class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small"
+			>
+				<div class="slds-col">
+					<div class="slds-text-heading_small">💭 Chat with Your Documents</div>
+				</div>
+				<div class="slds-col_bump-left">
+					<lightning-button
+						variant="neutral"
+						label="Clear Chat"
+						onclick={handleClearChat}
+						disabled={isChatEmpty}
+						icon-name="utility:clear"
+						class="slds-m-right_x-small"
+					></lightning-button>
+				</div>
+			</div>
+
+			<!-- Chat History -->
+			<div class="chat-container">
+				<template if:true={hasChatHistory}>
+					<template
+						for:each={chatHistory}
+						for:item="message"
+					>
+						<div
+							key={message.id}
+							class={message.cssClass}
+						>
+							<div class="message-header">
+								<lightning-icon
+									icon-name={message.icon}
+									size="x-small"
+									class="slds-m-right_xx-small"
+								></lightning-icon>
+								<span class="message-sender">{message.sender}</span>
+								<span class="message-time">{message.timestamp}</span>
+							</div>
+							<div class="message-content">{message.content}</div>
+
+							<!-- Show sources for AI responses -->
+							<template if:true={message.hasSources}>
+								<details class="slds-m-top_small">
+									<summary class="sources-summary">
+										<lightning-icon
+											icon-name="utility:knowledge_base"
+											size="xx-small"
+											class="slds-m-right_xx-small"
+										></lightning-icon>
+										View {message.sourcesCount} source excerpts
+									</summary>
+									<div class="sources-content">
+										<template
+											for:each={message.sources}
+											for:item="source"
+										>
+											<div
+												key={source.id}
+												class="source-item"
+											>
+												<div class="source-header">
+													<strong>{source.documentName}</strong>
+													<span class="source-relevance"
+														>{source.relevance}</span
+													>
+												</div>
+												<div class="source-text">{source.text}</div>
+											</div>
+										</template>
+									</div>
+								</details>
+							</template>
+						</div>
+					</template>
+				</template>
+
+				<!-- Empty Chat State -->
+				<template if:false={hasChatHistory}>
+					<div class="empty-chat-state">
+						<lightning-icon
+							icon-name="utility:comments"
+							size="large"
+							class="slds-m-bottom_small"
+						></lightning-icon>
+						<p class="slds-text-body_regular slds-text-color_weak">
+							Upload documents and start asking questions!
+						</p>
+					</div>
+				</template>
+
+				<!-- Generating Indicator -->
+				<template if:true={isGenerating}>
+					<div class="message-ai generating">
+						<div class="message-header">
+							<lightning-spinner
+								alternative-text="Thinking..."
+								size="x-small"
+								class="slds-m-right_xx-small"
+							></lightning-spinner>
+							<span class="message-sender">AI Assistant</span>
+						</div>
+						<div class="message-content">{generationStatus}</div>
+					</div>
+				</template>
+
+				<!-- Scroll anchor -->
+				<div class="chat-scroll-anchor"></div>
+			</div>
+
+			<!-- Chat Input -->
+			<div class="slds-m-top_medium">
+				<div class="chat-input-container">
+					<lightning-textarea
+						placeholder="Ask a question about your documents..."
+						value={question}
+						onchange={handleQuestionChange}
+						onkeydown={handleKeyDown}
+						rows="2"
+						disabled={isChatInputDisabled}
+						class="chat-input"
+					></lightning-textarea>
+					<lightning-button
+						variant="brand"
+						label={askButtonLabel}
+						onclick={askQuestion}
+						disabled={isAskButtonDisabled}
+						icon-name="utility:send"
+						class="send-button"
+					></lightning-button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Stats Section (Optional) -->
+		<template if:true={showDebugInfo}>
+			<div class="slds-p-around_medium slds-border_top">
+				<div class="slds-text-heading_small slds-m-bottom_small">
+					📊 Statistics
+				</div>
+				<div class="slds-grid slds-wrap slds-gutters_small">
+					<div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4">
+						<div class="stat-box">
+							<div class="stat-value">{totalDocuments}</div>
+							<div class="stat-label">Documents</div>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4">
+						<div class="stat-box">
+							<div class="stat-value">{totalChunks}</div>
+							<div class="stat-label">Total Chunks</div>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4">
+						<div class="stat-box">
+							<div class="stat-value">{chatMessagesCount}</div>
+							<div class="stat-label">Messages</div>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4">
+						<div class="stat-box">
+							<div class="stat-value">{currentModelName}</div>
+							<div class="stat-label">Model</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
+	</lightning-card>
+</template>

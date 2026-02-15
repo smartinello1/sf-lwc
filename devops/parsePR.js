@@ -4,6 +4,16 @@ const fs = require('fs')
 
 async function run() {
   try {
+    core.setOutput('noDiff', false);
+    const patternsToDeploy = ['./devops/changed-sources/force-app/main/default/classes/**.cls','./devops/changed-sources/force-app/main/default/triggers/**.cls']
+    const globberToDeploy = await glob.create(patternsToDeploy.join('\n'))
+    const filesToDeploy = await globberToDeploy.glob()
+    
+    if(filesToDeploy.length === 0) {
+      core.setOutput('noDiff', true);
+      return
+    }
+
     const patterns = ['./devops/changed-sources/force-app/main/default/classes/**.cls','./devops/changed-sources/force-app/main/default/triggers/**.cls']
     const globber = await glob.create(patterns.join('\n'))
     const files = await globber.glob()

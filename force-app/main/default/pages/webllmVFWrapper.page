@@ -1,0 +1,186 @@
+<apex:page>
+    <!-- <script type="module" src="/resource/webllmWrapper"></script> -->
+
+    <script type="module">
+        const isStreaming = "{!$CurrentPage.parameters.isStreaming}";
+        console.log('isStreaming: ', isStreaming);
+        import { webllm } from '{!$Resource.webllmWrapper}';
+        // todo: find a way to pass current org origin
+        const parentOrigin = "https://martinellosimone-dev-ed.lightning.force.com"
+
+        let myEngine;
+        let messages = [{ role: "system", content: "You are a helpful AI assistant." }]
+        try {
+            // Initialize with a progress callback
+            const initProgressCallback = (progress) => {
+                parent.postMessage({ type: "initCallback", data: progress }, parentOrigin)
+                console.log("Model loading progress:", progress);
+            };
+
+            console.log('modellist: ', webllm.prebuiltAppConfig.model_list)
+
+            // Using CreateMLCEngine
+            myEngine = await webllm.CreateMLCEngine(
+                "Hermes-3-Llama-3.1-8B-q4f16_1-MLC",
+                { initProgressCallback },
+                {
+                    context_window_size: -1,
+                    sliding_window_size: 4096,
+                    attention_sink_size: 4,
+                }
+            );
+            // other models
+            // Hermes-2-Pro-Mistral-7B-q4f16_1-MLC
+            console.log('myEngine: ', myEngine)
+            parent.postMessage("test message", parentOrigin)
+            // const config = {
+            //     temperature: 1.0,
+            //     top_p: 1,
+            // };
+            // await myEngine.reload("Llama-3.2-1B-Instruct-q4f32_1-MLC", config);
+
+
+            // const messages = [
+            //     { role: "system", content: "You are a helpful AI assistant." },
+            //     { role: "user", content: "Can you assist me to write an email to a customer that does want to buy our products?" }
+            // ];
+
+            // const reply = await engine.chat.completions.create({
+            //     messages,
+            // });
+
+            // console.log(reply.choices[0].message);
+            // console.log(reply);
+
+            // parent.postMessage(reply.choices[0].message, parentOrigin)
+        } catch (err) {
+            console.log('err: ', err.message)
+        }
+        const handleMessage = async (payload) => {
+            console.log('payload vf: ', payload)
+            if (payload.origin !== parentOrigin) {
+                return
+            }
+
+            console.log('payload vf data: ', payload.data)
+
+            messages.push({ role: "user", content: payload.data.message })
+
+            // no streaming, direct response
+            // const reply = await myEngine.chat.completions.create({
+            //     messages,
+            // });
+
+            // console.log(reply.choices[0].message);
+            // console.log(reply);
+
+            // messages.push({ role: 'assistant', content: reply.choices[0].message.content })
+
+            const chunks = await myEngine.chat.completions.create({
+                messages,
+                stream: true,
+                stream_options: { include_usage: true },
+            });
+
+            let reply = "";
+            for await (const chunk of chunks) {
+                reply += chunk.choices[0]?.delta.content || "";
+                console.log(reply);
+                if (chunk.usage) {
+                    console.log(chunk.usage); // only last chunk has usage
+                }
+
+                if (chunk.usage) {
+                    parent.postMessage({ type: "usage", usageData: chunk.usage }, parentOrigin)
+                } else {
+                    parent.postMessage({ type: "assistant", message: chunk.choices[0]?.delta.content || "" }, parentOrigin)
+                }
+            }
+
+            console.log('reply: ', reply)
+
+            messages.push({ role: 'assistant', content: reply })
+
+
+            const fullReply = await myEngine.getMessage();
+            console.log('fullReply: ', JSON.stringify(fullReply));
+        }
+        window.addEventListener("message", handleMessage)
+
+        // example
+        const str1 = "The quick brown fox jumps over the lazy dog.";
+        const str2 = "The quick brown the lazy fox jumps over dog.";
+        //
+        // Preprocess strings and combine words to a unique collection
+        //
+
+        const str1Words = str1.trim().split(' ').map(omitPunctuations).map(toLowercase);
+        const str2Words = str2.trim().split(' ').map(omitPunctuations).map(toLowercase);
+        const allWordsUnique = Array.from(new Set(str1Words.concat(str2Words)));
+
+
+
+        //
+        // Calculate IF-IDF algorithm vectors
+        //
+
+        const str1Vector = calcTfIdfVectorForDoc(str1Words, [str2Words], allWordsUnique);
+        const str2Vector = calcTfIdfVectorForDoc(str2Words, [str1Words], allWordsUnique);
+        console.log('Cosine similarity', cosineSimilarity(str1Vector, str2Vector));
+
+        //
+        // Main function
+        //
+
+        function cosineSimilarity(vec1, vec2) {
+            const dotProduct = vec1.map((val, i) => val * vec2[i]).reduce((accum, curr) => accum + curr, 0);
+            const vec1Size = calcVectorSize(vec1);
+            const vec2Size = calcVectorSize(vec2);
+
+            return dotProduct / (vec1Size * vec2Size);
+        };
+
+
+
+        //
+        // tf-idf algorithm implementation (https://en.wikipedia.org/wiki/Tf%E2%80%93idf)
+        //
+
+        function calcTfIdfVectorForDoc(doc, otherDocs, allWordsSet) {
+            return Array.from(allWordsSet).map(word => {
+                return tf(word, doc) * idf(word, doc, otherDocs);
+            });
+        };
+
+        function tf(word, doc) {
+            const wordOccurences = doc.filter(w => w === word).length;
+            return wordOccurences / doc.length;
+        };
+
+        function idf(word, doc, otherDocs) {
+            const docsContainingWord = [doc].concat(otherDocs).filter(doc => {
+                return !!doc.find(w => w === word);
+            });
+
+            return (1 + otherDocs.length) / docsContainingWord.length;
+        };
+
+
+
+        //
+        // Helper functions
+        //
+
+        function omitPunctuations(word) {
+            return word.replace(/[\!\.\,\?\-\?]/gi, '');
+        };
+
+        function toLowercase(word) {
+            return word.toLowerCase();
+        };
+
+        function calcVectorSize(vec) {
+            return Math.sqrt(vec.reduce((accum, curr) => accum + Math.pow(curr, 2), 0));
+        };
+    </script>
+</apex:page>

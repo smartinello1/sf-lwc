@@ -4,5 +4,6 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
-  "vlocity.sfdxUsername": "martinellosimone@lutech.it"
+  "vlocity.sfdxUsername": "martinellosimone@lutech.it",
+  "xml.preferences.showSchemaDocumentationType": "none"
 }

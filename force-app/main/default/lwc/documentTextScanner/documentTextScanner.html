@@ -1,0 +1,15 @@
+<template>
+	<lightning-card
+		title="Document Scanner"
+		icon-name="standard:scan_card"
+	>
+		<div class="slds-var-p-around_small">
+			<lightning-button
+				variant="brand"
+				label="Start scanning"
+				onclick={handleBeginScanEventClick}
+			></lightning-button>
+			<h1>results: {scannedDocument}</h1>
+		</div>
+	</lightning-card>
+</template>
