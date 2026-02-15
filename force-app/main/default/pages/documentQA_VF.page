@@ -1,0 +1,320 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+    <html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Multi-Document AI Engine</title>
+    </head>
+    <body>
+        <script type="module">
+            // Import libraries
+            import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+            import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+            // Global variables
+            let embedder = null;
+            let webLLMEngine = null;
+            let currentModel = 'Phi-3-mini-4k-instruct-q4f16_1-MLC';
+            let useWebLLM = true;
+
+            // Multi-document storage
+            const documentStore = new Map(); // docId -> { name, chunks, embeddings }
+
+            env.allowLocalModels = false;
+
+            function sendToParent(message) {
+                window.parent.postMessage(message, '*');
+            }
+
+            // Initialize models
+            async function initModels(selectedModel = currentModel) {
+                try {
+                    sendToParent({ type: 'MODEL_LOADING', status: 'Loading embedding model...', progress: 5 });
+                    
+                    if (!embedder) {
+                        embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+                    }
+                    
+                    sendToParent({ type: 'MODEL_LOADING', status: 'Loading WebLLM engine...', progress: 15 });
+                    
+                    const initProgressCallback = (progress) => {
+                        const percent = 15 + Math.round(progress.progress * 80);
+                        sendToParent({ 
+                            type: 'MODEL_LOADING', 
+                            status: progress.text || `Loading model... ${percent}%`,
+                            progress: percent
+                        });
+                    };
+
+                    webLLMEngine = await webllm.CreateMLCEngine(selectedModel, {
+                        initProgressCallback: initProgressCallback,
+                        logLevel: "ERROR",
+                        context_window_size: 8192,
+                        sliding_window_size: 4096
+                    });
+
+                    currentModel = selectedModel;
+                    
+                    sendToParent({ 
+                        type: 'MODEL_READY',
+                        model: selectedModel,
+                        engine: 'WebLLM',
+                        progress: 100
+                    });
+                    
+                } catch (error) {
+                    console.error('Model initialization error:', error);
+                    sendToParent({ type: 'MODEL_ERROR', error: error.message });
+                }
+            }
+
+            function chunkDocument(text, chunkSize = 200, overlap = 50) {
+                const chunks = [];
+                const words = text.split(/\s+/);
+                
+                for (let i = 0; i < words.length; i += chunkSize - overlap) {
+                    const chunk = words.slice(i, i + chunkSize).join(' ');
+                    if (chunk.trim()) {
+                        chunks.push(chunk);
+                    }
+                }
+                
+                return chunks;
+            }
+
+            async function getEmbedding(text) {
+                const output = await embedder(text, { pooling: 'mean', normalize: true });
+                return Array.from(output.data);
+            }
+
+            function cosineSimilarity(a, b) {
+                let dotProduct = 0;
+                let normA = 0;
+                let normB = 0;
+                
+                for (let i = 0; i < a.length; i++) {
+                    dotProduct += a[i] * b[i];
+                    normA += a[i] * a[i];
+                    normB += b[i] * b[i];
+                }
+                
+                return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+            }
+
+            async function processDocument(documentId, documentName, text) {
+                try {
+                    sendToParent({ 
+                        type: 'DOCUMENT_PROCESSING', 
+                        documentId,
+                        status: 'Chunking document...', 
+                        progress: 0 
+                    });
+                    
+                    const chunks = chunkDocument(text);
+                    
+                    sendToParent({ 
+                        type: 'DOCUMENT_PROCESSING',
+                        documentId, 
+                        status: `Creating embeddings for ${chunks.length} chunks...`,
+                        progress: 10
+                    });
+                    
+                    const embeddings = [];
+                    for (let i = 0; i < chunks.length; i++) {
+                        const embedding = await getEmbedding(chunks[i]);
+                        embeddings.push(embedding);
+                        
+                        if ((i + 1) % 5 === 0 || i === chunks.length - 1) {
+                            const percent = 10 + Math.round(((i + 1) / chunks.length) * 90);
+                            sendToParent({ 
+                                type: 'DOCUMENT_PROCESSING',
+                                documentId, 
+                                status: `Processing chunk ${i + 1}/${chunks.length}...`,
+                                progress: percent
+                            });
+                        }
+                    }
+                    
+                    // Store document data
+                    documentStore.set(documentId, {
+                        name: documentName,
+                        chunks: chunks,
+                        embeddings: embeddings
+                    });
+                    
+                    sendToParent({ 
+                        type: 'DOCUMENT_PROCESSED',
+                        documentId, 
+                        chunksCount: chunks.length 
+                    });
+                    
+                } catch (error) {
+                    console.error('Document processing error:', error);
+                    sendToParent({ 
+                        type: 'DOCUMENT_ERROR',
+                        documentId, 
+                        error: error.message 
+                    });
+                }
+            }
+
+            async function findRelevantChunksAcrossDocuments(question, topK = 2) {
+                const questionEmbedding = await getEmbedding(question);
+                const allChunks = [];
+                
+                // Collect all chunks from all documents
+                for (const [docId, docData] of documentStore.entries()) {
+                    docData.chunks.forEach((chunk, idx) => {
+                        allChunks.push({
+                            documentId: docId,
+                            documentName: docData.name,
+                            chunkIndex: idx,
+                            text: chunk,
+                            embedding: docData.embeddings[idx]
+                        });
+                    });
+                }
+                
+                // Calculate similarities
+                const similarities = allChunks.map(chunk => ({
+                    ...chunk,
+                    similarity: cosineSimilarity(questionEmbedding, chunk.embedding)
+                }));
+                
+                // Sort and get top K
+                similarities.sort((a, b) => b.similarity - a.similarity);
+                
+                return similarities.slice(0, topK);
+            }
+
+            async function answerQuestion(question) {
+                try {
+                    if (documentStore.size === 0) {
+                        sendToParent({ 
+                            type: 'ANSWER_ERROR', 
+                            error: 'No documents available. Please upload documents first.' 
+                        });
+                        return;
+                    }
+
+                    sendToParent({ type: 'ANSWER_GENERATING', status: 'Searching across all documents...' });
+                    
+                    const relevantChunks = await findRelevantChunksAcrossDocuments(question, 5);
+                    
+                    // Group by document for better context
+                    const context = relevantChunks.map(c => 
+                        `[From ${c.documentName}]\n${c.text}`
+                    ).join('\n\n');
+                    
+                    // Prepare sources for display
+                    const sources = relevantChunks.map(c => ({
+                        documentName: c.documentName,
+                        text: c.text,
+                        similarity: c.similarity
+                    }));
+                    
+                    sendToParent({ type: 'ANSWER_GENERATING', status: 'Generating answer with AI...' });
+                    
+                    const messages = [
+                        {
+                            role: "system",
+                            content: "You are a helpful AI assistant that answers questions based on provided documents. Always cite which document(s) you're referencing in your answer. Be concise, accurate, and informative."
+                        },
+                        {
+                            role: "user",
+                            content: `I have uploaded multiple documents. Here are the most relevant excerpts:\n\n${context}\n\nQuestion: ${question}\n\nPlease provide a comprehensive answer based on these documents. Reference which document(s) you're using.`
+                        }
+                    ];
+                    
+                    let fullResponse = '';
+                    
+                    if (useWebLLM && webLLMEngine) {
+                        const completion = await webLLMEngine.chat.completions.create({
+                            messages: messages,
+                            temperature: 0.7,
+                            // max_tokens: 600,
+                            context_window_size: 8192,
+                            sliding_window_size: 4096,
+                            stream: true
+                        });
+
+                        for await (const chunk of completion) {
+                            const delta = chunk.choices[0]?.delta?.content || '';
+                            fullResponse += delta;
+                        }
+                    } else {
+                        // Fallback to Transformers.js
+                        if (!window.t5Generator) {
+                            const options = {
+                                quantized: false,
+                                device: 'webgpu'
+                            }
+                            window.t5Generator = await pipeline('text2text-generation', 'Xenova/flan-t5-base', options);
+                        }
+                        
+                        const prompt = `Answer based on context.\n\nContext: ${context}\n\nQuestion: ${question}\n\nAnswer:`;
+                        const result = await window.t5Generator(prompt, { 
+                            max_length: 300,
+                            temperature: 0.7 
+                        });
+                        fullResponse = result[0].generated_text;
+                    }
+                    
+                    sendToParent({ 
+                        type: 'ANSWER_READY', 
+                        answer: fullResponse,
+                        sources: sources,
+                        model: currentModel
+                    });
+                    
+                } catch (error) {
+                    console.error('Answer generation error:', error);
+                    sendToParent({ type: 'ANSWER_ERROR', error: error.message });
+                }
+            }
+
+            function removeDocument(documentId) {
+                documentStore.delete(documentId);
+                console.log(`Removed document: ${documentId}`);
+            }
+
+            function clearAllDocuments() {
+                documentStore.clear();
+                console.log('Cleared all documents');
+            }
+
+            // Listen for messages from parent LWC
+            window.addEventListener('message', async (event) => {
+                const message = event.data;
+                
+                switch (message.type) {
+                    case 'PROCESS_DOCUMENT':
+                        await processDocument(message.documentId, message.documentName, message.data);
+                        break;
+                        
+                    case 'ASK_QUESTION':
+                        await answerQuestion(message.data);
+                        break;
+                        
+                    case 'REMOVE_DOCUMENT':
+                        removeDocument(message.documentId);
+                        break;
+                        
+                    case 'CLEAR_ALL_DOCUMENTS':
+                        clearAllDocuments();
+                        break;
+                        
+                    case 'RELOAD_MODEL':
+                        await initModels(message.model || currentModel);
+                        break;
+                }
+            });
+
+            // Initialize on load
+            window.addEventListener('load', () => {
+                console.log('🚀 Multi-Document AI Engine loaded');
+                initModels();
+            });
+        </script>
+    </body>
+    </html>
+</apex:page>
